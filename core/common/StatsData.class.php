@@ -275,20 +275,17 @@ class StatsData extends CodonData {
 
         $top_routes = CodonCache::read($key);
         if ($top_routes === false) {
-            $sql = 'SELECT * 
-					FROM `' . TABLE_PREFIX . 'schedules`';
+            $sql = 'SELECT * FROM `' . TABLE_PREFIX . 'schedules`';
 
             if ($airline_code != '') {
-                $sql .= " WHERE `code`='{$airline_code}' GROUP BY `code`";
+                $sql .= " WHERE `code`='{$airline_code}'";
             }
 
-            $sql = '	ORDER BY `timesflown` DESC
-					LIMIT 10';
+            $sql = $sql . ' ORDER BY `timesflown` DESC LIMIT 10';
 
             $top_routes = DB::get_results($sql);
             CodonCache::write($key, $top_routes, 'medium');
         }
-
         return $top_routes;
     }
 

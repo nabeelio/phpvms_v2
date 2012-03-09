@@ -14,3 +14,4 @@ mobile
 lib/rss/latestpireps.rss
 unittest/reports/**
 unittest/web
+nbproject/
