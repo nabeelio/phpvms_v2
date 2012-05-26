@@ -50,7 +50,7 @@ foreach($pireps as $pirep)
 
 	<td align="left" valign="top" nowrap class="<?php echo $td_class;?>">
 	<strong><a href="<?php echo SITE_URL?>/admin/index.php/pilotadmin/viewpilots?action=viewoptions&pilotid=<?php echo $pirep->pilotid;?>">
-		<?php echo PilotData::GetPilotCode($pirep->code, $pirep->pilotid) . ' - ' .$pirep->firstname .' ' . $pirep->lastname;?></a></strong>
+		<?php echo PilotData::GetPilotCode($pirep->pcode, $pirep->pilotid) . ' - ' .$pirep->firstname .' ' . $pirep->lastname;?></a></strong>
 	<strong>Flight:</strong> <?php echo $pirep->code . $pirep->flightnum; ?></div>
 	<strong>Dep/Arr: </strong><?php echo $pirep->depicao; ?>/<?php echo $pirep->arricao; ?> 
 	<strong>Flight Time: </strong><?php echo $pirep->flighttime; ?> <br />

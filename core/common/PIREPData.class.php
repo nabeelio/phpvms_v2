@@ -46,7 +46,7 @@ class PIREPData extends CodonData {
         
         $sql = 'SELECT p.*, UNIX_TIMESTAMP(p.submitdate) as submitdate, 
                     UNIX_TIMESTAMP(p.modifieddate) as modifieddate, 
-					u.pilotid, u.firstname, u.lastname, u.email, u.rank,
+					u.pilotid, u.firstname, u.lastname, u.email, u.rank,, u.code AS pcode,
 					a.id AS aircraftid, a.name as aircraft, a.registration,
 					dep.name as depname, dep.lat AS deplat, dep.lng AS deplng,
 					arr.name as arrname, arr.lat AS arrlat, arr.lng AS arrlng						
@@ -307,7 +307,7 @@ class PIREPData extends CodonData {
     public static function getReportDetails($pirepid) {
         
         $sql = 'SELECT p.*, s.*, s.id AS scheduleid, p.route, p.route_details,
-					u.pilotid, u.firstname, u.lastname, u.email, u.rank,
+					u.pilotid, u.firstname, u.lastname, u.email, u.rank, u.code AS pcode,
 					dep.name as depname, dep.lat AS deplat, dep.lng AS deplng,
 					arr.name as arrname, arr.lat AS arrlat, arr.lng AS arrlng,
 				    p.code, p.flightnum, p.depicao, p.arricao,  p.price AS price,
