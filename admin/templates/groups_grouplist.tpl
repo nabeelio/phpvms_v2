@@ -22,7 +22,7 @@ foreach($allgroups as $group) {
 	<td align="center"><?php echo $group->groupid; ?></td>
 	<td align="center" width="1%" nowrap>
 	<?php
-	if($group->core == 1) {
+	if($group->core == 0) {
 	?>
 		<a class="button {button:{icons:{primary:'ui-icon-wrench'}}}" 
 			href="<?php echo adminurl('/pilotadmin/editgroup/?groupid='.$group->groupid);?>">
