@@ -68,20 +68,20 @@ $page_content = ob_get_clean();
 $BaseTemplate->Set('title', MainController::$page_title .' - '.SITE_NAME);
 $BaseTemplate->Set('page_title', MainController::$page_title .' - '.SITE_NAME);
 
-if(file_exists(SKINS_PATH.'/layout.tpl'))
+if(file_exists(SKINS_PATH.'/layout.php'))
 {
-	$BaseTemplate->Set('page_htmlhead', Template::Get('core_htmlhead.tpl', true));
-	$BaseTemplate->Set('page_htmlreq', Template::Get('core_htmlreq.tpl', true));
+	$BaseTemplate->Set('page_htmlhead', Template::Get('core_htmlhead.php', true));
+	$BaseTemplate->Set('page_htmlreq', Template::Get('core_htmlreq.php', true));
 	$BaseTemplate->Set('page_content', $page_content);
 	
-	$BaseTemplate->ShowTemplate('layout.tpl');
+	$BaseTemplate->ShowTemplate('layout.php');
 }
 else
 {
 	# It's a template sammich!
-	$BaseTemplate->ShowTemplate('header.tpl');
+	$BaseTemplate->ShowTemplate('header.php');
 	echo $page_content;
-	$BaseTemplate->ShowTemplate('footer.tpl');
+	$BaseTemplate->ShowTemplate('footer.php');
 }
 
 # Force connection close

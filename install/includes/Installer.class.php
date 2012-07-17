@@ -107,7 +107,7 @@ class Installer
 	 */
 	public static function WriteConfig() {
 	   
-		$tpl = file_get_contents(SITE_ROOT . '/install/templates/config.tpl');
+		$tpl = file_get_contents(SITE_ROOT . '/install/templates/config.php');
 		
 		$tpl = str_replace('$DBASE_USER', $_POST['DBASE_USER'], $tpl);
 		$tpl = str_replace('$DBASE_PASS', $_POST['DBASE_PASS'], $tpl);
