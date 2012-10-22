@@ -26,34 +26,34 @@ ini_set('display_errors', 'on');
 
 define('DS', DIRECTORY_SEPARATOR);
 define('SITE_ROOT', dirname(dirname(dirname(__FILE__))));
-define('CORE_PATH', SITE_ROOT . '/core');
-define('CLASS_PATH', CORE_PATH . '/classes');
-define('INSTALL_ROOT', SITE_ROOT.'/install');
+define('CORE_PATH', SITE_ROOT . DS . 'core');
+define('CLASS_PATH', CORE_PATH . DS . 'classes');
+define('INSTALL_ROOT', SITE_ROOT . DS . 'install');
 
-if(!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.config.php') == 0) {
+if(!file_exists(CORE_PATH.DS.'local.config.php') || filesize(CORE_PATH.DS.'local.config.php') == 0) {
 	
 	/* Include just some basic files to get the install going */
-	include CLASS_PATH . '/ezdb/ezdb.class.php';
-	include CLASS_PATH . '/CodonCache.class.php';
-	include CLASS_PATH . '/CodonData.class.php';
-	include CLASS_PATH . '/Config.class.php';
-	include CLASS_PATH . '/Debug.class.php';
-	include CLASS_PATH . '/Template.class.php';
-	include CLASS_PATH . '/TemplateSet.class.php';
-	include CORE_PATH . '/common/SettingsData.class.php';
+	include CLASS_PATH . DS . 'ezdb' . DS . 'ezdb.class.php';
+	include CLASS_PATH . DS . 'CodonCache.class.php';
+	include CLASS_PATH . DS . 'CodonData.class.php';
+	include CLASS_PATH . DS . 'Config.class.php';
+	include CLASS_PATH . DS . 'Debug.class.php';
+	include CLASS_PATH . DS . 'Template.class.php';
+	include CLASS_PATH . DS . 'TemplateSet.class.php';
+	include CORE_PATH . DS . 'common' . DS . 'SettingsData.class.php';
     
 } else {
-	include CORE_PATH . '/codon.config.php';
+	include CORE_PATH . DS . 'codon.config.php';
 }
 
-include CORE_PATH.'/lib/mysqldiff/MySQLDiff.class.php';
-include INSTALL_ROOT.'/includes/Installer.class.php';
+include CORE_PATH.DS.'lib' . DS . 'mysqldiff' . DS . 'MySQLDiff.class.php';
+include INSTALL_ROOT.DS.'includes' . DS . 'Installer.class.php';
 
 Template::init();
-Template::setTemplatePath(INSTALL_ROOT.'/templates');
+Template::setTemplatePath(INSTALL_ROOT.DS.'templates');
 
 # Get the version info from the version file
-$revision = file_get_contents(CORE_PATH.'/version');
+$revision = file_get_contents(CORE_PATH.DS.'version');
 
 preg_match('/^[v]?(.*)-([0-9]*)-(.*)/', $revision, $matches);
 list($FULL_VERSION_STRING, $full_version, $revision_count, $hash) = $matches;
@@ -66,11 +66,4 @@ define('INSTALLER_FULL_VERSION', $FULL_VERSION_STRING);
 define('INSTALLER_VERSION', $full_version);
 define('UPDATE_VERSION', $full_version);
 define('REVISION', $revision);
-
-
-
-
-
-
-
-
+?>

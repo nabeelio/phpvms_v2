@@ -19,7 +19,7 @@
 
 class PIREPAdmin extends CodonModule {
     public function HTMLHead() {
-        switch ($this->controller->function) {
+        switch (self::$controller->function) {
             case 'viewpending':
             case 'viewrecent':
             case 'viewall':

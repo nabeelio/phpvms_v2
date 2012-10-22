@@ -65,19 +65,19 @@ class PIREPS extends CodonModule {
             return;
         }
 
-        if (isset($this->post->submit_pirep) && $this->post->submit_pirep) {
+        if (isset(self::$post->submit_pirep) && self::$post->submit_pirep) {
             if (!$this->SubmitPIREP()) {
                 $this->FilePIREPForm();
                 return false;
             }
         }
 
-        if (isset($this->post->submit)) {
+        if (isset(self::$post->submit)) {
 
             /* See if the PIREP is valid, and whether it's being edited
             by the owner, not someone else */
 
-            $pirep = PIREPData::getReportDetails($this->post->pirepid);
+            $pirep = PIREPData::getReportDetails(self::$post->pirepid);
 
             if (!$pirep) {
                 $this->set('message', 'Invalid PIREP');
@@ -94,15 +94,15 @@ class PIREPS extends CodonModule {
 
             /* Now do the edit actions */
 
-            if ($this->post->action == 'addcomment') {
-                $ret = PIREPData::addComment($this->post->pirepid, Auth::$pilot->pilotid, $this->post->comment);
+            if (self::$post->action == 'addcomment') {
+                $ret = PIREPData::addComment(self::$post->pirepid, Auth::$pilot->pilotid, self::$post->comment);
 
                 $this->set('message', 'Comment added!');
                 $this->render('core_success.tpl');
             }
 
-            /* Edit the PIREP custom fields */  elseif ($this->post->action == 'editpirep') {
-                $ret = PIREPData::saveFields($this->post->pirepid, $_POST);
+            /* Edit the PIREP custom fields */  elseif (self::$post->action == 'editpirep') {
+                $ret = PIREPData::saveFields(self::$post->pirepid, $_POST);
 
                 $this->set('message', 'PIREP edited!');
                 $this->render('core_success.tpl');
@@ -406,15 +406,15 @@ class PIREPS extends CodonModule {
             return false;
         }
 
-        if ($this->post->code == '' || $this->post->flightnum == '' || $this->post-> depicao == '' 
-                || $this->post->arricao == '' || $this->post->aircraft == '' || $this->post->flighttime == '') 
+        if (self::$post->code == '' || self::$post->flightnum == '' || self::$post-> depicao == '' 
+                || self::$post->arricao == '' || self::$post->aircraft == '' || self::$post->flighttime == '') 
         {
             $this->set('message', 'You must fill out all of the required fields!');
             return false;
         }
 
         # Only allow for valid routes to be filed
-        $sched_data = SchedulesData::getScheduleByFlight($this->post->code, $this->post->flightnum);
+        $sched_data = SchedulesData::getScheduleByFlight(self::$post->code, self::$post->flightnum);
         if (!$sched_data) {
             $this->set('message',
                 'The flight code and number you entered is not a valid route!');
@@ -422,8 +422,8 @@ class PIREPS extends CodonModule {
         }
 
         # See if they entered more than 59 in the minutes part of the flight time
-        $this->post->flighttime = str_replace(':', '.', $this->post->flighttime);
-        $parts = explode('.', $this->post->flighttime);
+        self::$post->flighttime = str_replace(':', '.', self::$post->flighttime);
+        $parts = explode('.', self::$post->flighttime);
         if ($parts[1] > 59) {
             $this->set('message', 'You entered more than 60 minutes in the minutes');
             return false;
@@ -444,15 +444,15 @@ class PIREPS extends CodonModule {
         }
 
         /* Removed this check since maybe it's a training flight or something, who knows
-        if($this->post->depicao == $this->post->arricao)
+        if(self::$post->depicao == self::$post->arricao)
         {
         $this->set('message', 'The departure airport is the same as the arrival airport!');
         $this->render('core_error.tpl');
         return false;
         }*/
 
-        $this->post->flighttime = str_replace(':', '.', $this->post->flighttime);
-        if (!is_numeric($this->post->flighttime)) {
+        self::$post->flighttime = str_replace(':', '.', self::$post->flighttime);
+        if (!is_numeric(self::$post->flighttime)) {
             $this->set('message', 'The flight time has to be a number!');
             return false;
         }
@@ -460,17 +460,17 @@ class PIREPS extends CodonModule {
         # form the fields to submit
         $this->pirepdata = array(
             'pilotid' => $pilotid, 
-            'code' => $this->post->code,
-            'flightnum' => $this->post->flightnum, 
-            'depicao' => $this->post->depicao,
-            'arricao' => $this->post->arricao, 
-            'aircraft' => $this->post->aircraft,
-            'flighttime' => $this->post->flighttime, 
-            'route' => $this->post->route,
+            'code' => self::$post->code,
+            'flightnum' => self::$post->flightnum, 
+            'depicao' => self::$post->depicao,
+            'arricao' => self::$post->arricao, 
+            'aircraft' => self::$post->aircraft,
+            'flighttime' => self::$post->flighttime, 
+            'route' => self::$post->route,
             'submitdate' => 'NOW()', 
-            'fuelused' => $this->post->fuelused, 
+            'fuelused' => self::$post->fuelused, 
             'source' =>'manual', 
-            'comment' => $this->post->comment
+            'comment' => self::$post->comment
             );
 
         CodonEvent::Dispatch('pirep_prefile', 'PIREPS');
@@ -488,7 +488,7 @@ class PIREPS extends CodonModule {
         PIREPData::SaveFields($pirepid, $_POST);
 
         # Remove the bid
-        $bidid = SchedulesData::GetBidWithRoute($pilotid, $this->post->code, $this->
+        $bidid = SchedulesData::GetBidWithRoute($pilotid, self::$post->code, $this->
             post->flightnum);
         if ($bidid) {
             SchedulesData::RemoveBid($bidid->bidid);
@@ -501,8 +501,8 @@ class PIREPS extends CodonModule {
         PilotData::setPilotRetired($pilotid, 0);
 
         # Delete the bid, if the value for it is set
-        if ($this->post->bid != '') {
-            SchedulesData::RemoveBid($this->post->bid);
+        if (self::$post->bid != '') {
+            SchedulesData::RemoveBid(self::$post->bid);
         }
 
         return true;

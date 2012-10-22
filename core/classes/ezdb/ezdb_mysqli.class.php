@@ -34,7 +34,8 @@
   * MySQLi implementation for ezDB
   * By Nabeel Shahzad
   */
-include_once dirname(__FILE__).'/ezdb_base.class.php';
+
+include_once dirname(__FILE__).DS.'ezdb_base.class.php';
 
 class ezDB_mysqli extends ezDB_Base
 {

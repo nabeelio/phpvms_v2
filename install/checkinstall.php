@@ -47,7 +47,7 @@ function success($title, $txt) {
 
 
 /* Rest of the script begins here */
-echo "<strong>phpVMS Build Number: </strong> " . file_get_contents(ROOT_PATH . '/core/version');
+echo "<strong>phpVMS Build Number: </strong> " . file_get_contents(ROOT_PATH.DS.'core'.DS.'version');
 echo '<br /><br />';
 
 echo '<strong>Checking PHP version</strong><br />';

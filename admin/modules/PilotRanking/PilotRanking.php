@@ -19,7 +19,7 @@
 
 class PilotRanking extends CodonModule {
 	public function HTMLHead() {
-		switch ($this->controller->function) {
+		switch (self::$controller->function) {
 			case 'pilotranks':
 			case 'calculateranks':
 				$this->set('sidebar', 'sidebar_ranks.tpl');

@@ -26,7 +26,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function HTMLHead() {
-        switch ($this->controller->function) {
+        switch (self::$controller->function) {
             case 'viewpilots':
                 $this->set('sidebar', 'sidebar_pilots.tpl');
                 break;

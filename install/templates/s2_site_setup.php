@@ -16,11 +16,7 @@
 	</td>
 	</tr>
 	
-	<tr>
-		<td><strong>Your Admin User</strong><br /><br /></td>
-		<td></td>
-	</tr>
-	
+    <th colspan="2"><strong>Your Admin User</strong></th>
 	<!--<tr>
 		<td><strong>* Site Name: </strong></td>
 		<td><input type="text" name="SITE_NAME" value="<?php echo $_POST['SITE_NAME']?>" /></td>
@@ -48,13 +44,10 @@
 	
 	<tr>
 		<td></td>
-		<td><hr></td>
+		<td><hr /></td>
 	</tr>
 	
-	<tr>
-		<td><strong>Your Virtual Airline</strong><br  /><br /></td>
-		<td></td>
-	</tr>
+	<th colspan="2"><strong>Your Virtual Airline</strong></th>
 	
 	<tr>
 		<td align="right" width="1px" nowrap valign="top"><strong>Your Virtual Airline: * </strong></td>

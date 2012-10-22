@@ -20,7 +20,7 @@
 class Finance extends CodonModule {
 
     public function HTMLHead() {
-        switch ($this->controller->function) {
+        switch (self::$controller->function) {
             case 'addexpense':
             case 'editexpense':
             case 'viewexpenses':

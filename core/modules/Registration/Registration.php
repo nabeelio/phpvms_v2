@@ -21,7 +21,7 @@ class Registration extends CodonModule
 	public function HTMLHead() {
 		/*Show our password strength checker
 			*/
-		if($this->get->page == 'register') {
+		if(self::$get->page == 'register') {
 			$this->renderTemplate('registration_javascript.tpl');
 		}
 	}
