@@ -30,7 +30,7 @@ class Login extends CodonModule
 	public function login($redir='')
 	{
 		if(Auth::LoggedIn() == true) {
-			$this->render('login_already.tpl');
+			$this->render('login_already');
 			return;
 		}
 		
@@ -39,7 +39,7 @@ class Login extends CodonModule
 		if(isset(self::$post->action) && self::$post->action == 'login') {
 			$this->ProcessLogin();
 		} else {
-			$this->render('login_form.tpl');
+			$this->render('login_form');
 		}
 	}
 	
@@ -47,7 +47,7 @@ class Login extends CodonModule
 	{
 		Auth::LogOut();
 		$this->set('redir', SITE_URL);
-		$this->render('login_complete.tpl');
+		$this->render('login_complete');
 	}
 	
 	public function forgotpassword()
@@ -57,7 +57,7 @@ class Login extends CodonModule
 			return;
 		}
 		
-		$this->render('login_forgotpassword.tpl');
+		$this->render('login_forgotpassword');
 	}
 	
 	public function ResetPassword()
@@ -71,7 +71,7 @@ class Login extends CodonModule
 			$pilot = PilotData::GetPilotByEmail($email);
 			
 			if(!$pilot) {
-				$this->render('login_notfound.tpl');
+				$this->render('login_notfound');
 				return;
 			}
 			
@@ -83,11 +83,11 @@ class Login extends CodonModule
 			$this->set('lastname', $pilot->lastname);
 			$this->set('newpw', $newpw);
 			
-			$message = Template::GetTemplate('email_lostpassword.tpl', true);
+			$message = Template::GetTemplate('email_lostpassword', true);
 			
 			Util::SendEmail($pilot->email, 'Password Reset', $message);
 			
-			$this->render('login_passwordreset.tpl');
+			$this->render('login_passwordreset');
 		}
 	}
 	
@@ -99,24 +99,24 @@ class Login extends CodonModule
 		if($email == '' || $password == '')
 		{
 			$this->set('message', 'You must fill out both your username and password');
-			$this->render('login_form.tpl');
+			$this->render('login_form');
 			return false;
 		}
 
 		if(!Auth::ProcessLogin($email, $password))
 		{
 			$this->set('message', Auth::$error_message);
-			$this->render('login_form.tpl');
+			$this->render('login_form');
 			return false;
 		} else {
             
 			if(Auth::$pilot->confirmed == PILOT_PENDING) {
-				$this->render('login_unconfirmed.tpl');
+				$this->render('login_unconfirmed');
 				Auth::LogOut();
 				
 				// show error
 			} elseif(Auth::$pilot->confirmed == PILOT_REJECTED) {
-				$this->render('login_rejected.tpl');
+				$this->render('login_rejected');
 				Auth::LogOut();
 			} else {
 				$pilotid = Auth::$pilot->pilotid;

@@ -40,7 +40,7 @@ class Pilots extends CodonModule
 			$this->set('allpilots', $pilot_list); # deprecated
             $this->set('pilot_list', $pilot_list);
 								
-			$this->render('pilots_list.tpl');
+			$this->render('pilots_list');
 		}
 		
 		$nohub = PilotData::findPilots(array('p.hub'=>''));
@@ -52,7 +52,7 @@ class Pilots extends CodonModule
 		$this->set('icao', '');
 		$this->set('allpilots', $nohub); # deprecated
         $this->set('pilot_list', $nohub);
-		$this->render('pilots_list.tpl');
+		$this->render('pilots_list');
 	}
 	
 	/**
@@ -65,7 +65,7 @@ class Pilots extends CodonModule
 	{
 		if($pilotid == '') {
 			$this->set('message', 'No pilot specified!');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 		
@@ -74,7 +74,7 @@ class Pilots extends CodonModule
         $this->set('pireps', $pirep_list); # deprecated
         $this->set('pireps_list', $pirep_list);
         
-		$this->render('pireps_viewall.tpl');
+		$this->render('pireps_viewall');
 	}
 	
 	
@@ -162,6 +162,6 @@ class Pilots extends CodonModule
 		$this->set('pilots', $pilot_list);
         $this->set('pilot_list', $pilot_list);
         
-		$this->render('frontpage_recentpilots.tpl');
+		$this->render('frontpage_recentpilots');
 	}
 }

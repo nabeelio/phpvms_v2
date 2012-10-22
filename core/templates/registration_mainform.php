@@ -84,7 +84,7 @@
 	<?php
 	
 	//Put this in a seperate template. Shows the Custom Fields for registration
-	Template::Show('registration_customfields.tpl');
+	Template::Show('registration_customfields');
 	
 	?>
 	

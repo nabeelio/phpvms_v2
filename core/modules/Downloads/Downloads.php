@@ -28,13 +28,13 @@ class Downloads extends CodonModule
 		}
 		
 		$this->set('allcategories', DownloadData::GetAllCategories());
-		$this->render('downloads_list.tpl');
+		$this->render('downloads_list');
 	}
 		
 	public function show_category($id)
 	{
 		$this->set('allcategories', array(DownloadData::GetAsset($id)));
-		$this->render('downloads_list.tpl');
+		$this->render('downloads_list');
 	}
 	
 	public function __call($name, $args)
@@ -56,6 +56,6 @@ class Downloads extends CodonModule
 		DownloadData::IncrementDLCount($id);
 				
 		$this->set('download', DownloadData::GetAsset($id));
-		$this->render('download_item.tpl');
+		$this->render('download_item');
 	}
 }

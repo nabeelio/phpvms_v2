@@ -24,6 +24,6 @@ class Frontpage extends CodonModule
 	{
 		$this->set('usersonline', StatsData::UsersOnline());
 		$this->set('guestsonline', StatsData::GuestsOnline());
-		$this->render('frontpage_main.tpl');
+		$this->render('frontpage_main');
 	}
 }

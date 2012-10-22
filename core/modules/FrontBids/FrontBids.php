@@ -28,6 +28,6 @@ class FrontBids extends CodonModule
 	{
 
 		$this->set('lastbids', SchedulesData::GetLatestBids($total));
-		$this->render('frontpage_recentbids.tpl');
+		$this->render('frontpage_recentbids');
 	}
 }

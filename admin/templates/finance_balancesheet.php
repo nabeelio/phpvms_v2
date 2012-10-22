@@ -1,7 +1,7 @@
 <?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <h3><?php echo $title?></h3>
 <?php
-Template::Show('finance_header.tpl'); 
+Template::Show('finance_header'); 
 ?>
 <table width="600px" class="balancesheet" cellpadding="0" cellspacing="0">
 

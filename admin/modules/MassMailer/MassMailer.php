@@ -22,25 +22,25 @@
 class MassMailer extends CodonModule {
 
 	public function HTMLHead() {
-		$this->set('sidebar', 'sidebar_mailer.tpl');
+		$this->set('sidebar', 'sidebar_mailer');
 	}
 
 	public function index() {
 		$this->set('allgroups', PilotGroups::getAllGroups());
-		$this->render('mailer_form.tpl');
+		$this->render('mailer_form');
 	}
 
 	public function sendmail() {
 		echo '<h3>Sending email</h3>';
 		if ($this->post->subject == '' || trim($this->post->message) == '') {
 			$this->set('message', 'You must enter a subject and message!');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		if (count($this->post->groups) == 0) {
 			$this->set('message', 'You must select groups to send to!');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 

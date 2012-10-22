@@ -61,7 +61,7 @@ class TemplateDiffs extends CodonModule
 	
 	public function showdiff($file)
 	{
-		$this->render('diff_showdiff.tpl');
+		$this->render('diff_showdiff');
 				
 		# Paths
 		$base = Config::Get('BASE_TEMPLATE_PATH').DS.$file;

@@ -18,7 +18,7 @@
 
 class Downloads extends CodonModule {
 	public function HTMLHead() {
-		$this->set('sidebar', 'sidebar_downloads.tpl');
+		$this->set('sidebar', 'sidebar_downloads');
 	}
 
 	public function index() {
@@ -55,14 +55,14 @@ class Downloads extends CodonModule {
 		}
 
 		$this->set('allcategories', DownloadData::GetAllCategories());
-		$this->render('downloads_overview.tpl');
+		$this->render('downloads_overview');
 	}
 
 	public function addcategory() {
 		$this->set('title', 'Add Category');
 		$this->set('action', 'addcategory');
 
-		$this->render('downloads_categoryform.tpl');
+		$this->render('downloads_categoryform');
 
 	}
 
@@ -71,7 +71,7 @@ class Downloads extends CodonModule {
 		$this->set('allcategories', DownloadData::GetAllCategories());
 		$this->set('action', 'adddownload');
 
-		$this->render('downloads_downloadform.tpl');
+		$this->render('downloads_downloadform');
 	}
 
 	public function editcategory() {
@@ -79,7 +79,7 @@ class Downloads extends CodonModule {
 		$this->set('action', 'editcategory');
 		$this->set('category', DownloadData::GetAsset($this->get->id));
 
-		$this->render('downloads_categoryform.tpl');
+		$this->render('downloads_categoryform');
 	}
 
 	public function editdownload() {
@@ -88,38 +88,38 @@ class Downloads extends CodonModule {
 		$this->set('allcategories', DownloadData::GetAllCategories());
 		$this->set('download', DownloadData::GetAsset($this->get->id));
 
-		$this->render('downloads_downloadform.tpl');
+		$this->render('downloads_downloadform');
 	}
 
 	protected function AddCategoryPost() {
 		if ($this->post->name == '') {
 			$this->set('message', 'No category name entered!');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		if (DownloadData::FindCategory($this->post->name)) {
 			$this->set('message', 'Category already exists');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		DownloadData::AddCategory($this->post->name, '', '');
 
 		$this->set('message', 'Category added!');
-		$this->render('core_success.tpl');
+		$this->render('core_success');
 	}
 
 	protected function EditCategoryPost() {
 		if ($this->post->name == '') {
 			$this->set('message', 'No category name entered!');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		if (DownloadData::FindCategory($this->post->name)) {
 			$this->set('message', 'Category already exists');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
@@ -128,27 +128,27 @@ class Downloads extends CodonModule {
 		DownloadData::EditAsset($data);
 
 		$this->set('message', 'Category edited!');
-		$this->render('core_success.tpl');
+		$this->render('core_success');
 
 	}
 
 	protected function DeleteCategoryPost() {
 		if ($this->post->id == '') {
 			$this->set('message', 'Invalid category!');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		DownloadData::RemoveCategory($this->post->id);
 
 		$this->set('message', 'Category removed!');
-		$this->render('core_success.tpl');
+		$this->render('core_success');
 	}
 
 	protected function AddDownloadPost() {
 		if ($this->post->name == '' || $this->post->link == '') {
 			$this->set('message', 'Link and name must be entered');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
@@ -158,7 +158,7 @@ class Downloads extends CodonModule {
 
 		if ($val == false) {
 			$this->set('message', DB::$error);
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 	}
@@ -166,7 +166,7 @@ class Downloads extends CodonModule {
 	protected function EditDownloadPost() {
 		if ($this->post->name == '' || $this->post->link == '') {
 			$this->set('message', 'Link and name must be entered!');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
@@ -175,7 +175,7 @@ class Downloads extends CodonModule {
 		DownloadData::EditAsset($data);
 
 		$this->set('message', 'Download edited!');
-		$this->render('core_success.tpl');
+		$this->render('core_success');
 	}
 
 	protected function DeleteDownloadPost() {

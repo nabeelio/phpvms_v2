@@ -2,7 +2,7 @@
 <div id="scheduleresults">
 <?php
 if($schedule_list) {
-    Template::ShowTemplate('schedule_results.tpl');
+    Template::ShowTemplate('schedule_results');
 }
 ?>
 </div>

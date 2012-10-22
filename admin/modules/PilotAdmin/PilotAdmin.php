@@ -28,15 +28,15 @@ class PilotAdmin extends CodonModule {
     public function HTMLHead() {
         switch (self::$controller->function) {
             case 'viewpilots':
-                $this->set('sidebar', 'sidebar_pilots.tpl');
+                $this->set('sidebar', 'sidebar_pilots');
                 break;
             case 'pendingpilots':
-                $this->set('sidebar', 'sidebar_pending.tpl');
+                $this->set('sidebar', 'sidebar_pending');
                 break;
             case 'pilotgroups':
             case 'editgroup':
             case 'addgroup':
-                $this->set('sidebar', 'sidebar_groups.tpl');
+                $this->set('sidebar', 'sidebar_groups');
                 break;
         }
     }
@@ -89,7 +89,7 @@ class PilotAdmin extends CodonModule {
 
 
                 $this->set('message', Lang::gs('pilot.deleted'));
-                $this->render('core_success.tpl');
+                $this->render('core_success');
 
 
                 LogData::addLog(Auth::$userinfo->pilotid, 'Deleted pilot ' . 
@@ -105,7 +105,7 @@ class PilotAdmin extends CodonModule {
 
                 $this->AddPilotToGroup();
                 $this->SetGroupsData($this->post->pilotid);
-                $this->render('pilots_groups.tpl');
+                $this->render('pilots_groups');
                 return;
 
                 break;
@@ -115,7 +115,7 @@ class PilotAdmin extends CodonModule {
                 $this->RemovePilotGroup();
 
                 $this->SetGroupsData($this->post->pilotid);
-                $this->render('pilots_groups.tpl');
+                $this->render('pilots_groups');
 
                 return;
 
@@ -125,7 +125,7 @@ class PilotAdmin extends CodonModule {
 
                 if ($this->post->firstname == '' || $this->post->lastname == '') {
                     $this->set('message', 'The first or lastname cannot be blank!');
-                    $this->render('core_error.tpl');
+                    $this->render('core_error');
                     return;
                 }
 
@@ -158,7 +158,7 @@ class PilotAdmin extends CodonModule {
                 StatsData::UpdateTotalHours();
 
                 $this->set('message', 'Profile updated successfully');
-                $this->render('core_success.tpl');
+                $this->render('core_success');
                 
                 if($this->post->resend_email == 'true') {
                     $this->post->id = $this->post->pilotid;
@@ -184,8 +184,8 @@ class PilotAdmin extends CodonModule {
 
     public function pilotgrouptab($pilotid) {
         $this->setGroupsData($pilotid);
-        Template::Show('pilots_groups.tpl'); 
-        Template::Show('pilots_addtogroup.tpl');
+        Template::Show('pilots_groups'); 
+        Template::Show('pilots_addtogroup');
     }
 
 
@@ -212,7 +212,7 @@ class PilotAdmin extends CodonModule {
         }
 
         $this->set('allpilots', PilotData::getPendingPilots());
-        $this->render('pilots_pending.tpl');
+        $this->render('pilots_pending');
     }
     
     /**
@@ -232,7 +232,7 @@ class PilotAdmin extends CodonModule {
         $oldPath = Template::setTemplatePath(TEMPLATES_PATH);
         $oldSkinPath = Template::setSkinPath(ACTIVE_SKIN_PATH);
         
-        $message = Template::getTemplate('email_registrationaccepted.tpl', true, true, true);
+        $message = Template::getTemplate('email_registrationaccepted', true, true, true);
         
         Template::setTemplatePath($oldPath);
         Template::setSkinPath($oldSkinPath);
@@ -240,7 +240,7 @@ class PilotAdmin extends CodonModule {
         Util::sendEmail($pilot->email, $subject, $message);
                 
         $this->set('message', 'Activation email has been re-sent to '.$pilot->firstname.' '.$pilot->lastname);
-        $this->render('core_success.tpl');
+        $this->render('core_success');
             
         LogData::addLog(
             Auth::$userinfo->pilotid, 
@@ -249,7 +249,7 @@ class PilotAdmin extends CodonModule {
         
         if($show_pending === true) {
             $this->set('allpilots', PilotData::getPendingPilots());
-            $this->render('pilots_pending.tpl');
+            $this->render('pilots_pending');
         }
     }
 
@@ -275,7 +275,7 @@ class PilotAdmin extends CodonModule {
         }
 
         $this->set('allbids', SchedulesData::getAllBids());
-        $this->render('pilots_viewallbids.tpl');
+        $this->render('pilots_viewallbids');
     }
 
     /**
@@ -306,7 +306,7 @@ class PilotAdmin extends CodonModule {
         $this->set('action', 'addgroup');
         $this->set('permission_set', Config::Get('permission_set'));
 
-        $this->render('groups_groupform.tpl');
+        $this->render('groups_groupform');
     }
 
     /**
@@ -326,7 +326,7 @@ class PilotAdmin extends CodonModule {
         $this->set('action', 'editgroup');
         $this->set('permission_set', Config::Get('permission_set'));
 
-        $this->render('groups_groupform.tpl');
+        $this->render('groups_groupform');
     }
 
     /**
@@ -344,7 +344,7 @@ class PilotAdmin extends CodonModule {
         }
 
         $this->set('allawards', AwardsData::GetPilotAwards($_REQUEST['pilotid']));
-        $this->render('pilots_awards.tpl');
+        $this->render('pilots_awards');
     }
 
     /**
@@ -353,7 +353,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function ShowPilotsList() {
-        $this->render('pilots_list.tpl');
+        $this->render('pilots_list');
     }
 
     /**
@@ -471,7 +471,7 @@ class PilotAdmin extends CodonModule {
         $this->set('pending', false);
         $this->set('load', 'pilotpireps');
 
-        $this->render('pilots_detailtabs.tpl');
+        $this->render('pilots_detailtabs');
     }
 
     /**
@@ -505,7 +505,7 @@ class PilotAdmin extends CodonModule {
     protected function AddGroupPost() {
         if ($this->post->name == '') {
             $this->set('message', Lang::gs('group.no.name'));
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -518,10 +518,10 @@ class PilotAdmin extends CodonModule {
 
         if (DB::errno() != 0) {
             $this->set('message', sprintf(Lang::gs('error'), DB::$error));
-            $this->render('core_error.tpl');
+            $this->render('core_error');
         } else {
             $this->set('message', sprintf(Lang::gs('group.added'), $this->post->name));
-            $this->render('core_success.tpl');
+            $this->render('core_success');
 
             LogData::addLog(Auth::$userinfo->pilotid, 'Added group "' . $this->post->name . '"');
         }
@@ -542,10 +542,10 @@ class PilotAdmin extends CodonModule {
 
         if (DB::errno() != 0) {
             $this->set('message', sprintf(Lang::gs('error'), DB::$error));
-            $this->render('core_error.tpl');
+            $this->render('core_error');
         } else {
             $this->set('message', sprintf(Lang::gs('group.saved'), $this->post->name));
-            $this->render('core_success.tpl');
+            $this->render('core_success');
 
             LogData::addLog(Auth::$userinfo->pilotid, 'Edited group "' . $this->post->name . '"');
         }
@@ -560,7 +560,7 @@ class PilotAdmin extends CodonModule {
     protected function AddPilotToGroup() {
         if (PilotGroups::CheckUserInGroup($this->post->pilotid, $this->post->groupname)) {
             $this->set('message', Lang::gs('group.pilot.already.in'));
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -568,7 +568,7 @@ class PilotAdmin extends CodonModule {
 
         if (DB::errno() != 0) {
             $this->set('message', Lang::gs('group.add.error'));
-            $this->render('core_error.tpl');
+            $this->render('core_error');
         } else {
             LogData::addLog(Auth::$userinfo->pilotid, 'Added pilot #' . $this->post->pilotid . ' to group "' . $this->post->groupname . '"');
         }
@@ -587,7 +587,7 @@ class PilotAdmin extends CodonModule {
 
         if (DB::errno() != 0) {
             $this->set('message', 'There was an error removing');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
         } else {
             LogData::addLog(Auth::$userinfo->pilotid, 'Removed pilot #' . $this->post->pilotid . ' from group "' . $this->post->groupid . '"');
         }
@@ -600,7 +600,7 @@ class PilotAdmin extends CodonModule {
      */
     protected function ShowGroups() {
         $this->set('allgroups', PilotGroups::GetAllGroups());
-        $this->render('groups_grouplist.tpl');
+        $this->render('groups_grouplist');
     }
 
     /**
@@ -622,7 +622,7 @@ class PilotAdmin extends CodonModule {
         $oldPath = Template::setTemplatePath(TEMPLATES_PATH);
         $oldSkinPath = Template::setSkinPath(ACTIVE_SKIN_PATH);
         
-        $message = Template::getTemplate('email_registrationaccepted.tpl', true, true, true);
+        $message = Template::getTemplate('email_registrationaccepted', true, true, true);
         
         Template::setTemplatePath($oldPath);
         Template::setSkinPath($oldSkinPath);
@@ -651,7 +651,7 @@ class PilotAdmin extends CodonModule {
         $oldPath = Template::setTemplatePath(TEMPLATES_PATH);
         $oldSkinPath = Template::setSkinPath(ACTIVE_SKIN_PATH);
         
-        $message = Template::Get('email_registrationdenied.tpl', true, true, true);
+        $message = Template::Get('email_registrationdenied', true, true, true);
         
         Template::setTemplatePath($oldPath);
         Template::setSkinPath($oldSkinPath);
@@ -681,14 +681,14 @@ class PilotAdmin extends CodonModule {
         // Check password length
         if (strlen($password1) <= 5) {
             $this->set('message', Lang::gs('password.wrong.length'));
-            $this->render('core_message.tpl');
+            $this->render('core_message');
             return;
         }
 
         // Check is passwords are the same
         if ($password1 != $password2) {
             $this->set('message', Lang::gs('password.no.match'));
-            $this->render('core_message.tpl');
+            $this->render('core_message');
             return;
         }
 
@@ -696,10 +696,10 @@ class PilotAdmin extends CodonModule {
 
         if (DB::errno() != 0) {
             $this->set('message', 'There was an error, administrator has been notified');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
         } else {
             $this->set('message', Lang::gs('password.changed'));
-            $this->render('core_success.tpl');
+            $this->render('core_success');
         }
 
         $pilot = PilotData::getPilotData($this->post->pilotid);
@@ -723,7 +723,7 @@ class PilotAdmin extends CodonModule {
         $award = AwardsData::GetPilotAward($this->post->pilotid, $this->post->awardid);
         if ($award) {
             $this->set('message', Lang::gs('award.exists'));
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -743,7 +743,7 @@ class PilotAdmin extends CodonModule {
 
         if ($award) {
             $this->set('message', Lang::gs('award.deleted'));
-            $this->render('core_success.tpl');
+            $this->render('core_success');
             return;
         }
     }

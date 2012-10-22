@@ -31,7 +31,7 @@ class Activity extends CodonModule
         }
         
         $this->set('allactivities', $activities);
-        $this->render('activity_list.tpl');
+        $this->render('activity_list');
     }
     
     /**
@@ -48,7 +48,7 @@ class Activity extends CodonModule
         }
         
         $this->set('allactivities', $activities);
-        $this->render('activity_list.tpl');
+        $this->render('activity_list');
     }
 
 }

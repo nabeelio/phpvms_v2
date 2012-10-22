@@ -22,7 +22,7 @@ class Pages extends CodonModule
 	public function NavBar()
 	{
 		$this->set('allpages', SiteData::getAllPages(true, Auth::$loggedin));
-		$this->render('pages_items.tpl');
+		$this->render('pages_items');
 	}
 	
 	public function __call($name, $args)
@@ -34,13 +34,13 @@ class Pages extends CodonModule
 		$pageinfo = SiteData::GetPageDataByName($page);
 		
 		if($pageinfo->public == 0 && Auth::LoggedIn() == false) {
-			$this->render('pages_nopermission.tpl');
+			$this->render('pages_nopermission');
 			return;
 		}
 		
 		$content = SiteData::GetPageContent($page);
 		if(!$content) {
-			$this->render('pages_notfound.tpl');
+			$this->render('pages_notfound');
 		} else {
 			// Do it this way, so then that this page/template
 			//	can be customized on a skin-by-skin basis
@@ -50,7 +50,7 @@ class Pages extends CodonModule
 			# Do entity encoding, compensate for a html_entity_decode() in the templates
 			$this->set('content', htmlentities($content->content));
 			
-			$this->render('pages_content.tpl');
+			$this->render('pages_content');
 		}
 	}
 }

@@ -29,24 +29,24 @@ class Operations extends CodonModule {
     public function HTMLHead() {
         switch (self::$controller->function) {
             case 'airlines':
-                $this->set('sidebar', 'sidebar_airlines.tpl');
+                $this->set('sidebar', 'sidebar_airlines');
                 break;
             case 'addaircraft':
             case 'aircraft':
-                $this->set('sidebar', 'sidebar_aircraft.tpl');
+                $this->set('sidebar', 'sidebar_aircraft');
                 break;
             case 'airports':
-                $this->set('sidebar', 'sidebar_airports.tpl');
+                $this->set('sidebar', 'sidebar_airports');
                 break;
             case '':
             case 'addschedule':
             case 'activeschedules':
             case 'inactiveschedules':
             case 'schedules':
-                $this->set('sidebar', 'sidebar_schedules.tpl');
+                $this->set('sidebar', 'sidebar_schedules');
                 break;
             case 'editschedule':
-                $this->set('sidebar', 'sidebar_editschedule.tpl');
+                $this->set('sidebar', 'sidebar_editschedule');
                 break;
         }
     }
@@ -96,7 +96,7 @@ class Operations extends CodonModule {
         }
 
         $this->set('mapdata', $data);
-        $this->render('route_map.tpl');
+        $this->render('route_map');
     }
 
     /**
@@ -109,7 +109,7 @@ class Operations extends CodonModule {
         $this->set('title', 'Add Aircraft');
         $this->set('action', 'addaircraft');
         $this->set('allranks', RanksData::getAllRanks());
-        $this->render('ops_aircraftform.tpl');
+        $this->render('ops_aircraftform');
     }
 
     /**
@@ -125,7 +125,7 @@ class Operations extends CodonModule {
         $this->set('title', 'Edit Aircraft');
         $this->set('action', 'editaircraft');
         $this->set('allranks', RanksData::getAllRanks());
-        $this->render('ops_aircraftform.tpl');
+        $this->render('ops_aircraftform');
     }
 
     /**
@@ -136,7 +136,7 @@ class Operations extends CodonModule {
     public function addairline() {
         $this->set('title', 'Add Airline');
         $this->set('action', 'addairline');
-        $this->render('ops_airlineform.tpl');
+        $this->render('ops_airlineform');
     }
 
     /**
@@ -149,7 +149,7 @@ class Operations extends CodonModule {
         $this->set('action', 'editairline');
         $this->set('airline', OperationsData::GetAirlineByID($this->get->id));
 
-        $this->render('ops_airlineform.tpl');
+        $this->render('ops_airlineform');
     }
 
     /**
@@ -231,7 +231,7 @@ class Operations extends CodonModule {
         }
 
         $this->set('allairlines', OperationsData::GetAllAirlines());
-        $this->render('ops_airlineslist.tpl');
+        $this->render('ops_airlineslist');
     }
 
     /**
@@ -254,7 +254,7 @@ class Operations extends CodonModule {
         }
 
         $this->set('allaircraft', OperationsData::GetAllAircraft());
-        $this->render('ops_aircraftlist.tpl');
+        $this->render('ops_aircraftlist');
     }
 
     /**
@@ -266,7 +266,7 @@ class Operations extends CodonModule {
         $this->set('title', 'Add Airport');
         $this->set('action', 'addairport');
 
-        $this->render('ops_airportform.tpl');
+        $this->render('ops_airportform');
     }
 
     /**
@@ -279,7 +279,7 @@ class Operations extends CodonModule {
         $this->set('action', 'editairport');
         $this->set('airport', OperationsData::GetAirportInfo($this->get->icao));
 
-        $this->render('ops_airportform.tpl');
+        $this->render('ops_airportform');
     }
 
     /**
@@ -305,7 +305,7 @@ class Operations extends CodonModule {
         }
 
         //$this->set('airports', OperationsData::getAllAirports());
-        $this->render('ops_airportlist.tpl');
+        $this->render('ops_airportlist');
     }
 
     /**
@@ -433,7 +433,7 @@ class Operations extends CodonModule {
         //$this->set('airport_json_list', OperationsData::getAllAirportsJSON());
         $this->set('flighttypes', Config::Get('FLIGHT_TYPES'));
 
-        $this->render('ops_scheduleform.tpl');
+        $this->render('ops_scheduleform');
     }
 
     /**
@@ -454,7 +454,7 @@ class Operations extends CodonModule {
         $this->set('allairports', OperationsData::GetAllAirports());
         $this->set('flighttypes', Config::Get('FLIGHT_TYPES'));
 
-        $this->render('ops_scheduleform.tpl');
+        $this->render('ops_scheduleform');
     }
 
     /**
@@ -594,7 +594,7 @@ class Operations extends CodonModule {
             }
 
             $this->set('schedules', SchedulesData::findSchedules($params));
-            $this->render('ops_schedules.tpl');
+            $this->render('ops_schedules');
             return;
         }
 
@@ -645,7 +645,7 @@ class Operations extends CodonModule {
             $this->set('schedules', SchedulesData::findSchedules(array('s.enabled' => 0)));
         }
 
-        $this->render('ops_schedules.tpl');
+        $this->render('ops_schedules');
     }
 
     /**
@@ -658,13 +658,13 @@ class Operations extends CodonModule {
 
         if ($this->post->code == '' || $this->post->name == '') {
             $this->set('message', 'You must fill out all of the fields');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
         if (OperationsData::GetAirlineByCode($this->post->code)) {
             $this->set('message', 'An airline with this code already exists!');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -676,13 +676,13 @@ class Operations extends CodonModule {
                 $this->set('message', 'This airline has already been added');
             else  $this->set('message', 'There was an error adding the airline');
 
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
         $this->set('message', 'Added the airline "' . $this->post->code . ' - ' . $this->post->name .
             '"');
-        $this->render('core_success.tpl');
+        $this->render('core_success');
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Added the airline "' . $this->post->code .
             ' - ' . $this->post->name . '"');
@@ -698,13 +698,13 @@ class Operations extends CodonModule {
 
         if ($this->post->code == '' || $this->post->name == '') {
             $this->set('message', 'Code and name cannot be blank');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
         }
 
         $prevairline = OperationsData::GetAirlineByCode($this->post->code);
         if ($prevairline && $prevairline->id != $this->post->id) {
             $this->set('message', 'This airline with this code already exists!');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -716,13 +716,13 @@ class Operations extends CodonModule {
 
         if (DB::errno() != 0) {
             $this->set('message', 'There was an error editing the airline');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return false;
         }
 
         $this->set('message', 'Edited the airline "' . $this->post->code . ' - ' . $this->post->name .
             '"');
-        $this->render('core_success.tpl');
+        $this->render('core_success');
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Edited the airline "' . $this->post->code .
             ' - ' . $this->post->name . '"');
@@ -739,7 +739,7 @@ class Operations extends CodonModule {
             '' || $this->post->registration == '') {
             $this->set('message',
                 'You must enter the ICAO, name, full name and the registration.');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -751,7 +751,7 @@ class Operations extends CodonModule {
         $ac = OperationsData::GetAircraftByReg($this->post->registration);
         if ($ac) {
             $this->set('message', 'The aircraft registration must be unique');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -779,12 +779,12 @@ class Operations extends CodonModule {
                 $this->set('message', 'This aircraft already exists');
             else  $this->set('message', 'There was an error adding the aircraft');
 
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return false;
         }
 
         $this->set('message', 'The aircraft has been added');
-        $this->render('core_success.tpl');
+        $this->render('core_success');
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Added the aircraft "' . $this->post->name .
             ' - ' . $this->post->registration . '"');
@@ -798,7 +798,7 @@ class Operations extends CodonModule {
     protected function edit_aircraft_post() {
         if ($this->post->id == '') {
             $this->set('message', 'Invalid ID specified');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -806,7 +806,7 @@ class Operations extends CodonModule {
             '' || $this->post->registration == '') {
             $this->set('message',
                 'You must enter the ICAO, name, full name, and registration');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -814,7 +814,7 @@ class Operations extends CodonModule {
         if ($ac) {
             $this->set('message',
                 'This registration is already assigned to another active aircraft');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -832,7 +832,7 @@ class Operations extends CodonModule {
 
         if (DB::errno() != 0) {
             $this->set('message', 'There was an error editing the aircraft');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -841,7 +841,7 @@ class Operations extends CodonModule {
 
         $this->set('message', 'The aircraft "' . $this->post->registration .
             '" has been edited');
-        $this->render('core_success.tpl');
+        $this->render('core_success');
     }
 
     /**
@@ -854,7 +854,7 @@ class Operations extends CodonModule {
         if ($this->post->icao == '' || $this->post->name == '' || $this->post->country ==
             '' || $this->post->lat == '' || $this->post->lng == '') {
             $this->set('message', 'Some fields were blank!');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -874,12 +874,12 @@ class Operations extends CodonModule {
                 $this->set('message', 'This airport has already been added');
             else  $this->set('message', 'There was an error adding the airport');
 
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
         /*$this->set('message', 'The airport has been added');
-        $this->render('core_success.tpl');*/
+        $this->render('core_success');*/
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Added the airport "' . $this->post->icao .
             ' - ' . $this->post->name . '"');
@@ -894,7 +894,7 @@ class Operations extends CodonModule {
         if ($this->post->icao == '' || $this->post->name == '' || $this->post->country ==
             '' || $this->post->lat == '' || $this->post->lng == '') {
             $this->set('message', 'Some fields were blank!');
-            $this->render('core_message.tpl');
+            $this->render('core_message');
             return;
         }
 
@@ -912,12 +912,12 @@ class Operations extends CodonModule {
         if (DB::errno() != 0) {
             $this->set('message', 'There was an error adding the airport: ' . DB::$error);
 
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
         $this->set('message', '"' . $this->post->icao . '" has been edited');
-        $this->render('core_success.tpl');
+        $this->render('core_success');
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Edited the airport "' . $this->post->icao .
             ' - ' . $this->post->name . '"');
@@ -934,7 +934,7 @@ class Operations extends CodonModule {
             '' || $this->post->arrtime == '' || $this->post->depicao == '' || $this->post->arricao ==
             '') {
             $this->set('message', 'All of the fields must be filled out');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
 
             return;
         }
@@ -943,7 +943,7 @@ class Operations extends CodonModule {
         $sched = SchedulesData::getScheduleByFlight($this->post->code, $this->post->flightnum);
         if (is_object($sched)) {
             $this->set('message', 'This schedule already exists!');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
 
             return;
         }
@@ -1024,13 +1024,13 @@ class Operations extends CodonModule {
             $this->set('message',
                 'There was an error adding the schedule, already exists DB error: ' . DB::error
                 ());
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
         $this->set('message', 'The schedule "' . $this->post->code . $this->post->flightnum .
             '" has been added');
-        $this->render('core_success.tpl');
+        $this->render('core_success');
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Added schedule "' . $this->post->code .
             $this->post->flightnum . '"');
@@ -1046,7 +1046,7 @@ class Operations extends CodonModule {
             '' || $this->post->arrtime == '' || $this->post->depicao == '' || $this->post->arricao ==
             '') {
             $this->set('message', 'All of the fields must be filled out');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
 
             return;
         }
@@ -1117,7 +1117,7 @@ class Operations extends CodonModule {
         $val = SchedulesData::editScheduleFields($this->post->id, $data);
         if (!$val) {
             $this->set('message', 'There was an error editing the schedule: ' . DB::error());
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -1126,7 +1126,7 @@ class Operations extends CodonModule {
 
         $this->set('message', 'The schedule "' . $this->post->code . $this->post->flightnum .
             '" has been edited');
-        $this->render('core_success.tpl');
+        $this->render('core_success');
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Edited schedule "' . $this->post->code .
             $this->post->flightnum . '"');
