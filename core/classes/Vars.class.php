@@ -58,6 +58,7 @@ class Vars
 	{
 		self::$post = new stdClass();
 		self::$get =  new stdClass();
+		self::$request =  new stdClass();
 		
 		foreach($_POST as $key=>$value)
 		{
