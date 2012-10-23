@@ -72,8 +72,8 @@ class Schedules extends CodonModule {
 
         $schedule = SchedulesData::getScheduleDetailed($routeid);
         $this->set('schedule', $schedule);
-        $this->render('schedule_details.tpl');
-        $this->render('route_map.tpl');
+        $this->render('schedule_details');
+        $this->render('route_map');
     }
 
     /**
@@ -85,13 +85,13 @@ class Schedules extends CodonModule {
     public function brief($routeid = '') {
         if ($routeid == '') {
             $this->set('message', 'You must be logged in to access this feature!');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
         $schedule = SchedulesData::getScheduleDetailed($routeid);
         $this->set('schedule', $schedule);
-        $this->render('schedule_briefing.tpl');
+        $this->render('schedule_briefing');
     }
 
     /**
@@ -103,14 +103,14 @@ class Schedules extends CodonModule {
     public function boardingpass($routeid) {
         if ($routeid == '') {
             $this->set('message', 'You must be logged in to access this feature!');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
         $schedule = SchedulesData::getScheduleDetailed($routeid);
 
         $this->set('schedule', $schedule);
-        $this->render('schedule_boarding_pass.tpl');
+        $this->render('schedule_boarding_pass');
     }
 
     /**
@@ -123,7 +123,7 @@ class Schedules extends CodonModule {
             return;
 
         $this->set('bids', SchedulesData::GetBids(Auth::$pilot->pilotid));
-        $this->render('schedule_bids.tpl');
+        $this->render('schedule_bids');
     }
 
     /**
@@ -205,7 +205,7 @@ class Schedules extends CodonModule {
         $this->set('equipment', $equip); # deprecated
         $this->set('aircraft_list', $equip);
         
-        $this->render('schedule_searchform.tpl');
+        $this->render('schedule_searchform');
 
         # Show the routes. Remote this to not show them.
         
@@ -275,7 +275,7 @@ class Schedules extends CodonModule {
         
         $this->set('allroutes', $schedules);
         $this->set('schedule_list', $schedules);
-        $this->render('schedule_list.tpl');
+        $this->render('schedule_list');
     }
 
     /**
@@ -320,7 +320,7 @@ class Schedules extends CodonModule {
         $this->set('allroutes', $schedule_list); #deprecated
         $this->set('schedule_list', $schedule_list);
         
-        $this->render('schedule_results.tpl');
+        $this->render('schedule_results');
     }
 
     /**

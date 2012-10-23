@@ -25,7 +25,7 @@ class Maintenance extends CodonModule {
      * @return
      */
     public function HTMLHead() {
-        $this->set('sidebar', 'sidebar_maintenance.tpl');
+        $this->set('sidebar', 'sidebar_maintenance');
     }
 
     /**
@@ -43,7 +43,7 @@ class Maintenance extends CodonModule {
      * @return
      */
     public function options() {
-        $this->render('maintenance_options.tpl');
+        $this->render('maintenance_options');
     }
 
     /**
@@ -145,28 +145,28 @@ class Maintenance extends CodonModule {
             if (!is_numeric($this->post->new_pilotid)) {
                 $error = true;
                 $this->set('message', 'The pilot ID isn\'t numeric!');
-                $this->render('core_error.tpl');
+                $this->render('core_error');
                 return;
             }
 
             if ($this->post->new_pilotid < 1) {
                 $error = true;
                 $this->set('message', 'You cannot have an ID less than 1');
-                $this->render('core_error.tpl');
+                $this->render('core_error');
                 return;
             }
 
             if (empty($this->post->new_pilotid)) {
                 $error = true;
                 $this->set('message', 'The pilot ID is blank!');
-                $this->render('core_error.tpl');
+                $this->render('core_error');
                 return;
             }
 
             if (empty($this->post->old_pilotid) || $this->post->old_pilotid == 0) {
                 $error = true;
                 $this->set('message', 'No pilot selected');
-                $this->render('core_error.tpl');
+                $this->render('core_error');
                 return;
             }
 
@@ -174,7 +174,7 @@ class Maintenance extends CodonModule {
             if (is_object($pilot)) {
                 $error = true;
                 $this->set('message', 'This ID is already used!');
-                $this->render('core_error.tpl');
+                $this->render('core_error');
                 return;
             }
 
@@ -182,12 +182,12 @@ class Maintenance extends CodonModule {
                 PilotData::changePilotID($this->post->old_pilotid, $this->post->new_pilotid);
 
                 $this->set('message', "Pilot ID changed from {$this->post->old_pilotid} to {$this->post->new_pilotid}");
-                $this->render('core_success.tpl');
+                $this->render('core_success');
             }
         }
 
         $this->set('allpilots', PilotData::findPilots(array()));
-        $this->render('maintenance_changepilotid.tpl');
+        $this->render('maintenance_changepilotid');
     }
 
     /**

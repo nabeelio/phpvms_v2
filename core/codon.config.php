@@ -81,7 +81,7 @@ Debug::$debug_enabled = Config::Get('DEBUG_MODE');
 if(Debug::$debug_enabled == true) {
     ini_set('log_errors','On');
     ini_set('display_errors', 'Off');
-    ini_set('error_log', LOGS_PATH.'/errors.txt');
+    ini_set('error_log', LOGS_PATH.DS.'errors.txt');
 }
 
 /* Init caching engine */
@@ -89,7 +89,7 @@ CodonCache::init($cache_settings);
 
 if(DBASE_NAME != '' && DBASE_SERVER != '' && DBASE_NAME != 'DBASE_NAME') {
     
-	require CLASS_PATH.DS.'ezdb/ezdb.class.php';
+	require CLASS_PATH.DS.'ezdb'.DS.'ezdb.class.php';
 	
 	DB::$show_errors = Config::Get('DEBUG_MODE');
 	DB::$throw_exceptions = false;

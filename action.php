@@ -41,7 +41,7 @@
 	Don't show the site header/footer
 */
 
-define('CODON_MODULES_PATH', dirname(__FILE__).'/core/modules');
+define('CODON_MODULES_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'modules');
 define('CODON_DEFAULT_MODULE', 'Frontpage');
 include 'core/codon.config.php';
 
@@ -50,7 +50,7 @@ define('SKINS_PATH', LIB_PATH.DS.'skins'.DS.CURRENT_SKIN);
 $BaseTemplate = new TemplateSet;
 
 //load the main skin
-$settings_file = SKINS_PATH . '/' . CURRENT_SKIN . '.php';
+$settings_file = SKINS_PATH . DS . CURRENT_SKIN . '.php';
 if(file_exists($settings_file)) {
     include $settings_file;
 }

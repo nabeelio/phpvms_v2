@@ -19,11 +19,11 @@
 
 class PIREPAdmin extends CodonModule {
     public function HTMLHead() {
-        switch ($this->controller->function) {
+        switch (self::$controller->function) {
             case 'viewpending':
             case 'viewrecent':
             case 'viewall':
-                $this->set('sidebar', 'sidebar_pirep_pending.tpl');
+                $this->set('sidebar', 'sidebar_pirep_pending');
                 break;
         }
     }
@@ -73,7 +73,7 @@ class PIREPAdmin extends CodonModule {
         $this->set('pireps', PIREPData::findPIREPS($params));
         $this->set('pending', true);
         $this->set('load', 'viewpending');
-        $this->render('pireps_list.tpl');
+        $this->render('pireps_list');
     }
 
 
@@ -84,13 +84,13 @@ class PIREPAdmin extends CodonModule {
         $this->set('load', 'pilotpireps');
 
         $this->set('pireps', PIREPData::findPIREPS(array('p.pilotid' => $this->get->pilotid)));
-        $this->render('pireps_list.tpl');
+        $this->render('pireps_list');
     }
 
 
     public function rejectpirep() {
         $this->set('pirepid', $this->get->pirepid);
-        $this->render('pirep_reject.tpl');
+        $this->render('pirep_reject');
     }
 
     public function viewrecent() {
@@ -101,7 +101,7 @@ class PIREPAdmin extends CodonModule {
         $this->set('pending', false);
         $this->set('load', 'viewrecent');
 
-        $this->render('pireps_list.tpl');
+        $this->render('pireps_list');
     }
 
     public function approveall() {
@@ -178,7 +178,7 @@ class PIREPAdmin extends CodonModule {
 
         $this->set('pireps', $allreports);
 
-        $this->render('pireps_list.tpl');
+        $this->render('pireps_list');
     }
 
     public function editpirep() {
@@ -190,13 +190,13 @@ class PIREPAdmin extends CodonModule {
         $this->set('pirepfields', PIREPData::GetAllFields());
         $this->set('comments', PIREPData::GetComments($this->get->pirepid));
 
-        $this->render('pirep_edit.tpl');
+        $this->render('pirep_edit');
     }
 
     public function viewcomments() {
         
         $this->set('comments', PIREPData::GetComments($this->get->pirepid));
-        $this->render('pireps_comments.tpl');
+        $this->render('pireps_comments');
     }
 
     public function deletecomment() {
@@ -210,13 +210,13 @@ class PIREPAdmin extends CodonModule {
         LogData::addLog(Auth::$userinfo->pilotid, 'Deleted a comment');
 
         $this->set('message', 'Comment deleted!');
-        $this->render('core_success.tpl');
+        $this->render('core_success');
     }
 
     public function viewlog() {
         
         $this->set('report', PIREPData::GetReportDetails($this->get->pirepid));
-        $this->render('pirep_log.tpl');
+        $this->render('pirep_log');
     }
 
     public function addcomment() {
@@ -225,13 +225,13 @@ class PIREPAdmin extends CodonModule {
             $this->add_comment_post();
 
             $this->set('message', 'Comment added to PIREP!');
-            $this->render('core_success.tpl');
+            $this->render('core_success');
             return;
         }
 
 
         $this->set('pirepid', $this->get->pirepid);
-        $this->render('pirep_addcomment.tpl');
+        $this->render('pirep_addcomment');
     }
 
     /* Utility functions */
@@ -251,7 +251,7 @@ class PIREPAdmin extends CodonModule {
         $this->set('lastname', $pirep_details->lastname);
         $this->set('pirepid', $pirepid);
 
-        $message = Template::GetTemplate('email_commentadded.tpl', true);
+        $message = Template::GetTemplate('email_commentadded', true);
         Util::SendEmail($pirep_details->email, 'Comment Added', $message);
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Added a comment to PIREP #' . $pirepid);
@@ -261,7 +261,7 @@ class PIREPAdmin extends CodonModule {
         $this->post->id = $pirepid;
         $this->approve_pirep_post();
         
-        $this->render('pirepadmin_approved.tpl');       
+        $this->render('pirepadmin_approved');       
     }
 
     /**
@@ -332,7 +332,7 @@ class PIREPAdmin extends CodonModule {
             $this->set('lastname', $pirep_details->lastname);
             $this->set('pirepid', $pirepid);
 
-            $message = Template::GetTemplate('email_commentadded.tpl', true);
+            $message = Template::GetTemplate('email_commentadded', true);
             Util::SendEmail($pirep_details->email, 'Comment Added', $message);
         }
 
@@ -349,14 +349,14 @@ class PIREPAdmin extends CodonModule {
             ) {
                 
             $this->set('message', 'You must fill out all of the required fields!');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return false;
         }
 
         $pirepInfo = PIREPData::getReportDetails($this->post->pirepid);
         if (!$pirepInfo) {
             $this->set('message', 'Invalid PIREP!');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return false;
         }
 
@@ -384,7 +384,7 @@ class PIREPAdmin extends CodonModule {
 
         if (!PIREPData::updateFlightReport($this->post->pirepid, $data)) {
             $this->set('message', 'There was an error editing your PIREP');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return false;
         }
 

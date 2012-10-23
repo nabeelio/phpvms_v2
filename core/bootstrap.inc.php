@@ -19,12 +19,12 @@
 
 function pre_module_load() {
     
-    if (is_dir(CORE_PATH.'/local.config.php')) {
-        Debug::showCritical('core/local.config.php is a folder, not a file. Please delete and create as a file');
+    if (is_dir(CORE_PATH.DS.'local.config.php')) {
+        Debug::showCritical('core'.DS.'local.config.php is a folder, not a file. Please delete and create as a file');
         die();
     }
 
-    if (!file_exists(CORE_PATH.'/local.config.php') || filesize(CORE_PATH.'/local.config.php') == 0) {
+    if (!file_exists(CORE_PATH.DS.'local.config.php') || filesize(CORE_PATH.DS.'local.config.php') == 0) {
         Debug::showCritical('phpVMS has not been installed yet! Goto <a href="install/install.php">install/install.php</a> to start!');
         exit;
     }

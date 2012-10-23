@@ -12,9 +12,9 @@
  * That equals headache for you, and headache for me to figure out what went wrong.
  * 
  * BUT BUT WAIT, you say... I want to include more javascript, css, etc...! 
- * Well - in your skin's header.tpl file, this file is included as:
+ * Well - in your skin's header file, this file is included as:
  * 
- * Template::Show('core_htmlhead.tpl');
+ * Template::Show('core_htmlhead');
  * 
  * Just add your stuff under that line there. That way, it's in the proper
  * spot, and this file stays intact for the system (and me) to be able to

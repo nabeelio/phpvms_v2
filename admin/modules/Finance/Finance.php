@@ -20,12 +20,12 @@
 class Finance extends CodonModule {
 
     public function HTMLHead() {
-        switch ($this->controller->function) {
+        switch (self::$controller->function) {
             case 'addexpense':
             case 'editexpense':
             case 'viewexpenses':
 
-                $this->set('sidebar', 'sidebar_expenses.tpl');
+                $this->set('sidebar', 'sidebar_expenses');
 
                 break;
         }
@@ -130,7 +130,7 @@ class Finance extends CodonModule {
 
             $this->set('title', 'Balance Sheet for ' . $period);
             $this->set('month_data', $finance_data);
-            $this->render('finance_balancesheet.tpl');
+            $this->render('finance_balancesheet');
         } elseif ($type[0] == 'y') {
             $type = str_replace('y', '', $type);
             $year = date('Y', $type);
@@ -141,7 +141,7 @@ class Finance extends CodonModule {
             $this->set('allfinances', $all_finances);
             $this->set('year', date('Y', $type));
 
-            $this->render('finance_summarysheet.tpl');
+            $this->render('finance_summarysheet');
         } else {
             // This should be the last 3 months overview
             # Get the last 3 months
@@ -151,7 +151,7 @@ class Finance extends CodonModule {
 
             $this->set('title', 'Balance Sheet for Last 3 Months');
             $this->set('allfinances', $finance_data);
-            $this->render('finance_summarysheet.tpl');
+            $this->render('finance_summarysheet');
         }
     }
 
@@ -233,14 +233,14 @@ class Finance extends CodonModule {
         }
 
         $this->set('allexpenses', FinanceData::GetAllExpenses());
-        $this->render('finance_expenselist.tpl');
+        $this->render('finance_expenselist');
     }
 
     public function addexpense() {
         $this->set('title', 'Add Expense');
         $this->set('action', 'addexpense');
 
-        $this->render('finance_expenseform.tpl');
+        $this->render('finance_expenseform');
     }
 
     public function editexpense($id) {
@@ -248,19 +248,19 @@ class Finance extends CodonModule {
         $this->set('action', 'editexpense');
         $this->set('expense', FinanceData::getExpenseDetail($id));
 
-        $this->render('finance_expenseform.tpl');
+        $this->render('finance_expenseform');
     }
 
     public function processExpense() {
         if ($this->post->name == '' || $this->post->cost == '') {
             $this->set('message', 'Name and cost must be entered');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
         if (!is_numeric($this->post->cost)) {
             $this->set('message', 'Cost must be a numeric amount, no symbols');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
             return;
         }
 
@@ -268,7 +268,7 @@ class Finance extends CodonModule {
             # Make sure it doesn't exist
             if (FinanceData::GetExpenseByName($this->post->name)) {
                 $this->set('message', 'Expense already exists!');
-                $this->render('core_error.tpl');
+                $this->render('core_error');
                 return;
             }
 
@@ -289,11 +289,11 @@ class Finance extends CodonModule {
 
         if (!$ret) {
             $this->set('message', 'Error: ' . DB::error());
-            $this->render('core_error.tpl');
+            $this->render('core_error');
 
             return;
         }
 
-        $this->render('core_success.tpl');
+        $this->render('core_success');
     }
 }

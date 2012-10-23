@@ -10,7 +10,7 @@ if(PilotGroups::group_has_perm(Auth::$usergroups, EDIT_NEWS)
 {
 ?>
 <li style="padding: 0; margin; 0;"><a class="menu" href="#">
-	<img src="<?php echo fileurl('/admin/lib/layout/images/site_icon.png');?>" />News & Content
+	<img src="<?php echo fileurl('/admin/lib/layout/images/site_icon.png');?>" />News &amp; Content
 	</a>
 	<ul style="padding: 0; margin: 0;">
 		<?php 
@@ -60,25 +60,25 @@ if(PilotGroups::group_has_perm(Auth::$usergroups, EDIT_AIRLINES)
 		if(PilotGroups::group_has_perm(Auth::$usergroups, EDIT_AIRLINES)) 
 		{
 		?>
-		<li><a href="<?php echo adminurl('/operations/airlines');?>">Add & Edit Airlines</a></li>
+		<li><a href="<?php echo adminurl('/operations/airlines');?>">Add &amp; Edit Airlines</a></li>
 		<?php 
 		}
 		if(PilotGroups::group_has_perm(Auth::$usergroups, EDIT_FLEET)) 
 		{
 		?>
-			<li><a href="<?php echo adminurl('/operations/aircraft');?>">Add & Edit Fleet</a></li>
+			<li><a href="<?php echo adminurl('/operations/aircraft');?>">Add &amp; Edit Fleet</a></li>
 		<?php 
 		}
 		if(PilotGroups::group_has_perm(Auth::$usergroups, EDIT_SCHEDULES)) 
 		{
 		?>
-		<li><a href="<?php echo adminurl('/operations/airports');?>">Add & Edit Airports</a></li>
+		<li><a href="<?php echo adminurl('/operations/airports');?>">Add &amp; Edit Airports</a></li>
 		<?php 
 		}
 		if(PilotGroups::group_has_perm(Auth::$usergroups, EDIT_SCHEDULES)) 
 		{
 		?>
-		<li><a href="<?php echo adminurl('/operations/schedules');?>">Flight Schedules & Routes</a></li>
+		<li><a href="<?php echo adminurl('/operations/schedules');?>">Flight Schedules &amp; Routes</a></li>
 		<?php 
 		}
 		if(PilotGroups::group_has_perm(Auth::$usergroups, IMPORT_SCHEDULES)) 
@@ -105,7 +105,7 @@ if(PilotGroups::group_has_perm(Auth::$usergroups, MODERATE_PIREPS)
 {
 	?>
 <li style="padding: 0; margin: 0;"><a class="menu" href="#">
-	<img src="<?php echo  SITE_URL?>/admin/lib/layout/images/pilots_icon.png" />Pilots & Groups</a>
+	<img src="<?php echo  SITE_URL?>/admin/lib/layout/images/pilots_icon.png" />Pilots &amp; Groups</a>
 	<ul style="padding: 0; margin: 0;">
 		<?php
 		if(PilotGroups::group_has_perm(Auth::$usergroups, MODERATE_REGISTRATIONS)) 
@@ -210,7 +210,7 @@ if(PilotGroups::group_has_perm(Auth::$usergroups, VIEW_FINANCES)
 {
 ?>
 <li style="padding: 0; margin: 0;"><a class="menu" href="<?php echo SITE_URL?>/admin/index.php/reports">
-	<img src="<?php echo  SITE_URL?>/admin/lib/layout/images/reports_icon.png" />Reports & Expenses</a>
+	<img src="<?php echo  SITE_URL?>/admin/lib/layout/images/reports_icon.png" />Reports &amp; Expenses</a>
 	<ul style="padding: 0; margin: 0;">
 		<?php
 		if(PilotGroups::group_has_perm(Auth::$usergroups, VIEW_FINANCES)) 
@@ -240,7 +240,7 @@ if(PilotGroups::group_has_perm(Auth::$usergroups, FULL_ADMIN)
 {
 	?>
 <li style="padding: 0; margin: 0;"><a class="menu" href="#">
-	<img src="<?php echo  SITE_URL?>/admin/lib/layout/images/settings_icon.gif" />Site & Settings</a>
+	<img src="<?php echo  SITE_URL?>/admin/lib/layout/images/settings_icon.gif" />Site &amp; Settings</a>
 	<ul style="padding: 0; margin: 0;">
 		<?php 
 		if(PilotGroups::group_has_perm(Auth::$usergroups, FULL_ADMIN)) 

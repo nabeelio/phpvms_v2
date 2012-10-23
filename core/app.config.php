@@ -189,7 +189,7 @@ Config::Set('FSFK_IMAGE_PATH', '/lib/fsfk'); // web path from SITE_ROOT
 # Options for the signature that's generated 
 Config::Set('SIGNATURE_TEXT_COLOR', '#000');
 Config::Set('SIGNATURE_USE_CUSTOM_FONT', true);
-Config::Set('SIGNATURE_FONT_PATH', SITE_ROOT.'/lib/fonts/tahoma.ttf');
+Config::Set('SIGNATURE_FONT_PATH', SITE_ROOT.DS.'lib'.DS.'fonts'.DS.'tahoma.ttf');
 Config::Set('SIGNATURE_FONT_SIZE', '10');
 Config::Set('SIGNATURE_X_OFFSET', '10');
 Config::Set('SIGNATURE_Y_OFFSET', '17');
@@ -295,9 +295,9 @@ Config::Set('ADMIN_SKIN', 'layout');
  * For your sake. And mine. :)
  * 
  * 
- * 
- * 
- * 
+ * Sorry Nabeel :P ~Oxymoron~ (10/21/2012)
+ * - Fixed path pointers to be compatible 
+ * for php running on windows servers
  * 
  * 
  * 
@@ -316,25 +316,25 @@ Config::Set('ADMIN_SKIN', 'layout');
  * 
  */
 
-$revision = trim(file_get_contents(CORE_PATH.'/version'));
+$revision = trim(file_get_contents(CORE_PATH.DS.'version'));
 define('PHPVMS_VERSION', $revision);
 
 Config::Set('TEMPLATE_USE_CACHE', false);
 Config::Set('TEMPLATE_CACHE_EXPIRE', '24');
 Config::Set('DBASE_USE_CACHE', false);
-Config::Set('CACHE_PATH', SITE_ROOT . '/core/cache');
+Config::Set('CACHE_PATH', SITE_ROOT . DS . 'core'.DS.'cache');
 Config::Set('TPL_EXTENSION', '.tpl');
-Config::Set('BASE_TEMPLATE_PATH', SITE_ROOT.'/core/templates');
+Config::Set('BASE_TEMPLATE_PATH', SITE_ROOT.DS.'core'.DS.'templates');
 
 if(defined('ADMIN_PANEL') && ADMIN_PANEL === true) {	
-	Template::SetTemplatePath(SITE_ROOT.'/admin/templates');
+	Template::SetTemplatePath(SITE_ROOT.DS.'admin'.DS.'templates');
 	
-	define('CODON_MODULES_PATH', SITE_ROOT.'/admin/modules');
+	define('CODON_MODULES_PATH', SITE_ROOT.DS.'admin'.DS.'modules');
 	define('CODON_DEFAULT_MODULE', 'Dashboard');
 } else {	
 	Template::SetTemplatePath(Config::Get('BASE_TEMPLATE_PATH'));
 	
-	define('CODON_MODULES_PATH', SITE_ROOT.'/core/modules');
+	define('CODON_MODULES_PATH', SITE_ROOT.DS.'core'.DS.'modules');
 	define('CODON_DEFAULT_MODULE', 'Frontpage');
 }
 

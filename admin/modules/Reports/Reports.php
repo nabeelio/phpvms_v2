@@ -19,7 +19,7 @@
 
 class Reports extends CodonModule {
 	function HTMLHead() {
-		$this->set('sidebar', 'sidebar_reports.tpl');
+		$this->set('sidebar', 'sidebar_reports');
 	}
 
 	public function index() {
@@ -32,13 +32,13 @@ class Reports extends CodonModule {
 
 		$this->set('allairlines', OperationsData::GetAllAirlines());
 
-		$this->render('reports_main.tpl');
+		$this->render('reports_main');
 	}
 
 	public function aircraft() {
 		$acstats = StatsData::AircraftUsage();
 
 		$this->set('acstats', $acstats);
-		$this->render('reports_aircraft.tpl');
+		$this->render('reports_aircraft');
 	}
 }

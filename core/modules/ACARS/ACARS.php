@@ -30,7 +30,7 @@ class ACARS extends CodonModule
 	{
 		$this->title = 'ACARS Map';
 		$this->set('acarsdata', ACARSData::GetACARSData());
-		$this->render('acarsmap.tpl');
+		$this->render('acarsmap');
 	}
 	
 	/**
@@ -144,24 +144,24 @@ class ACARS extends CodonModule
 		
 	public function fsacarsconfig()
 	{
-		$this->write_config('fsacars_config.tpl', Auth::$userinfo->code.'.ini');
+		$this->write_config('fsacars_config', Auth::$userinfo->code.'.ini');
 	}
 	
 	public function fspaxconfig()
 	{
-		$this->write_config('fspax_config.tpl', Auth::$userinfo->code.'_config.cfg');
+		$this->write_config('fspax_config', Auth::$userinfo->code.'_config.cfg');
 	}
 	
 	public function xacarsconfig()
 	{
-		$this->write_config('xacars_config.tpl', 'xacars.ini');
+		$this->write_config('xacars_config', 'xacars.ini');
 	}
 	
 	/**
 	 * Write out a config file to the user, give the template name and
 	 *	the filename to save the template as to the user
 	 *
-	 * @param mixed $template_name Template to use for config (fspax_config.tpl)
+	 * @param mixed $template_name Template to use for config (fspax_config)
 	 * @param mixed $save_as File to save as (xacars.ini)
 	 * @return mixed Nothing, sends the file to the user
 	 *

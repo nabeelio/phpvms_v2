@@ -37,7 +37,7 @@
  * @package codon_core
  */
 
-define('CODON_MODULES_PATH', dirname(__FILE__).'/core/modules');
+define('CODON_MODULES_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'modules');
 define('CODON_DEFAULT_MODULE', 'Frontpage');
 include 'core/codon.config.php';
 
@@ -68,7 +68,7 @@ $page_content = ob_get_clean();
 $BaseTemplate->Set('title', MainController::$page_title .' - '.SITE_NAME);
 $BaseTemplate->Set('page_title', MainController::$page_title .' - '.SITE_NAME);
 
-if(file_exists(SKINS_PATH.'/layout.php'))
+if(file_exists(SKINS_PATH.DS.'layout.php'))
 {
 	$BaseTemplate->Set('page_htmlhead', Template::Get('core_htmlhead.php', true));
 	$BaseTemplate->Set('page_htmlreq', Template::Get('core_htmlreq.php', true));

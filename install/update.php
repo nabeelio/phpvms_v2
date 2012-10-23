@@ -17,7 +17,7 @@
  */
  
 define('ADMIN_PANEL', true);
-include dirname(__FILE__).'/includes/loader.inc.php';
+include dirname(__FILE__).DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'loader.inc.php';
 
 $CURRENT_VERSION = SettingsData::getSetting('PHPVMS_VERSION');
 if(!$CURRENT_VERSION) {
@@ -39,7 +39,7 @@ if(!$CURRENT_VERSION) {
 
 $CURRENT_VERSION = str_replace('.', '', $CURRENT_VERSION);
 
-Template::SetTemplatePath(SITE_ROOT.'/install/templates');
+Template::SetTemplatePath(SITE_ROOT.DS.'install'.DS.'templates');
 Template::Show('header');
 
 # Ew
@@ -89,7 +89,7 @@ foreach($diffs_done as $sql) {
 
 /* Run the update fixtures file */
 echo '<h2>Populating Update Data...</h2>';
-$sqlLines = Installer::readSQLFile(SITE_ROOT.'/install/fixtures/update.sql', TABLE_PREFIX);
+$sqlLines = Installer::readSQLFile(SITE_ROOT.DS.'install'.DS.'fixtures'.DS.'update.sql', TABLE_PREFIX);
 foreach($sqlLines as $sql) {
     DB::query($sql['sql']);
     if(DB::errno() != 0 && DB::errno() != 1062) {

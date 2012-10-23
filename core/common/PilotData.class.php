@@ -85,9 +85,9 @@ class PilotData extends CodonData {
             $pilotid = self::getPilotCode($pilot->code, $pilot->pilotid);
         }
 
-        $link = AVATAR_PATH . '/' . $pilotid . '.png';
+        $link = AVATAR_PATH.DS.$pilotid.'.png';
 
-        if (!file_exists(SITE_ROOT . '/' . $link)) {
+        if (!file_exists(SITE_ROOT.DS.$link)) {
             return SITE_URL . '/lib/images/noavatar.png';
         }
 
@@ -408,7 +408,7 @@ class PilotData extends CodonData {
     public static function getBackgroundImages() {
         
         $list = array();
-        $files = scandir(SITE_ROOT . '/lib/signatures/background');
+        $files = scandir(SITE_ROOT.DS.'lib'.DS.'signatures'.DS.'background');
 
         foreach ($files as $file) {
             if ($file == '.' || $file == '..') continue;
@@ -425,10 +425,9 @@ class PilotData extends CodonData {
      * 
      * @param mixed $code
      * @param mixed $pilotid
-     * @param mixed $_FILES
      * @return
      */
-    public static function saveAvatar($code, $pilotid, $_FILES) {
+    public static function saveAvatar($code, $pilotid) {
         
         # Check the proper file size
         #  Ignored for now since there is a resize
@@ -892,7 +891,7 @@ class PilotData extends CodonData {
      * @param int The pilot ID for which to generate a signature for
      * @return bool Success
      */
-    public function generateSignature($pilotid) {
+    public static function generateSignature($pilotid) {
 
         $pilot = self::getPilotData($pilotid);
         $pilotcode = self::getPilotCode($pilot->code, $pilot->pilotid);
@@ -917,14 +916,14 @@ class PilotData extends CodonData {
         # Load up our image
         # Get the background image the pilot selected
         if (empty($pilot->bgimage)) {
-            $bgimage = SITE_ROOT.'/lib/signatures/background/background.png';
+            $bgimage = SITE_ROOT.DS.'lib'.DS.'signatures'.DS.'background'.DS.'background.png';
         } else {
-            $bgimage = SITE_ROOT.'/lib/signatures/background/'.$pilot->bgimage;
+            $bgimage = SITE_ROOT.DS.'lib'.DS.'signatures'.DS.'background'.DS.$pilot->bgimage;
         }  
 
         if (!file_exists($bgimage)) {
             # Doesn't exist so use the default
-            $bgimage = SITE_ROOT . '/lib/signatures/background/background.png';
+            $bgimage = SITE_ROOT.DS.'lib'.DS.'signatures'.DS.'background'.DS.'background.png';
 
             if (!file_exists($bgimage)) {
                 return false;
@@ -995,9 +994,8 @@ class PilotData extends CodonData {
         # Add the country flag, line it up with the first line, which is the
         #	pilot code/name
         $country = strtolower($pilot->location);
-        if (file_exists(SITE_ROOT . '/lib/images/countries/' . $country . '.png')) {
-            $flagimg = imagecreatefrompng(SITE_ROOT . '/lib/images/countries/' . $country .
-                '.png');
+        if (file_exists(SITE_ROOT . DS . 'lib' . DS . 'images' . DS . 'countries' . DS . $country . '.png')) {
+            $flagimg = imagecreatefrompng(SITE_ROOT.DS.'lib'.DS . 'images'.DS.'countries'.DS.$country.'.png');
 
             if (Config::Get('SIGNATURE_USE_CUSTOM_FONT') == false) {
                 $ret = imagecopy($img, $flagimg, strlen($output[0]) * $fontwidth, ($yoffset+($stepsize/2) - 5.5), 0, 0, 16, 11);
@@ -1034,7 +1032,7 @@ class PilotData extends CodonData {
                 imagefontheight($font), $text, $textcolor);
         }
 
-        imagepng($img, SITE_ROOT . SIGNATURE_PATH . '/' . $pilotcode . '.png', 1);
+        imagepng($img, SITE_ROOT . SIGNATURE_PATH . DS . $pilotcode . '.png', 1);
         imagedestroy($img);
     }
 }

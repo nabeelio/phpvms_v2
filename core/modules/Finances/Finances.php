@@ -124,7 +124,7 @@ class Finances extends CodonModule
 			
 			$this->set('title', 'Balance Sheet for '.$period);
 			$this->set('month_data', $finance_data);
-			$this->render('finance_balancesheet.tpl');
+			$this->render('finance_balancesheet');
 		} elseif($type[0] == 'y') {
 			$type = str_replace('y', '', $type);
 			$year = date('Y', $type);
@@ -135,7 +135,7 @@ class Finances extends CodonModule
 			$this->set('allfinances', $all_finances);
 			$this->set('year', date('Y', $type));
 			
-			$this->render('finance_summarysheet.tpl');
+			$this->render('finance_summarysheet');
 		} else {
 			// This should be the last 3 months overview
 			# Get the last 3 months
@@ -145,7 +145,7 @@ class Finances extends CodonModule
 			
 			$this->set('title', 'Balance Sheet for Last 3 Months');
 			$this->set('allfinances', $finance_data);
-			$this->render('finance_summarysheet.tpl');
+			$this->render('finance_summarysheet');
 		}
 	}
 	

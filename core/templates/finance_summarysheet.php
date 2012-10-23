@@ -10,7 +10,7 @@
  *
  *	YOU HAVE BEEN WARNED!!!
  */
-?><?php Template::Show('finance_header.tpl'); ?>
+?><?php Template::Show('finance_header'); ?>
 <h3><?php echo $title?></h3>
 <?php
 

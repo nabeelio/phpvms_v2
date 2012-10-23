@@ -28,7 +28,7 @@ class Contact extends CodonModule
 				# Make sure they entered an email address
 				if(trim($this->post->name) == '' || trim($this->post->email) == '') {
 					$this->set('message', 'You must enter a name and email!');
-					$this->render('core_error.tpl');
+					$this->render('core_error');
 					return;
 				}
 			}
@@ -42,13 +42,13 @@ class Contact extends CodonModule
 			if(!$resp->is_valid) {
 				$this->set('captcha_error', $resp->error);
 				$this->set('message', 'You failed the captcha test!');
-				$this->render('contact_form.tpl');
+				$this->render('contact_form');
 				return;
 			}
 			
 			if($this->post->subject == '' || trim($this->post->message) == '') {
 				$this->set('message', 'You must enter a subject and message!');
-				$this->render('core_error.tpl');
+				$this->render('core_error');
 				return;
 			}
 			
@@ -66,7 +66,7 @@ class Contact extends CodonModule
 			$message = utf8_encode($message);
 			Util::SendEmail(ADMIN_EMAIL, $subject, $message);
 			
-			$this->render('contact_sent.tpl');
+			$this->render('contact_sent');
 			return;
 		}		
 		
@@ -84,7 +84,7 @@ class Contact extends CodonModule
 		//echo 'output of $_SESSION: <br />';
 		//print_r($_SESSION);
 		
-		$this->render('contact_form.tpl');
+		$this->render('contact_form');
 	}
 	
 }

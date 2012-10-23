@@ -26,18 +26,18 @@
 class Dashboard extends CodonModule {
     
     public function HTMLHead() {
-        $this->set('sidebar', 'sidebar_dashboard.tpl');
+        $this->set('sidebar', 'sidebar_dashboard');
     }
 
     public function index() {
-        /* Dashboard.tpl calls the functions below
+        /* Dashboard template calls the functions below
         */
 
         $this->CheckForUpdates();
         CentralData::send_vastats();
 
         $this->set('unexported_count', count(PIREPData::getReportsByExportStatus(false)));
-        $this->render('dashboard.tpl');
+        $this->render('dashboard');
     }
 
     public function pirepcounts() {
@@ -61,13 +61,13 @@ class Dashboard extends CodonModule {
     }
 
     public function about() {
-        $this->render('core_about.tpl');
+        $this->render('core_about');
     }
 
     public function CheckInstallFolder() {
-        if (file_exists(SITE_ROOT . '/install')) {
+        if (file_exists(SITE_ROOT . DS . 'install')) {
             $this->set('message', 'The install folder still exists!! This poses a security risk. Please delete it immediately');
-            $this->render('core_error.tpl');
+            $this->render('core_error');
         }
     }
 
@@ -146,7 +146,7 @@ class Dashboard extends CodonModule {
                     $this->set('message', 'Version ' . $message->version . ' is available for download! Please update ASAP');
                 }
 
-                $this->set('updateinfo', Template::GetTemplate('core_error.tpl', true)); 
+                $this->set('updateinfo', Template::GetTemplate('core_error', true)); 
             }
 
             /* Retrieve latest news from Feedburner RSS, in case the phpVMS site is down

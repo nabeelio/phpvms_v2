@@ -13,7 +13,7 @@ if(!$pireps)
 <?php
 if($_GET['module'] == 'pirepadmin' && $_GET['page'] == 'viewall')
 {
-	Template::Show('pireps_filter.tpl');
+	Template::Show('pireps_filter');
 }
 
 if(isset($paginate))
@@ -129,7 +129,7 @@ if($pirep->aircraft == '')
 {
 	$error = true;
 	Template::Set('message', 'No aircraft for this PIREP. You must edit and assign before you can accept it.');
-	Template::Show('core_error.tpl');
+	Template::Show('core_error');
 }	
 ?>
 <table id="details_dialog_<?php echo $pirep->pirepid;?>" 

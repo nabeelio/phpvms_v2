@@ -63,7 +63,7 @@ if(isset($message))
 		<?php
 		if($pirep->aircraftid == '') {
 			Template::Set('message', 'You must set an aircraft');
-			Template::Show('core_error.tpl');
+			Template::Show('core_error');
 		}
 		?>
 	</td>

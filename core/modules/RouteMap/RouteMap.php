@@ -55,6 +55,6 @@ class RouteMap extends CodonModule
 		
 		$this->set('allschedules', $schedule_list); #deprecated
         $this->set('pirep_list', $schedule_list); #pretend these are pireps... 
-		$this->render('flown_routes_map.tpl');
+		$this->render('flown_routes_map');
 	}
 }

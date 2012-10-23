@@ -146,7 +146,7 @@ class FinanceData extends CodonData {
      * @param mixed $timestamp
      * @return
      */
-    public function setExpensesforMonth($timestamp) {
+    public static function setExpensesforMonth($timestamp) {
         
         $all_expenses = self::getAllExpenses();
         

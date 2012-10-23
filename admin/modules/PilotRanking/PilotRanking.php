@@ -19,14 +19,14 @@
 
 class PilotRanking extends CodonModule {
 	public function HTMLHead() {
-		switch ($this->controller->function) {
+		switch (self::$controller->function) {
 			case 'pilotranks':
 			case 'calculateranks':
-				$this->set('sidebar', 'sidebar_ranks.tpl');
+				$this->set('sidebar', 'sidebar_ranks');
 				break;
 
 			case 'awards':
-				$this->set('sidebar', 'sidebar_awards.tpl');
+				$this->set('sidebar', 'sidebar_awards');
 				break;
 		}
 	}
@@ -55,14 +55,14 @@ class PilotRanking extends CodonModule {
 		}
 
 		$this->set('ranks', RanksData::GetAllRanks());
-		$this->render('ranks_allranks.tpl');
+		$this->render('ranks_allranks');
 	}
 
 	public function addrank() {
 		$this->set('title', 'Add Rank');
 		$this->set('action', 'addrank');
 
-		$this->render('ranks_rankform.tpl');
+		$this->render('ranks_rankform');
 	}
 
 	public function editrank() {
@@ -70,7 +70,7 @@ class PilotRanking extends CodonModule {
 		$this->set('action', 'editrank');
 		$this->set('rank', RanksData::GetRankInfo($this->get->rankid));
 
-		$this->render('ranks_rankform.tpl');
+		$this->render('ranks_rankform');
 	}
 
 	public function awards() {
@@ -93,7 +93,7 @@ class PilotRanking extends CodonModule {
 		}
 
 		$this->set('awards', AwardsData::GetAllAwards());
-		$this->render('awards_allawards.tpl');
+		$this->render('awards_allawards');
 	}
 
 	public function addaward() {
@@ -101,7 +101,7 @@ class PilotRanking extends CodonModule {
 		$this->set('title', 'Add Award');
 		$this->set('action', 'addaward');
 
-		$this->render('awards_awardform.tpl');
+		$this->render('awards_awardform');
 
 	}
 
@@ -110,7 +110,7 @@ class PilotRanking extends CodonModule {
 		$this->set('action', 'editaward');
 		$this->set('award', AwardsData::GetAwardDetail($this->get->awardid));
 
-		$this->render('awards_awardform.tpl');
+		$this->render('awards_awardform');
 
 	}
 
@@ -120,13 +120,13 @@ class PilotRanking extends CodonModule {
 
 		if ($this->post->minhours == '' || $this->post->rank == '') {
 			$this->set('message', 'Hours and Rank must be blank');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		if (!is_numeric($this->post->minhours)) {
 			$this->set('message', 'The hours must be a number');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
@@ -136,12 +136,12 @@ class PilotRanking extends CodonModule {
 
 		if (DB::errno() != 0) {
 			$this->set('message', 'Error adding the rank: ' . DB::error());
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		$this->set('message', 'Rank Added!');
-		$this->render('core_success.tpl');
+		$this->render('core_success');
 
 		LogData::addLog(Auth::$userinfo->pilotid, 'Added the rank "' . $this->post->rank . '"');
 	}
@@ -149,13 +149,13 @@ class PilotRanking extends CodonModule {
 	protected function edit_rank_post() {
 		if ($this->post->minhours == '' || $this->post->rank == '') {
 			$this->set('message', 'Hours and Rank must be blank');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		if (!is_numeric($this->post->minhours)) {
 			$this->set('message', 'The hours must be a number');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
@@ -165,12 +165,12 @@ class PilotRanking extends CodonModule {
 
 		if (DB::errno() != 0) {
 			$this->set('message', 'Error updating the rank: ' . DB::error());
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		$this->set('message', 'Rank Added!');
-		$this->render('core_success.tpl');
+		$this->render('core_success');
 
 		LogData::addLog(Auth::$userinfo->pilotid, 'Edited the rank "' . $this->post->rank . '"');
 	}
@@ -178,14 +178,14 @@ class PilotRanking extends CodonModule {
 	protected function add_award_post() {
 		if ($this->post->name == '' || $this->post->image == '') {
 			$this->set('message', 'The name and image must be entered');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		$ret = AwardsData::AddAward($this->post->name, $this->post->descrip, $this->post->image);
 
 		$this->set('message', 'Award Added!');
-		$this->render('core_success.tpl');
+		$this->render('core_success');
 
 		LogData::addLog(Auth::$userinfo->pilotid, "Added the award \"{$this->post->name}\"");
 	}
@@ -193,14 +193,14 @@ class PilotRanking extends CodonModule {
 	protected function edit_award_post() {
 		if ($this->post->name == '' || $this->post->image == '') {
 			$this->set('message', 'The name and image must be entered');
-			$this->render('core_error.tpl');
+			$this->render('core_error');
 			return;
 		}
 
 		$ret = AwardsData::EditAward($this->post->awardid, $this->post->name, $this->post->descrip, $this->post->image);
 
 		$this->set('message', 'Award Added!');
-		$this->render('core_success.tpl');
+		$this->render('core_success');
 
 		LogData::addLog(Auth::$userinfo->pilotid, 'Edited the award "' . $this->post->name . '"');
 	}

@@ -17,7 +17,7 @@
  */
  
 define('ADMIN_PANEL', true);
-include dirname(__FILE__).'/includes/loader.inc.php';
+include dirname(__FILE__).DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'loader.inc.php';
 
 
 Template::Show('header');
@@ -98,3 +98,4 @@ switch($_GET['page']) {
 }	
 
 Template::Show('footer');
+?>

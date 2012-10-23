@@ -21,8 +21,8 @@ class Registration extends CodonModule
 	public function HTMLHead() {
 		/*Show our password strength checker
 			*/
-		if($this->get->page == 'register') {
-			$this->renderTemplate('registration_javascript.tpl');
+		if(self::$get->page == 'register') {
+			$this->renderTemplate('registration_javascript');
 		}
 	}
 		
@@ -32,7 +32,7 @@ class Registration extends CodonModule
 		require_once CORE_LIB_PATH.'/recaptcha/recaptchalib.php';
 
 		if(Auth::LoggedIn()) { // Make sure they don't over-ride it
-			$this->render('login_already.tpl');
+			$this->render('login_already');
 			return;
 		}
 			
@@ -62,7 +62,7 @@ class Registration extends CodonModule
 		$this->set('countries', $country_list);
 		$this->set('country_list', $country_list);
         
-		$this->render('registration_mainform.tpl');
+		$this->render('registration_mainform');
 	}
 	
 	/**
@@ -98,14 +98,14 @@ class Registration extends CodonModule
 		
 		if($ret) {
 			$this->set('error', Lang::gs('email.inuse'));
-			$this->render('registration_error.tpl');
+			$this->render('registration_error');
 			return false;
 		}
 		
 		$val = RegistrationData::AddUser($data);
 		if($val == false) {
 			$this->set('error', RegistrationData::$error);
-			$this->render('registration_error.tpl');
+			$this->render('registration_error');
 			return;
 		} else {
 		  
@@ -118,10 +118,10 @@ class Registration extends CodonModule
 				
 				$pilot = PilotData::getPilotData($pilotid);
 				$this->set('pilot', $pilot);
-				$this->render('registration_autoconfirm.tpl');
+				$this->render('registration_autoconfirm');
 			} else { /* Otherwise, wait until an admin confirms the registration */
 				RegistrationData::SendEmailConfirm($email, $firstname, $lastname);
-				$this->render('registration_sentconfirmation.tpl');
+				$this->render('registration_sentconfirmation');
 			}
 		}
 		
@@ -143,7 +143,7 @@ class Registration extends CodonModule
 		$this->set('lastname', $data['lastname']);
 		$this->set('userinfo', $data);
 		
-		$message = Template::Get('email_registered.tpl', true);
+		$message = Template::Get('email_registered', true);
 		Util::SendEmail($data['email'], 'Registration at '.SITE_NAME, $message);
 		
 		$rss = new RSSFeed('Latest Pilot Registrations', SITE_URL, 'The latest pilot registrations');

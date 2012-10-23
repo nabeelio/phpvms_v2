@@ -12,22 +12,22 @@
 	</ul>
 	<br />
 	<div id="pilotdetails">
-		<?php Template::Show('pilots_details.tpl'); ?>
+		<?php Template::Show('pilots_details'); ?>
 	</div>
 	<div id="pilotgroups">
 		<?php 
 		?>
 	</div>
 	<div id="awards">
-	<?php Template::Show('pilots_awards.tpl'); 
-		  Template::Show('pilots_addawards.tpl');
+	<?php Template::Show('pilots_awards'); 
+		  Template::Show('pilots_addawards');
 	?>
 	</div>
 	<div id="pireps">
-		<?php Template::Show('pireps_list.tpl'); ?>
+		<?php Template::Show('pireps_list'); ?>
 	</div>
 	<div id="resetpass">
-		<?php Template::Show('pilots_options.tpl'); ?>
+		<?php Template::Show('pilots_options'); ?>
 	</div>
 </div>
 </div>

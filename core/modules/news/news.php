@@ -44,7 +44,7 @@ class News extends CodonModule
 			$this->set('postedby', $row->postedby);
 			$this->set('postdate', date(DATE_FORMAT, $row->postdate));
 		
-			$this->show('news_newsitem.tpl');
+			$this->show('news_newsitem');
 		}
 	}
 }
