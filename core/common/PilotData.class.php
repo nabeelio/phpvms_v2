@@ -428,7 +428,7 @@ class PilotData extends CodonData {
      * @param mixed $_FILES
      * @return
      */
-    public static function saveAvatar($code, $pilotid, $_FILES) {
+    public static function saveAvatar($code, $pilotid) {
         
         # Check the proper file size
         #  Ignored for now since there is a resize
