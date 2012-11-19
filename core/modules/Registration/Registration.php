@@ -221,23 +221,24 @@ class Registration extends CodonModule
 		else
 			$this->set('location_error', '');
 		
-		// Check password length
-		if(strlen($this->post->password1) <= 5)
+		// Validate the password
+		if (empty($this->post->password1) or empty($this->post->password2))
+		{
+		$this->set('password_error', 'password cannot be blank');
+		}
+		elseif ($this->post->password1 != $this->post->password2) 
 		{
 			$error = true;
-			$this->set('password_error', 'The password is too short!');
+			$this->set('password_error', 'passwords do not match');
 		}
-		else
-			$this->set('password_error', '');
-		
-		// Check is passwords are the same
-		if($this->post->password1 != $this->post->password2)
+		elseif (filter_var($this->post->password1, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^.*(?=.{5,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/"))) === false)
 		{
 			$error = true;
-			$this->set('password_error', 'The passwords do not match!');
+			$this->set('password_error', 'the password must contain 1 uppercase letter, 1 lowercase letter, 1 number, and must be 5 characters or more');
 		}
-		else
+		else {
 			$this->set('password_error', '');
+		}
 		
 		/* Check if they agreed to the statement
 
