@@ -42,6 +42,17 @@ class OperationsData extends CodonData {
         $ret = DB::get_results($sql);
         return $ret;
     }
+	
+	public static function deleteAllAirports() {
+        $sql = 'DELETE FROM ' . TABLE_PREFIX . 'airports';
+
+        $res = DB::query($sql);
+
+        if (DB::errno() != 0) return false;
+
+        return true;
+    }
+	
     /**
      * Get all aircraft from database
      */
@@ -254,6 +265,13 @@ class OperationsData extends CodonData {
 						`name` LIKE '%{$airport}%'";
 
         return DB::get_results($sql);
+    }
+	
+	public static function getAirportByICAO($icao) {
+        $icao = strtoupper($icao);
+        $airline = DB::get_row('SELECT * FROM ' . TABLE_PREFIX . 'airports 
+							     WHERE `icao`=\'' . $icao . '\'');
+        return $airline;
     }
 
     /**

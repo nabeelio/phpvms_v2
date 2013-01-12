@@ -100,6 +100,85 @@ class Import extends CodonModule {
 
         fclose($fp);
     }
+	
+	public function importairports() {
+		
+		if (!file_exists($_FILES['uploadedfile']['tmp_name'])) {
+            $this->render('import_airportform.tpl');
+            return;
+        }
+		
+		echo '<p><strong>DO NOT REFRESH OR STOP THIS PAGE</strong></p>';
+
+        set_time_limit(270);
+        $errs = array();
+        $skip = false;
+		
+		$temp_name = $_FILES['uploadedfile']['tmp_name'];
+        $new_name = CACHE_PATH . $_FILES['uploadedfile']['name'];
+        move_uploaded_file($temp_name, $new_name);
+		
+		$fp = fopen($new_name, 'r');
+			
+		//Did you want to delete all of the airports?	
+		if (isset($_POST['erase_airports'])) {
+            OperationsData::deleteAllAirports();
+        }
+		
+		$added = 0;
+		$updated = 0;
+        $total = 0;
+		$skipped = 0;
+        echo '<div style="overflow: auto; height: 400px; border: 1px solid #666; margin-bottom: 20px; padding: 5px; padding-top: 0px; padding-bottom: 20px;">';
+		
+		while ($fields = fgetcsv($fp, 1000, ',')) {
+            
+			
+			$icao = $fields[0];
+			$name = $fields[1];
+			$country = $fields[2];
+			$lat = $fields[3];
+			$lng = $fields[4];
+			if ($fields[5] == '1') {
+                $hub = true;
+            } else {
+                $hub = false;
+            }
+			$fuelprice = $fields[6];
+			$chartlink = $fields[7];
+			
+			if($icao == "" || $lat == "" || $lng == "") {
+				continue;
+			}
+			
+			$array = array('icao' => $icao, 'name' => $name, 'country' => $country, 'lat' => $lat, 'lng' => $lng, 'hub' => $hub, 'fuelprice' => $fuelprice, 'chartlink' => $chartlink);
+			
+			//Check if airport exisits, then update
+			$airport = OperationsData::getAirportByICAO($icao);
+			if($airport) {
+				$query = OperationsData::editAirport($array);
+				$updated++;
+			} else {
+				//We gotta add it..
+				$query = OperationsData::addAirport($array);
+				$added++;
+			}
+			
+			if($query === false) {
+				$error = (DB::error() != '') ? DB::error() : 'Unknown Reasons';
+                    echo "$icao was not added, reason: $error<br />";
+			}
+			else {
+				$total++;
+                echo "Imported {$icao} - {$name}<br />";
+			}
+		}
+			
+		echo "The import process is complete, added {$added} airports, updated {$updated}, for a total of {$total}<br />";
+		echo '</div>';
+        unlink($new_name);
+
+	}
 
     public function importaircraft() {
 

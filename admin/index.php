@@ -76,13 +76,13 @@ $BaseTemplate->Set('title', SITE_NAME);
 Template::Set('MODULE_NAV_INC', $NAVBAR);
 Template::Set('MODULE_HEAD_INC', $HTMLHead);
 
-$BaseTemplate->Show('header.tpl');
+$BaseTemplate->Show('header.php');
 
 flush();
 
 MainController::runAllActions();
 
-$BaseTemplate->Show('footer.tpl');
+$BaseTemplate->Show('footer.php');
 
 # Force connection close
 DB::close();
