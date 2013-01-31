@@ -56,7 +56,7 @@ class Countries extends CodonData {
         'Kuwait', 'KG' => 'Kyrgyzstan', 'LA' => 'Lao Peoples Democratic Republic', 'LV' =>
         'Latvia', 'LB' => 'Lebanon', 'LS' => 'Lesotho', 'LR' => 'Liberia', 'LY' =>
         'Libyan Arab Jamahiriya', 'LI' => 'Liechtenstein', 'LT' => 'Lithuania', 'LU' =>
-        'Luxembourg', 'MO' => 'Macau', 'MK' =>
+        'Luxembourg', 'ME' => 'Montenegro', 'MO' => 'Macau', 'MK' =>
         'Macedonia, The Former Yugoslav Republic Of', 'MG' => 'Madagascar', 'MW' =>
         'Malawi', 'MY' => 'Malaysia', 'MV' => 'Maldives', 'ML' => 'Mali', 'MT' =>
         'Malta', 'MH' => 'Marshall Islands', 'MQ' => 'Martinique', 'MR' => 'Mauritania',
@@ -71,7 +71,7 @@ class Countries extends CodonData {
         'PW' => 'Palau', 'PS' => 'Palestinian Territory, Occupied', 'PA' => 'Panama',
         'PG' => 'Papua New Guinea', 'PY' => 'Paraguay', 'PE' => 'Peru', 'PH' =>
         'Philippines', 'PN' => 'Pitcairn', 'PL' => 'Poland', 'PT' => 'Portugal', 'PR' =>
-        'Puerto Rico', 'QA' => 'Qatar', 'RE' => 'Reunion', 'RO' => 'Romania', 'RU' =>
+        'Puerto Rico', 'QA' => 'Qatar', 'RE' => 'Reunion', 'RO' => 'Romania', 'RS' => 'Serbia', 'RU' =>
         'Russian Federation', 'RW' => 'Rwanda', 'SH' => 'Saint Helena', 'KN' =>
         'Saint Kitts And Nevis', 'LC' => 'Saint Lucia', 'PM' =>
         'Saint Pierre And Miquelon', 'VC' => 'Saint Vincent And The Grenadines', 'WS' =>
@@ -92,8 +92,7 @@ class Countries extends CodonData {
         'United States Minor Outlying Islands', 'UY' => 'Uruguay', 'UZ' => 'Uzbekistan',
         'VU' => 'Vanuatu', 'VE' => 'Venezuela', 'VN' => 'Viet Nam', 'VG' =>
         'Virgin Islands, British', 'VI' => 'Virgin Islands, U.S.', 'WALES' => 'Wales',
-        'WF' => 'Wallis And Futuna', 'EH' => 'Western Sahara', 'YE' => 'Yemen', 'YU' =>
-        'Yugoslavia', 'ZM' => 'Zambia', 'ZW' => 'Zimbabwe');
+        'WF' => 'Wallis And Futuna', 'EH' => 'Western Sahara', 'YE' => 'Yemen', 'ZM' => 'Zambia', 'ZW' => 'Zimbabwe');
 
 
     public static function getAllCountries() {
