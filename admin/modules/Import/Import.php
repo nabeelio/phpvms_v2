@@ -20,7 +20,7 @@
 class Import extends CodonModule {
 
 	public function HTMLHead() {
-        switch ($this->controller->function) {
+        switch (self::$controller->function) {
             case '':
             default:
             case 'processimport':

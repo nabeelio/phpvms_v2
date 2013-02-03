@@ -63,13 +63,13 @@ class CodonModule
 
 		$module_name = strtolower($module_name);
 				
-		$this->post = Vars::$post;
-		$this->get = CodonRewrite::$get;
+		self::$post = Vars::$post;
+		self::$get = CodonRewrite::$get;
 		$this->request = Vars::$request;
-		$this->controller = CodonRewrite::$controller;
+		self::$controller = CodonRewrite::$controller;
 			
 		$this->init = true;
-		$this->activeModule = MainController::$activeModule;
+		self::$activeModule = MainController::$activeModule;
 	}
 	
 	public function config($setting) {

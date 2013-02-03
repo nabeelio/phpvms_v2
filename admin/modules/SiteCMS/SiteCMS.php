@@ -20,7 +20,7 @@
 class SiteCMS extends CodonModule
 {
 	public function HTMLHead() {
-		switch($this->controller->function) {
+		switch(self::$controller->function) {
 			case 'addnews':
 			case 'viewnews':
 				$this->set('sidebar', 'sidebar_news.tpl');

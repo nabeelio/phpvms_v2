@@ -25,7 +25,7 @@ class Settings extends CodonModule {
 	
 	public function HTMLHead() {
 
-		switch($this->controller->function) {
+		switch(self::$controller->function) {
 			case '':
 			case 'settings':
 				$this->set('sidebar', 'sidebar_settings.tpl');
