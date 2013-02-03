@@ -21,7 +21,7 @@ class Registration extends CodonModule
 	public function HTMLHead() {
 		/*Show our password strength checker
 			*/
-		if($this->get->page == 'register') {
+		if(self::$get->page == 'register') {
 			$this->renderTemplate('registration_javascript.tpl');
 		}
 	}
@@ -80,13 +80,13 @@ class Registration extends CodonModule
         } 
         
 		$data = array(
-			'firstname' => $this->post->firstname,
-			'lastname' => $this->post->lastname,
-			'email' => $this->post->email,
-			'password' => $this->post->password1,
-			'code' => $this->post->code,
-			'location' => $this->post->location,
-			'hub' => $this->post->hub,
+			'firstname' => self::$post->firstname,
+			'lastname' => self::$post->lastname,
+			'email' => self::$post->email,
+			'password' => self::$post->password1,
+			'code' => self::$post->code,
+			'location' => self::$post->location,
+			'hub' => self::$post->hub,
 			'confirm' => false
 		);
 			
@@ -180,7 +180,7 @@ class Registration extends CodonModule
 		
 		/* Check the firstname and last name
 		 */
-		if($this->post->firstname == '') {
+		if(self::$post->firstname == '') {
 			$error = true;
 			$this->set('firstname_error', true);
 		} else {
@@ -190,7 +190,7 @@ class Registration extends CodonModule
 			
 		/* Check the last name
 		 */
-		if($this->post->lastname == '') {
+		if(self::$post->lastname == '') {
 			$error = true;
 			$this->set('lastname_error', true);
 		}
@@ -200,7 +200,7 @@ class Registration extends CodonModule
 		
 		/* Check the email address
 		 */
-		if(filter_var($this->post->email, FILTER_VALIDATE_EMAIL) == false) {
+		if(filter_var(self::$post->email, FILTER_VALIDATE_EMAIL) == false) {
 			$error = true;
 			$this->set('email_error', true);
 		} else {
@@ -210,7 +210,7 @@ class Registration extends CodonModule
 		
 		/* Check the location
 		 */
-		if($this->post->location == '') {
+		if(self::$post->location == '') {
 			$error = true;
 			$this->set('location_error', true);
 		} else {
@@ -218,7 +218,7 @@ class Registration extends CodonModule
 		}
 		
 		// Check password length
-		if(strlen($this->post->password1) <= 5) {
+		if(strlen(self::$post->password1) <= 5) {
 			$error = true;
 			$this->set('password_error', 'The password is too short!');
 		} else {
@@ -226,7 +226,7 @@ class Registration extends CodonModule
 		}
 		
 		// Check is passwords are the same
-		if($this->post->password1 != $this->post->password2) {
+		if(self::$post->password1 != self::$post->password2) {
 			$error = true;
 			$this->set('password_error', 'The passwords do not match!');
 		} else {

@@ -27,11 +27,11 @@ class RouteMap extends CodonModule
 	public function index()
 	{
 		
-		if($this->get->maptype == 'hubmap') {
+		if(self::$get->maptype == 'hubmap') {
 			
 			// Show only 20 routes
 			$schedule_list = SchedulesData::findSchedules(array(
-    				's.depicao'=>$this->get->hub, 
+    				's.depicao'=>self::$get->hub, 
     				's.enabled'=>1
     			), Config::Get('ROUTE_MAP_SHOW_NUMBER')
             );
@@ -41,7 +41,7 @@ class RouteMap extends CodonModule
 				return;
 			}
 			
-			$airportinfo = OperationsData::GetAirportInfo($this->get->hub);
+			$airportinfo = OperationsData::GetAirportInfo(self::$get->hub);
 			
 			echo '<h3>Departures from '.$airportinfo->name.'</h3>';
 			

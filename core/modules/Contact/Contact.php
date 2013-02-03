@@ -23,10 +23,10 @@ class Contact extends CodonModule
 		require_once CORE_LIB_PATH.'/recaptcha/recaptchalib.php';
 
 
-		if($this->post->submit)	{
+		if(self::$post->submit)	{
 			if(Auth::LoggedIn() == false) {					
 				# Make sure they entered an email address
-				if(trim($this->post->name) == '' || trim($this->post->email) == '') {
+				if(trim(self::$post->name) == '' || trim(self::$post->email) == '') {
 					$this->set('message', 'You must enter a name and email!');
 					$this->render('core_error.tpl');
 					return;
@@ -46,14 +46,14 @@ class Contact extends CodonModule
 				return;
 			}
 			
-			if($this->post->subject == '' || trim($this->post->message) == '') {
+			if(self::$post->subject == '' || trim(self::$post->message) == '') {
 				$this->set('message', 'You must enter a subject and message!');
 				$this->render('core_error.tpl');
 				return;
 			}
 			
-			$subject = 'New message from '.$this->post->name.' - "'.$this->post->subject.'"';
-			$message = DB::escape($this->post->message) . PHP_EOL . PHP_EOL;
+			$subject = 'New message from '.self::$post->name.' - "'.self::$post->subject.'"';
+			$message = DB::escape(self::$post->message) . PHP_EOL . PHP_EOL;
 			
 			unset($_POST['recaptcha_challenge_field']);
 			unset($_POST['recaptcha_response_field']);

@@ -33,7 +33,7 @@ class Schedules extends CodonModule {
      * @return
      */
     public function view() {
-        if (isset($this->post->action) && $this->post->action == 'findflight') {
+        if (isset(self::$post->action) && self::$post->action == 'findflight') {
             $this->FindFlight();
             return;
         }
@@ -58,7 +58,7 @@ class Schedules extends CodonModule {
      * @return
      */
     public function details($routeid = '') {
-        //$routeid = $this->get->id;
+        //$routeid = self::$get->id;
 
         if (!is_numeric($routeid)) {
             preg_match('/^([A-Za-z]{3})(\d*)/', $routeid, $matches);
@@ -135,7 +135,7 @@ class Schedules extends CodonModule {
         if (!Auth::LoggedIn())
             return;
 
-        $routeid = $this->get->id;
+        $routeid = self::$get->id;
 
         if ($routeid == '') {
             echo 'No route passed';
@@ -183,7 +183,7 @@ class Schedules extends CodonModule {
         if (!Auth::LoggedIn())
             return;
 
-        SchedulesData::RemoveBid($this->post->id);
+        SchedulesData::RemoveBid(self::$post->id);
     }
 
     /**
@@ -287,29 +287,29 @@ class Schedules extends CodonModule {
         
         
         $params = array();
-        if($this->post->airlines != '') {
-            $params['s.code'] = $this->post->airlines;
+        if(self::$post->airlines != '') {
+            $params['s.code'] = self::$post->airlines;
         }
 
-        if ($this->post->depicao != '') {
-            $params['s.depicao'] = $this->post->depicao;
+        if (self::$post->depicao != '') {
+            $params['s.depicao'] = self::$post->depicao;
         }
 
-        if ($this->post->arricao != '') {
-            $params['s.arricao'] = $this->post->arricao;
+        if (self::$post->arricao != '') {
+            $params['s.arricao'] = self::$post->arricao;
         }
 
-        if ($this->post->equipment != '') {
-            $params['a.name'] = $this->post->equipment;
+        if (self::$post->equipment != '') {
+            $params['a.name'] = self::$post->equipment;
         }
 
-        if ($this->post->distance != '') {
-            if ($this->post->type == 'greater')
+        if (self::$post->distance != '') {
+            if (self::$post->type == 'greater')
                 $value = '> ';
             else
                 $value = '< ';
 
-            $value .= $this->post->distance;
+            $value .= self::$post->distance;
 
             $params['s.distance'] = $value;
         }

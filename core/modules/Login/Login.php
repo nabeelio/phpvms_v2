@@ -36,7 +36,7 @@ class Login extends CodonModule
 		
 		$this->set('redir', $redir);
 	
-		if(isset($this->post->action) && $this->post->action == 'login') {
+		if(isset(self::$post->action) && self::$post->action == 'login') {
 			$this->ProcessLogin();
 		} else {
 			$this->render('login_form.tpl');
@@ -52,7 +52,7 @@ class Login extends CodonModule
 	
 	public function forgotpassword()
 	{
-		if($this->post->action == 'resetpass') {
+		if(self::$post->action == 'resetpass') {
 			$this->ResetPassword();
 			return;
 		}
@@ -62,7 +62,7 @@ class Login extends CodonModule
 	
 	public function ResetPassword()
 	{
-		$email = $this->post->email;
+		$email = self::$post->email;
 		
 		if(!$email) {
 			return false;
@@ -93,8 +93,8 @@ class Login extends CodonModule
 	
 	public function ProcessLogin()
 	{
-		$email = $this->post->email;
-		$password = $this->post->password;
+		$email = self::$post->email;
+		$password = self::$post->password;
 			
 		if($email == '' || $password == '')
 		{
@@ -123,7 +123,7 @@ class Login extends CodonModule
 				$session_id = Auth::$session_id;
 				
 				# If they choose to be "remembered", then assign a cookie
-				if($this->post->remember == 'on') {
+				if(self::$post->remember == 'on') {
 					$cookie = "{$session_id}|{$pilotid}|{$_SERVER['REMOTE_ADDR']}";
 					$res = setrawcookie(VMS_AUTH_COOKIE, $cookie, time() + Config::Get('SESSION_LOGIN_TIME'), '/');
 				}
@@ -132,8 +132,8 @@ class Login extends CodonModule
 				
 				CodonEvent::Dispatch('login_success', 'Login');
 				
-				$this->post->redir = str_replace('index.php/', '', $this->post->redir);
-				header('Location: '.url('/'.$this->post->redir));
+				self::$post->redir = str_replace('index.php/', '', self::$post->redir);
+				header('Location: '.url('/'.self::$post->redir));
 			}
 			
 			return;
