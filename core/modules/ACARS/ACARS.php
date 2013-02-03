@@ -121,17 +121,17 @@ class ACARS extends CodonModule
 	
 	public function routeinfo()
 	{		
-		if($this->get->depicao == '' || $this->get->arricao == '')
+		if(self::$get->depicao == '' || self::$get->arricao == '')
 			return;
 		
-		$depinfo = OperationsData::GetAirportInfo($this->get->depicao);
+		$depinfo = OperationsData::GetAirportInfo(self::$get->depicao);
 		if(!$depinfo) {
-			$depinfo = OperationsData::RetrieveAirportInfo($this->get->depicao);
+			$depinfo = OperationsData::RetrieveAirportInfo(self::$get->depicao);
 		}
 		
-		$arrinfo = OperationsData::GetAirportInfo($this->get->arricao);
+		$arrinfo = OperationsData::GetAirportInfo(self::$get->arricao);
 		if(!$arrinfo) {
-			$arrinfo = OperationsData::RetrieveAirportInfo($this->get->arricao);
+			$arrinfo = OperationsData::RetrieveAirportInfo(self::$get->arricao);
 		}
 		
 		// Convert to json format

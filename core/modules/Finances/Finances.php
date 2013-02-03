@@ -31,7 +31,7 @@ class Finances extends CodonModule
 	
 	public function viewexpensechart()
 	{
-		$type = $this->get->type;
+		$type = self::$get->type;
 		$type = str_replace('m', '', $type);
 		$check = date('Ym', $type);
 			
@@ -62,7 +62,7 @@ class Finances extends CodonModule
 		 * 
 		 * No type indicates to view the 'overall'
 		 */
-		$type = $this->get->type;
+		$type = self::$get->type;
 		if($type[0] == 'y') {
 			$type = str_replace('y', '', $type);
 			$year = date('Y', $type);
@@ -105,7 +105,7 @@ class Finances extends CodonModule
 	
 	public function viewreport()
 	{
-		$type = $this->get->type;
+		$type = self::$get->type;
 		
 		/**
 		 * Check the first letter in the type
