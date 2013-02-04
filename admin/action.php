@@ -58,14 +58,14 @@ if($tplname == '') {
     $tplname = 'layout';
 }
     
-$settings_file = SITE_ROOT . '/admin/lib/'.$tplname.'/'.$tplname.'.php';
+$settings_file = SITE_ROOT.'admin'.DS.'lib'.DS.$tplname.DS.$tplname.'.php';
 if(file_exists($settings_file)) {
 	include $settings_file;
 }
 
 
-Template::setTemplatePath(dirname(__FILE__).'/templates');
-Template::setSkinPath(SITE_ROOT . '/admin/lib/'.$tplname);
+Template::setTemplatePath(dirname(__FILE__).DS.'templates');
+Template::setSkinPath(SITE_ROOT.'admin'.DS.'lib'.DS.$tplname);
 
 MainController::runAllActions();
 

@@ -22,7 +22,9 @@
 	Or add an entry into the crontab file. I recommend running this maybe 2-3am, 
  */
 define('ADMIN_PANEL', true);
-include dirname(dirname(__FILE__)).'/core/codon.config.php';
+//include dirname(dirname(__FILE__)).'/core/codon.config.php';
+include '../core/codon.config.php'; // Why not just keep everything uniform?
+
 Auth::$userinfo->pilotid = 0;
 
 error_reporting(E_ALL);
