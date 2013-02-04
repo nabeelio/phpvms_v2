@@ -27,7 +27,7 @@ class Operations extends CodonModule {
      * @return
      */
     public function HTMLHead() {
-        switch ($this->controller->function) {
+        switch (self::$controller->function) {
             case 'airlines':
                 $this->set('sidebar', 'sidebar_airlines.tpl');
                 break;
