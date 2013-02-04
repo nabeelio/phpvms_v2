@@ -1,3 +1,7 @@
+<?php
+// Am i doin it right guys?
+//if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); }
+?>
 	</div>
 	</div>
 	<div style="clear:both"></div>
