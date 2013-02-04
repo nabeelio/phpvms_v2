@@ -35,14 +35,14 @@ class Profile extends CodonModule
 		/*
 		 * This is from /profile/editprofile
 		 */
-		 if(isset($this->post->action)) {
-			if($this->post->action == 'saveprofile') {
+		 if(isset(self::$post->action)) {
+			if(self::$post->action == 'saveprofile') {
 				$this->save_profile_post();
 			}
 			
 			/* this comes from /profile/changepassword
 			*/
-			if($this->post->action == 'changepassword') {
+			if(self::$post->action == 'changepassword') {
 				$this->change_password_post();
 			}
 		}
@@ -185,16 +185,16 @@ class Profile extends CodonModule
 		$pilot = Auth::$pilot;
 		
 		//TODO: check email validity
-		if($this->post->email == '') {
+		if(self::$post->email == '') {
 			return;
 		}
 				
 		$params = array(
 			'code' => $pilot->code,
-			'email' => $this->post->email,
-			'location' => $this->post->location,
+			'email' => self::$post->email,
+			'location' => self::$post->location,
 			'hub' => $pilot->hub,
-			'bgimage' => $this->post->bgimage,
+			'bgimage' => self::$post->bgimage,
 			'retired' => false
 		);
 			
@@ -224,20 +224,20 @@ class Profile extends CodonModule
 		}
 		
 		// Verify
-		if($this->post->oldpassword == '') {
+		if(self::$post->oldpassword == '') {
 			$this->set('message', 'You must enter your current password');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		if($this->post->password1 != $this->post->password2) {
+		if(self::$post->password1 != self::$post->password2) {
 			$this->set('message', 'Your passwords do not match');
 			$this->render('core_error.tpl');
 			return;
 		}
 
 		// Change
-		$hash = md5($this->post->oldpassword . Auth::$pilot->salt);
+		$hash = md5(self::$post->oldpassword . Auth::$pilot->salt);
 
 		if($hash == Auth::$pilot->password) {
 			RegistrationData::ChangePassword(Auth::$pilotid, $_POST['password1']);

@@ -32,13 +32,13 @@ class MassMailer extends CodonModule {
 
 	public function sendmail() {
 		echo '<h3>Sending email</h3>';
-		if ($this->post->subject == '' || trim($this->post->message) == '') {
+		if (self::$post->subject == '' || trim(self::$post->message) == '') {
 			$this->set('message', 'You must enter a subject and message!');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		if (count($this->post->groups) == 0) {
+		if (count(self::$post->groups) == 0) {
 			$this->set('message', 'You must select groups to send to!');
 			$this->render('core_error.tpl');
 			return;
@@ -48,7 +48,7 @@ class MassMailer extends CodonModule {
 
 		$pilotarray = array();
 		//Begin the nice long assembly of e-mail addresses
-		foreach ($this->post->groups as $groupid) {
+		foreach (self::$post->groups as $groupid) {
 			if ($groupid == 'all') {
 				$all_pilots = PilotData::findPilots(array());
 				foreach ($all_pilots as $pilot) {
@@ -68,8 +68,8 @@ class MassMailer extends CodonModule {
 			}
 		}
 
-		$subject = DB::escape($this->post->subject);
-		$message = stripslashes($this->post->message) . PHP_EOL . PHP_EOL;
+		$subject = DB::escape(self::$post->subject);
+		$message = stripslashes(self::$post->message) . PHP_EOL . PHP_EOL;
 
 		# Do some quick fixing of obvious formatting errors
 		$message = str_replace('<br>', '<br />', $message);

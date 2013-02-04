@@ -20,7 +20,7 @@
 class Finance extends CodonModule {
 
     public function HTMLHead() {
-        switch ($this->controller->function) {
+        switch (self::$controller->function) {
             case 'addexpense':
             case 'editexpense':
             case 'viewexpenses':
@@ -40,7 +40,7 @@ class Finance extends CodonModule {
     }
 
     public function viewexpensechart() {
-        $type = $this->get->type;
+        $type = self::$get->type;
         $type = str_replace('m', '', $type);
         $check = date('Ym', $type);
 
@@ -72,7 +72,7 @@ class Finance extends CodonModule {
          * 
          * No type indicates to view the 'overall'
          */
-        $type = $this->get->type;
+        $type = self::$get->type;
         if ($type[0] == 'y') {
             $type = str_replace('y', '', $type);
             $year = date('Y', $type);
@@ -110,7 +110,7 @@ class Finance extends CodonModule {
     }
 
     public function viewreport() {
-        $type = $this->get->type;
+        $type = self::$get->type;
         $params = $this->formfilter();
 
         /**
@@ -202,17 +202,17 @@ class Finance extends CodonModule {
 
     protected function formfilter() {
         $params = array();
-        if ($this->get->action == 'filter' && !empty($this->get->query)) {
-            if ($this->get->type == 'flightnum') {
-                $params = array('p.flightnum' => $this->get->query);
-            } elseif ($this->get->type == 'code') {
-                $params = array('p.code' => $this->get->query);
-            } elseif ($this->get->type == 'aircraft') {
-                $params = array('p.registration' => $this->get->query);
-            } elseif ($this->get->type == 'depapt') {
-                $params = array('p.depicao' => $this->get->query);
-            } elseif ($this->get->type == 'arrapt') {
-                $params = array('p.arricao' => $this->get->query);
+        if (self::$get->action == 'filter' && !empty(self::$get->query)) {
+            if (self::$get->type == 'flightnum') {
+                $params = array('p.flightnum' => self::$get->query);
+            } elseif (self::$get->type == 'code') {
+                $params = array('p.code' => self::$get->query);
+            } elseif (self::$get->type == 'aircraft') {
+                $params = array('p.registration' => self::$get->query);
+            } elseif (self::$get->type == 'depapt') {
+                $params = array('p.depicao' => self::$get->query);
+            } elseif (self::$get->type == 'arrapt') {
+                $params = array('p.arricao' => self::$get->query);
             }
         }
 
@@ -220,12 +220,12 @@ class Finance extends CodonModule {
     }
 
     public function viewexpenses() {
-        if ($this->post->action == 'addexpense' || $this->post->action == 'editexpense') {
+        if (self::$post->action == 'addexpense' || self::$post->action == 'editexpense') {
             $this->processExpense();
         }
 
-        if ($this->post->action == 'deleteexpense') {
-            FinanceData::removeExpense($this->post->id);
+        if (self::$post->action == 'deleteexpense') {
+            FinanceData::removeExpense(self::$post->id);
             FinanceData::setExpensesforMonth(time());
 
             echo json_encode(array('status' => 'ok'));
@@ -252,39 +252,39 @@ class Finance extends CodonModule {
     }
 
     public function processExpense() {
-        if ($this->post->name == '' || $this->post->cost == '') {
+        if (self::$post->name == '' || self::$post->cost == '') {
             $this->set('message', 'Name and cost must be entered');
             $this->render('core_error.tpl');
             return;
         }
 
-        if (!is_numeric($this->post->cost)) {
+        if (!is_numeric(self::$post->cost)) {
             $this->set('message', 'Cost must be a numeric amount, no symbols');
             $this->render('core_error.tpl');
             return;
         }
 
-        if ($this->post->action == 'addexpense') {
+        if (self::$post->action == 'addexpense') {
             # Make sure it doesn't exist
-            if (FinanceData::GetExpenseByName($this->post->name)) {
+            if (FinanceData::GetExpenseByName(self::$post->name)) {
                 $this->set('message', 'Expense already exists!');
                 $this->render('core_error.tpl');
                 return;
             }
 
-            $ret = FinanceData::AddExpense($this->post->name, $this->post->cost, $this->post->type);
-            $this->set('message', 'The expense "' . $this->post->name . '" has been added');
+            $ret = FinanceData::AddExpense(self::$post->name, self::$post->cost, self::$post->type);
+            $this->set('message', 'The expense "' . self::$post->name . '" has been added');
 
             FinanceData::setExpensesforMonth(time());
 
-            LogData::addLog(Auth::$userinfo->pilotid, 'Added expense "' . $this->post->name . '"');
-        } elseif ($this->post->action == 'editexpense') {
-            $ret = FinanceData::EditExpense($this->post->id, $this->post->name, $this->post->cost, $this->post->type);
-            $this->set('message', 'The expense "' . $this->post->name . '" has been edited');
+            LogData::addLog(Auth::$userinfo->pilotid, 'Added expense "' . self::$post->name . '"');
+        } elseif (self::$post->action == 'editexpense') {
+            $ret = FinanceData::EditExpense(self::$post->id, self::$post->name, self::$post->cost, self::$post->type);
+            $this->set('message', 'The expense "' . self::$post->name . '" has been edited');
 
             FinanceData::setExpensesforMonth(time());
 
-            LogData::addLog(Auth::$userinfo->pilotid, 'Edited expense "' . $this->post->name . '"');
+            LogData::addLog(Auth::$userinfo->pilotid, 'Edited expense "' . self::$post->name . '"');
         }
 
         if (!$ret) {

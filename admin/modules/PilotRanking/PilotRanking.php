@@ -19,7 +19,7 @@
 
 class PilotRanking extends CodonModule {
 	public function HTMLHead() {
-		switch ($this->controller->function) {
+		switch (self::$controller->function) {
 			case 'pilotranks':
 			case 'calculateranks':
 				$this->set('sidebar', 'sidebar_ranks.tpl');
@@ -36,7 +36,7 @@ class PilotRanking extends CodonModule {
 	}
 
 	public function pilotranks() {
-		switch ($this->post->action) {
+		switch (self::$post->action) {
 			case 'addrank':
 				$this->add_rank_post();
 				break;
@@ -46,7 +46,7 @@ class PilotRanking extends CodonModule {
 
 			case 'deleterank':
 
-				$ret = RanksData::DeleteRank($this->post->id);
+				$ret = RanksData::DeleteRank(self::$post->id);
 
 				echo json_encode(array('status' => 'ok'));
 
@@ -68,14 +68,14 @@ class PilotRanking extends CodonModule {
 	public function editrank() {
 		$this->set('title', 'Edit Rank');
 		$this->set('action', 'editrank');
-		$this->set('rank', RanksData::GetRankInfo($this->get->rankid));
+		$this->set('rank', RanksData::GetRankInfo(self::$get->rankid));
 
 		$this->render('ranks_rankform.tpl');
 	}
 
 	public function awards() {
-		if (isset($this->post->action)) {
-			switch ($this->post->action) {
+		if (isset(self::$post->action)) {
+			switch (self::$post->action) {
 				case 'addaward':
 					$this->add_award_post();
 					break;
@@ -83,7 +83,7 @@ class PilotRanking extends CodonModule {
 					$this->edit_award_post();
 					break;
 				case 'deleteaward':
-					$ret = AwardsData::DeleteAward($this->post->id);
+					$ret = AwardsData::DeleteAward(self::$post->id);
 					LogData::addLog(Auth::$userinfo->pilotid, 'Deleted an award');
 
 					echo json_encode(array('status' => 'ok'));
@@ -108,7 +108,7 @@ class PilotRanking extends CodonModule {
 	public function editaward() {
 		$this->set('title', 'Edit Award');
 		$this->set('action', 'editaward');
-		$this->set('award', AwardsData::GetAwardDetail($this->get->awardid));
+		$this->set('award', AwardsData::GetAwardDetail(self::$get->awardid));
 
 		$this->render('awards_awardform.tpl');
 
@@ -118,21 +118,21 @@ class PilotRanking extends CodonModule {
 
 	protected function add_rank_post() {
 
-		if ($this->post->minhours == '' || $this->post->rank == '') {
+		if (self::$post->minhours == '' || self::$post->rank == '') {
 			$this->set('message', 'Hours and Rank must be blank');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		if (!is_numeric($this->post->minhours)) {
+		if (!is_numeric(self::$post->minhours)) {
 			$this->set('message', 'The hours must be a number');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		$this->post->payrate = abs($this->post->payrate);
+		self::$post->payrate = abs(self::$post->payrate);
 
-		$ret = RanksData::AddRank($this->post->rank, $this->post->minhours, $this->post->imageurl, $this->post->payrate);
+		$ret = RanksData::AddRank(self::$post->rank, self::$post->minhours, self::$post->imageurl, self::$post->payrate);
 
 		if (DB::errno() != 0) {
 			$this->set('message', 'Error adding the rank: ' . DB::error());
@@ -143,25 +143,25 @@ class PilotRanking extends CodonModule {
 		$this->set('message', 'Rank Added!');
 		$this->render('core_success.tpl');
 
-		LogData::addLog(Auth::$userinfo->pilotid, 'Added the rank "' . $this->post->rank . '"');
+		LogData::addLog(Auth::$userinfo->pilotid, 'Added the rank "' . self::$post->rank . '"');
 	}
 
 	protected function edit_rank_post() {
-		if ($this->post->minhours == '' || $this->post->rank == '') {
+		if (self::$post->minhours == '' || self::$post->rank == '') {
 			$this->set('message', 'Hours and Rank must be blank');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		if (!is_numeric($this->post->minhours)) {
+		if (!is_numeric(self::$post->minhours)) {
 			$this->set('message', 'The hours must be a number');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		$this->post->payrate = abs($this->post->payrate);
+		self::$post->payrate = abs(self::$post->payrate);
 
-		$ret = RanksData::UpdateRank($this->post->rankid, $this->post->rank, $this->post->minhours, $this->post->rankimage, $this->post->payrate);
+		$ret = RanksData::UpdateRank(self::$post->rankid, self::$post->rank, self::$post->minhours, self::$post->rankimage, self::$post->payrate);
 
 		if (DB::errno() != 0) {
 			$this->set('message', 'Error updating the rank: ' . DB::error());
@@ -172,36 +172,36 @@ class PilotRanking extends CodonModule {
 		$this->set('message', 'Rank Added!');
 		$this->render('core_success.tpl');
 
-		LogData::addLog(Auth::$userinfo->pilotid, 'Edited the rank "' . $this->post->rank . '"');
+		LogData::addLog(Auth::$userinfo->pilotid, 'Edited the rank "' . self::$post->rank . '"');
 	}
 
 	protected function add_award_post() {
-		if ($this->post->name == '' || $this->post->image == '') {
+		if (self::$post->name == '' || self::$post->image == '') {
 			$this->set('message', 'The name and image must be entered');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		$ret = AwardsData::AddAward($this->post->name, $this->post->descrip, $this->post->image);
+		$ret = AwardsData::AddAward(self::$post->name, self::$post->descrip, self::$post->image);
 
 		$this->set('message', 'Award Added!');
 		$this->render('core_success.tpl');
 
-		LogData::addLog(Auth::$userinfo->pilotid, "Added the award \"{$this->post->name}\"");
+		LogData::addLog(Auth::$userinfo->pilotid, "Added the award \"{self::$post->name}\"");
 	}
 
 	protected function edit_award_post() {
-		if ($this->post->name == '' || $this->post->image == '') {
+		if (self::$post->name == '' || self::$post->image == '') {
 			$this->set('message', 'The name and image must be entered');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		$ret = AwardsData::EditAward($this->post->awardid, $this->post->name, $this->post->descrip, $this->post->image);
+		$ret = AwardsData::EditAward(self::$post->awardid, self::$post->name, self::$post->descrip, self::$post->image);
 
 		$this->set('message', 'Award Added!');
 		$this->render('core_success.tpl');
 
-		LogData::addLog(Auth::$userinfo->pilotid, 'Edited the award "' . $this->post->name . '"');
+		LogData::addLog(Auth::$userinfo->pilotid, 'Edited the award "' . self::$post->name . '"');
 	}
 }

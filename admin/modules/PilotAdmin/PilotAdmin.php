@@ -26,7 +26,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function HTMLHead() {
-        switch ($this->controller->function) {
+        switch (self::$controller->function) {
             case 'viewpilots':
                 $this->set('sidebar', 'sidebar_pilots.tpl');
                 break;
@@ -69,7 +69,7 @@ class PilotAdmin extends CodonModule {
         wants to use it
         */
 
-        switch ($this->post->action) {
+        switch (self::$post->action) {
             case 'changepassword':
 
                 $this->ChangePassword();
@@ -79,7 +79,7 @@ class PilotAdmin extends CodonModule {
 
             case 'deletepilot':
 
-                $pilotid = $this->post->pilotid;
+                $pilotid = self::$post->pilotid;
                 $pilotinfo = PilotData::getPilotData($pilotid);
 
                 PilotData::DeletePilot($pilotid);
@@ -104,7 +104,7 @@ class PilotAdmin extends CodonModule {
             case 'addgroup':
 
                 $this->AddPilotToGroup();
-                $this->SetGroupsData($this->post->pilotid);
+                $this->SetGroupsData(self::$post->pilotid);
                 $this->render('pilots_groups.tpl');
                 return;
 
@@ -114,7 +114,7 @@ class PilotAdmin extends CodonModule {
 
                 $this->RemovePilotGroup();
 
-                $this->SetGroupsData($this->post->pilotid);
+                $this->SetGroupsData(self::$post->pilotid);
                 $this->render('pilots_groups.tpl');
 
                 return;
@@ -123,36 +123,36 @@ class PilotAdmin extends CodonModule {
 
             case 'saveprofile':
 
-                if ($this->post->firstname == '' || $this->post->lastname == '') {
+                if (self::$post->firstname == '' || self::$post->lastname == '') {
                     $this->set('message', 'The first or lastname cannot be blank!');
                     $this->render('core_error.tpl');
                     return;
                 }
 
                 $params = array(
-                    'code' => $this->post->code, 
-                    'firstname' => $this->post->firstname, 
-                    'lastname' => $this->post->lastname, 
-                    'email' => $this->post->email, 
-                    'location' => $this->post->location, 
-                    'hub' => $this->post->hub, 
-                    'retired' => $this->post->retired, 
-                    'totalhours' => $this->post->totalhours, 
-                    'totalflights' => $this->post->totalflights, 
-                    'totalpay' => floatval($this->post->totalpay), 
-                    'payadjust' => floatval($this->post->payadjust), 
-                    'transferhours' => $this->post->transferhours, 
-                    'comment' => $this->post->comment, 
+                    'code' => self::$post->code, 
+                    'firstname' => self::$post->firstname, 
+                    'lastname' => self::$post->lastname, 
+                    'email' => self::$post->email, 
+                    'location' => self::$post->location, 
+                    'hub' => self::$post->hub, 
+                    'retired' => self::$post->retired, 
+                    'totalhours' => self::$post->totalhours, 
+                    'totalflights' => self::$post->totalflights, 
+                    'totalpay' => floatval(self::$post->totalpay), 
+                    'payadjust' => floatval(self::$post->payadjust), 
+                    'transferhours' => self::$post->transferhours, 
+                    'comment' => self::$post->comment, 
                 );
 
-                PilotData::updateProfile($this->post->pilotid, $params);
-                PilotData::SaveFields($this->post->pilotid, $_POST);
+                PilotData::updateProfile(self::$post->pilotid, $params);
+                PilotData::SaveFields(self::$post->pilotid, $_POST);
 
                 /* Don't calculate a pilot's rank if this is set */
                 if (Config::Get('RANKS_AUTOCALCULATE') == false) {
-                    PilotData::changePilotRank($this->post->pilotid, $this->post->rank);
+                    PilotData::changePilotRank(self::$post->pilotid, self::$post->rank);
                 } else {
-                    RanksData::calculateUpdatePilotRank($this->post->pilotid);
+                    RanksData::calculateUpdatePilotRank(self::$post->pilotid);
                 }
 
                 StatsData::UpdateTotalHours();
@@ -160,12 +160,12 @@ class PilotAdmin extends CodonModule {
                 $this->set('message', 'Profile updated successfully');
                 $this->render('core_success.tpl');
                 
-                if($this->post->resend_email == 'true') {
-                    $this->post->id = $this->post->pilotid;
+                if(self::$post->resend_email == 'true') {
+                    self::$post->id = self::$post->pilotid;
                     $this->resendemail(false);
                 }
 
-                $pilot = PilotData::getPilotData($this->post->pilotid);
+                $pilot = PilotData::getPilotData(self::$post->pilotid);
                 LogData::addLog(Auth::$userinfo->pilotid, 'Updated profile for ' 
                                 .PilotData::getPilotCode($pilot->code, $pilot->pilotid) 
                                 .' '.$pilot->firstname.' '.$pilot->lastname);
@@ -174,7 +174,7 @@ class PilotAdmin extends CodonModule {
                 break;
         }
 
-        if ($this->get->action == 'viewoptions') {
+        if (self::$get->action == 'viewoptions') {
             $this->ViewPilotDetails();
             return;
         }
@@ -196,8 +196,8 @@ class PilotAdmin extends CodonModule {
      */
     public function pendingpilots() {
         
-        if (isset($this->post->action)) {
-            switch ($this->post->action) {
+        if (isset(self::$post->action)) {
+            switch (self::$post->action) {
                 case 'approvepilot':
 
                     $this->ApprovePilot();
@@ -222,7 +222,7 @@ class PilotAdmin extends CodonModule {
      */
     public function resendemail($show_pending = true) {
                 
-        $pilot = PilotData::getPilotData($this->post->id);
+        $pilot = PilotData::getPilotData(self::$post->id);
 
         # Send pilot notification
         $subject = Lang::gs('email.register.accepted.subject');
@@ -259,8 +259,8 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function viewbids() {
-        if ($this->post->action == 'deletebid') {
-            $ret = SchedulesData::RemoveBid($this->post->id);
+        if (self::$post->action == 'deletebid') {
+            $ret = SchedulesData::RemoveBid(self::$post->id);
 
             $params = array();
             if ($ret == true) {
@@ -284,10 +284,10 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function pilotgroups() {
-        if (isset($this->post->action)) {
-            if ($this->post->action == 'addgroup') {
+        if (isset(self::$post->action)) {
+            if (self::$post->action == 'addgroup') {
                 $this->AddGroupPost();
-            } elseif ($this->post->action == 'editgroup') {
+            } elseif (self::$post->action == 'editgroup') {
                 # Process
                 $this->SaveGroup();
             }
@@ -315,11 +315,11 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function editgroup() {
-        if (!isset($this->get->groupid)) {
+        if (!isset(self::$get->groupid)) {
             return;
         }
 
-        $group_info = PilotGroups::GetGroup($this->get->groupid);
+        $group_info = PilotGroups::GetGroup(self::$get->groupid);
 
         $this->set('group', $group_info);
         $this->set('title', 'Editing ' . $group_info->name);
@@ -335,10 +335,10 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     public function pilotawards() {
-        if (isset($this->post->action)) {
-            if ($this->post->action == 'addaward') {
+        if (isset(self::$post->action)) {
+            if (self::$post->action == 'addaward') {
                 $this->AddAward();
-            } elseif ($this->post->action == 'deleteaward') {
+            } elseif (self::$post->action == 'deleteaward') {
                 $this->DeleteAward();
             }
         }
@@ -363,17 +363,17 @@ class PilotAdmin extends CodonModule {
      */
     public function getpilotsjson() {
         
-        $page = $this->get->page; // get the requested page
-        $limit = $this->get->rows; // get how many rows we want to have into the grid
-        $sidx = $this->get->sidx; // get index row - i.e. user click to sort
-        $sord = $this->get->sord; // get the direction
+        $page = self::$get->page; // get the requested page
+        $limit = self::$get->rows; // get how many rows we want to have into the grid
+        $sidx = self::$get->sidx; // get index row - i.e. user click to sort
+        $sord = self::$get->sord; // get the direction
         if (!$sidx)
             $sidx = 1;
 
         /* Do the search using jqGrid */
         $where = array();
-        if ($this->get->_search == 'true') {
-            $searchstr = jqgrid::strip($this->get->filters);
+        if (self::$get->_search == 'true') {
+            $searchstr = jqgrid::strip(self::$get->filters);
             $where_string = jqgrid::constructWhere($searchstr);
 
             # Append to our search, add 1=1 since it comes with AND
@@ -459,13 +459,13 @@ class PilotAdmin extends CodonModule {
      */
     protected function ViewPilotDetails() {
         //This is for the main tab
-        $this->set('pilotinfo', PilotData::GetPilotData($this->get->pilotid));
-        $this->set('customfields', PilotData::GetFieldData($this->get->pilotid, true));
-        $this->set('allawards', AwardsData::GetPilotAwards($this->get->pilotid));
-        $this->set('pireps', PIREPData::GetAllReportsForPilot($this->get->pilotid));
+        $this->set('pilotinfo', PilotData::GetPilotData(self::$get->pilotid));
+        $this->set('customfields', PilotData::GetFieldData(self::$get->pilotid, true));
+        $this->set('allawards', AwardsData::GetPilotAwards(self::$get->pilotid));
+        $this->set('pireps', PIREPData::GetAllReportsForPilot(self::$get->pilotid));
         $this->set('countries', Countries::getAllCountries());
 
-        $this->SetGroupsData($this->get->pilotid);
+        $this->SetGroupsData(self::$get->pilotid);
 
         // For the PIREP list
         $this->set('pending', false);
@@ -503,27 +503,27 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function AddGroupPost() {
-        if ($this->post->name == '') {
+        if (self::$post->name == '') {
             $this->set('message', Lang::gs('group.no.name'));
             $this->render('core_error.tpl');
             return;
         }
 
         $permissions = 0;
-        foreach ($this->post->permissions as $perm) {
+        foreach (self::$post->permissions as $perm) {
             $permissions = PilotGroups::set_permission($permissions, $perm);
         }
 
-        $ret = PilotGroups::AddGroup($this->post->name, $permissions);
+        $ret = PilotGroups::AddGroup(self::$post->name, $permissions);
 
         if (DB::errno() != 0) {
             $this->set('message', sprintf(Lang::gs('error'), DB::$error));
             $this->render('core_error.tpl');
         } else {
-            $this->set('message', sprintf(Lang::gs('group.added'), $this->post->name));
+            $this->set('message', sprintf(Lang::gs('group.added'), self::$post->name));
             $this->render('core_success.tpl');
 
-            LogData::addLog(Auth::$userinfo->pilotid, 'Added group "' . $this->post->name . '"');
+            LogData::addLog(Auth::$userinfo->pilotid, 'Added group "' . self::$post->name . '"');
         }
     }
 
@@ -534,20 +534,20 @@ class PilotAdmin extends CodonModule {
      */
     protected function SaveGroup() {
         $permissions = 0;
-        foreach ($this->post->permissions as $perm) {
+        foreach (self::$post->permissions as $perm) {
             $permissions = PilotGroups::set_permission($permissions, $perm);
         }
 
-        PilotGroups::EditGroup($this->post->groupid, $this->post->name, $permissions);
+        PilotGroups::EditGroup(self::$post->groupid, self::$post->name, $permissions);
 
         if (DB::errno() != 0) {
             $this->set('message', sprintf(Lang::gs('error'), DB::$error));
             $this->render('core_error.tpl');
         } else {
-            $this->set('message', sprintf(Lang::gs('group.saved'), $this->post->name));
+            $this->set('message', sprintf(Lang::gs('group.saved'), self::$post->name));
             $this->render('core_success.tpl');
 
-            LogData::addLog(Auth::$userinfo->pilotid, 'Edited group "' . $this->post->name . '"');
+            LogData::addLog(Auth::$userinfo->pilotid, 'Edited group "' . self::$post->name . '"');
         }
     }
 
@@ -558,19 +558,19 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function AddPilotToGroup() {
-        if (PilotGroups::CheckUserInGroup($this->post->pilotid, $this->post->groupname)) {
+        if (PilotGroups::CheckUserInGroup(self::$post->pilotid, self::$post->groupname)) {
             $this->set('message', Lang::gs('group.pilot.already.in'));
             $this->render('core_error.tpl');
             return;
         }
 
-        $ret = PilotGroups::AddUsertoGroup($this->post->pilotid, $this->post->groupname);
+        $ret = PilotGroups::AddUsertoGroup(self::$post->pilotid, self::$post->groupname);
 
         if (DB::errno() != 0) {
             $this->set('message', Lang::gs('group.add.error'));
             $this->render('core_error.tpl');
         } else {
-            LogData::addLog(Auth::$userinfo->pilotid, 'Added pilot #' . $this->post->pilotid . ' to group "' . $this->post->groupname . '"');
+            LogData::addLog(Auth::$userinfo->pilotid, 'Added pilot #' . self::$post->pilotid . ' to group "' . self::$post->groupname . '"');
         }
     }
 
@@ -580,8 +580,8 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function RemovePilotGroup() {
-        $pilotid = $this->post->pilotid;
-        $groupid = $this->post->groupid;
+        $pilotid = self::$post->pilotid;
+        $groupid = self::$post->groupid;
 
         PilotGroups::RemoveUserFromGroup($pilotid, $groupid);
 
@@ -589,7 +589,7 @@ class PilotAdmin extends CodonModule {
             $this->set('message', 'There was an error removing');
             $this->render('core_error.tpl');
         } else {
-            LogData::addLog(Auth::$userinfo->pilotid, 'Removed pilot #' . $this->post->pilotid . ' from group "' . $this->post->groupid . '"');
+            LogData::addLog(Auth::$userinfo->pilotid, 'Removed pilot #' . self::$post->pilotid . ' from group "' . self::$post->groupid . '"');
         }
     }
 
@@ -610,10 +610,10 @@ class PilotAdmin extends CodonModule {
      */
     protected function ApprovePilot() {
         
-        PilotData::AcceptPilot($this->post->id);
+        PilotData::AcceptPilot(self::$post->id);
         RanksData::CalculatePilotRanks();
 
-        $pilot = PilotData::getPilotData($this->post->id);
+        $pilot = PilotData::getPilotData(self::$post->id);
 
         # Send pilot notification
         $subject = Lang::gs('email.register.accepted.subject');
@@ -640,7 +640,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function RejectPilot() {
-        $pilot = PilotData::GetPilotData($this->post->id);
+        $pilot = PilotData::GetPilotData(self::$post->id);
 
         # Send pilot notification
 
@@ -659,7 +659,7 @@ class PilotAdmin extends CodonModule {
         Util::SendEmail($pilot->email, $subject, $message);
 
         # Reject in the end, since it's delted
-        PilotData::RejectPilot($this->post->id);
+        PilotData::RejectPilot(self::$post->id);
 
         CodonEvent::Dispatch('pilot_rejected', 'PilotAdmin', $pilot);
 
@@ -675,8 +675,8 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function ChangePassword() {
-        $password1 = $this->post->password1;
-        $password2 = $this->post->password2;
+        $password1 = self::$post->password1;
+        $password2 = self::$post->password2;
 
         // Check password length
         if (strlen($password1) <= 5) {
@@ -692,7 +692,7 @@ class PilotAdmin extends CodonModule {
             return;
         }
 
-        RegistrationData::ChangePassword($this->post->pilotid, $password1);
+        RegistrationData::ChangePassword(self::$post->pilotid, $password1);
 
         if (DB::errno() != 0) {
             $this->set('message', 'There was an error, administrator has been notified');
@@ -702,7 +702,7 @@ class PilotAdmin extends CodonModule {
             $this->render('core_success.tpl');
         }
 
-        $pilot = PilotData::getPilotData($this->post->pilotid);
+        $pilot = PilotData::getPilotData(self::$post->pilotid);
         LogData::addLog(
             Auth::$userinfo->pilotid, 
             'Changed the password for '.PilotData::getPilotCode($pilot->code, $pilot->pilotid).' - '.$pilot->firstname.' '.$pilot->lastname
@@ -716,20 +716,20 @@ class PilotAdmin extends CodonModule {
      */
     protected function AddAward() {
 
-        if ($this->post->awardid == '' || $this->post->pilotid == '')
+        if (self::$post->awardid == '' || self::$post->pilotid == '')
             return;
 
         # Check if they already have this award
-        $award = AwardsData::GetPilotAward($this->post->pilotid, $this->post->awardid);
+        $award = AwardsData::GetPilotAward(self::$post->pilotid, self::$post->awardid);
         if ($award) {
             $this->set('message', Lang::gs('award.exists'));
             $this->render('core_error.tpl');
             return;
         }
 
-        AwardsData::AddAwardToPilot($this->post->pilotid, $this->post->awardid);
+        AwardsData::AddAwardToPilot(self::$post->pilotid, self::$post->awardid);
 
-        $pilot = PilotData::getPilotData($this->post->pilotid);
+        $pilot = PilotData::getPilotData(self::$post->pilotid);
         LogData::addLog(Auth::$userinfo->pilotid, 'Added and award to ' . PilotData::getPilotCode($pilot->code, $pilot->pilotid) . ' - ' . $pilot->firstname . ' ' . $pilot->lastname);
     }
 
@@ -739,7 +739,7 @@ class PilotAdmin extends CodonModule {
      * @return
      */
     protected function DeleteAward() {
-        AwardsData::DeletePilotAward($this->post->id);
+        AwardsData::DeletePilotAward(self::$post->id);
 
         if ($award) {
             $this->set('message', Lang::gs('award.deleted'));
