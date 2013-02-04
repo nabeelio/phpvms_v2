@@ -139,38 +139,38 @@ class Maintenance extends CodonModule {
     public function changepilotid() {
         echo '<h3>Change Pilot ID</h3>';
 
-        if (isset($this->post->submit)) {
+        if (isset(self::$post->submit)) {
             $error = false;
 
-            if (!is_numeric($this->post->new_pilotid)) {
+            if (!is_numeric(self::$post->new_pilotid)) {
                 $error = true;
                 $this->set('message', 'The pilot ID isn\'t numeric!');
                 $this->render('core_error.tpl');
                 return;
             }
 
-            if ($this->post->new_pilotid < 1) {
+            if (self::$post->new_pilotid < 1) {
                 $error = true;
                 $this->set('message', 'You cannot have an ID less than 1');
                 $this->render('core_error.tpl');
                 return;
             }
 
-            if (empty($this->post->new_pilotid)) {
+            if (empty(self::$post->new_pilotid)) {
                 $error = true;
                 $this->set('message', 'The pilot ID is blank!');
                 $this->render('core_error.tpl');
                 return;
             }
 
-            if (empty($this->post->old_pilotid) || $this->post->old_pilotid == 0) {
+            if (empty(self::$post->old_pilotid) || self::$post->old_pilotid == 0) {
                 $error = true;
                 $this->set('message', 'No pilot selected');
                 $this->render('core_error.tpl');
                 return;
             }
 
-            $pilot = PilotData::getPilotData($this->post->new_pilotid);
+            $pilot = PilotData::getPilotData(self::$post->new_pilotid);
             if (is_object($pilot)) {
                 $error = true;
                 $this->set('message', 'This ID is already used!');
@@ -179,9 +179,9 @@ class Maintenance extends CodonModule {
             }
 
             if ($error === false) {
-                PilotData::changePilotID($this->post->old_pilotid, $this->post->new_pilotid);
+                PilotData::changePilotID(self::$post->old_pilotid, self::$post->new_pilotid);
 
-                $this->set('message', "Pilot ID changed from {$this->post->old_pilotid} to {$this->post->new_pilotid}");
+                $this->set('message', "Pilot ID changed from {self::$post->old_pilotid} to {self::$post->new_pilotid}");
                 $this->render('core_success.tpl');
             }
         }

@@ -26,7 +26,7 @@ class Downloads extends CodonModule {
 	}
 
 	public function overview() {
-		switch ($this->post->action) {
+		switch (self::$post->action) {
 			case 'addcategory':
 				$this->AddCategoryPost();
 				break;
@@ -77,7 +77,7 @@ class Downloads extends CodonModule {
 	public function editcategory() {
 		$this->set('title', 'Edit Category');
 		$this->set('action', 'editcategory');
-		$this->set('category', DownloadData::GetAsset($this->get->id));
+		$this->set('category', DownloadData::GetAsset(self::$get->id));
 
 		$this->render('downloads_categoryform.tpl');
 	}
@@ -86,44 +86,44 @@ class Downloads extends CodonModule {
 		$this->set('title', 'Edit Download');
 		$this->set('action', 'editdownload');
 		$this->set('allcategories', DownloadData::GetAllCategories());
-		$this->set('download', DownloadData::GetAsset($this->get->id));
+		$this->set('download', DownloadData::GetAsset(self::$get->id));
 
 		$this->render('downloads_downloadform.tpl');
 	}
 
 	protected function AddCategoryPost() {
-		if ($this->post->name == '') {
+		if (self::$post->name == '') {
 			$this->set('message', 'No category name entered!');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		if (DownloadData::FindCategory($this->post->name)) {
+		if (DownloadData::FindCategory(self::$post->name)) {
 			$this->set('message', 'Category already exists');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		DownloadData::AddCategory($this->post->name, '', '');
+		DownloadData::AddCategory(self::$post->name, '', '');
 
 		$this->set('message', 'Category added!');
 		$this->render('core_success.tpl');
 	}
 
 	protected function EditCategoryPost() {
-		if ($this->post->name == '') {
+		if (self::$post->name == '') {
 			$this->set('message', 'No category name entered!');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		if (DownloadData::FindCategory($this->post->name)) {
+		if (DownloadData::FindCategory(self::$post->name)) {
 			$this->set('message', 'Category already exists');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		$data = array('id' => $this->post->id, 'name' => $this->post->name, 'parent_id' => '', 'description' => '', 'link' => '', 'image' => '',);
+		$data = array('id' => self::$post->id, 'name' => self::$post->name, 'parent_id' => '', 'description' => '', 'link' => '', 'image' => '',);
 
 		DownloadData::EditAsset($data);
 
@@ -133,26 +133,26 @@ class Downloads extends CodonModule {
 	}
 
 	protected function DeleteCategoryPost() {
-		if ($this->post->id == '') {
+		if (self::$post->id == '') {
 			$this->set('message', 'Invalid category!');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		DownloadData::RemoveCategory($this->post->id);
+		DownloadData::RemoveCategory(self::$post->id);
 
 		$this->set('message', 'Category removed!');
 		$this->render('core_success.tpl');
 	}
 
 	protected function AddDownloadPost() {
-		if ($this->post->name == '' || $this->post->link == '') {
+		if (self::$post->name == '' || self::$post->link == '') {
 			$this->set('message', 'Link and name must be entered');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		$data = array('parent_id' => $this->post->category, 'name' => $this->post->name, 'description' => $this->post->description, 'link' => $this->post->link, 'image' => $this->post->image,);
+		$data = array('parent_id' => self::$post->category, 'name' => self::$post->name, 'description' => self::$post->description, 'link' => self::$post->link, 'image' => self::$post->image,);
 
 		$val = DownloadData::AddDownload($data);
 
@@ -164,13 +164,13 @@ class Downloads extends CodonModule {
 	}
 
 	protected function EditDownloadPost() {
-		if ($this->post->name == '' || $this->post->link == '') {
+		if (self::$post->name == '' || self::$post->link == '') {
 			$this->set('message', 'Link and name must be entered!');
 			$this->render('core_error.tpl');
 			return;
 		}
 
-		$data = array('id' => $this->post->id, 'parent_id' => $this->post->category, 'name' => $this->post->name, 'description' => $this->post->description, 'link' => $this->post->link, 'image' => $this->post->image,);
+		$data = array('id' => self::$post->id, 'parent_id' => self::$post->category, 'name' => self::$post->name, 'description' => self::$post->description, 'link' => self::$post->link, 'image' => self::$post->image,);
 
 		DownloadData::EditAsset($data);
 
@@ -180,13 +180,13 @@ class Downloads extends CodonModule {
 
 	protected function DeleteDownloadPost() {
 		$params = array();
-		if ($this->post->id == '') {
+		if (self::$post->id == '') {
 			$params['status'] = 'Invalid Download ID';
 			echo json_encode($params);
 			return;
 		}
 
-		DownloadData::RemoveAsset($this->post->id);
+		DownloadData::RemoveAsset(self::$post->id);
 		$params['status'] = 'ok';
 		echo json_encode($params);
 		return;
