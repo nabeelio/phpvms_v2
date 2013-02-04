@@ -1,6 +1,6 @@
 <?php
 
-include dirname(__FILE__).'/loader.inc.php';
+include dirname(__FILE__).DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR.'loader.inc.php';
 
 if(!DB::init($_POST['DBASE_TYPE'])) {
 	Template::Set('message', 'There was an error initializing the database');
