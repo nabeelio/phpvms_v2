@@ -1,7 +1,6 @@
 	</div>
 	</div>
-	
-	<br class="clearfloat" />
+	<div style="clear:both"></div>
 	<div id="footer">
 	<p>
 		"<?php echo randquote(); ?>"
@@ -16,7 +15,8 @@
   </div>
 </div>
 <?php
-Template::Show('core_footer.tpl');
+Template::Show('core_footer.php');
 ?>
+
 </body>
 </html>

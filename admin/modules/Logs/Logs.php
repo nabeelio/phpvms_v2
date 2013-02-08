@@ -23,6 +23,6 @@ class Logs extends CodonModule {
 		$params = array();
 		
 		$this->set('all_logs', LogData::findLogs($params));
-		$this->render('logs_index.tpl');
+		$this->render('logs_index.php');
 	}
 }

@@ -181,7 +181,7 @@ class PilotGroups extends CodonData {
             if ($group->permissions === NO_ADMIN_ACCESS) continue;
 
             # One of the group has full admin access
-            if ($group->permissions === FULL_ADMIN) {
+            if ((float)$group->permissions === (float)FULL_ADMIN) {
                 return true;
             }
 

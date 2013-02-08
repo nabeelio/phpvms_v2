@@ -23,7 +23,7 @@ class PIREPAdmin extends CodonModule {
             case 'viewpending':
             case 'viewrecent':
             case 'viewall':
-                $this->set('sidebar', 'sidebar_pirep_pending.tpl');
+                $this->set('sidebar', 'sidebar_pirep_pending.php');
                 break;
         }
     }
@@ -60,6 +60,7 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function viewpending() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->post_action();
 
         $this->set('title', 'Pending Reports');
@@ -73,27 +74,30 @@ class PIREPAdmin extends CodonModule {
         $this->set('pireps', PIREPData::findPIREPS($params));
         $this->set('pending', true);
         $this->set('load', 'viewpending');
-        $this->render('pireps_list.tpl');
+        $this->render('pireps_list.php');
     }
 
 
     public function pilotpireps() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->post_action();
 
         $this->set('pending', false);
         $this->set('load', 'pilotpireps');
 
         $this->set('pireps', PIREPData::findPIREPS(array('p.pilotid' => $this->get->pilotid)));
-        $this->render('pireps_list.tpl');
+        $this->render('pireps_list.php');
     }
 
 
     public function rejectpirep() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->set('pirepid', $this->get->pirepid);
-        $this->render('pirep_reject.tpl');
+        $this->render('pirep_reject.php');
     }
 
     public function viewrecent() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->set('title', Lang::gs('pireps.view.recent'));
         $this->set('pireps', PIREPData::GetRecentReports());
         $this->set('descrip', 'These pilot reports are from the past 48 hours');
@@ -101,10 +105,11 @@ class PIREPAdmin extends CodonModule {
         $this->set('pending', false);
         $this->set('load', 'viewrecent');
 
-        $this->render('pireps_list.tpl');
+        $this->render('pireps_list.php');
     }
 
     public function approveall() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         echo '<h3>Approve All</h3>';
 
@@ -137,6 +142,7 @@ class PIREPAdmin extends CodonModule {
     }
 
     public function viewall() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->post_action();
 
         if (!isset($this->get->start) || $this->get->start == '')
@@ -179,10 +185,11 @@ class PIREPAdmin extends CodonModule {
 
         $this->set('pireps', $allreports);
 
-        $this->render('pireps_list.tpl');
+        $this->render('pireps_list.php');
     }
 
     public function editpirep() {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->set('pirep', PIREPData::GetReportDetails($this->get->pirepid));
         $this->set('allairlines', OperationsData::GetAllAirlines());
         $this->set('allairports', OperationsData::GetAllAirports());
@@ -191,16 +198,18 @@ class PIREPAdmin extends CodonModule {
         $this->set('pirepfields', PIREPData::GetAllFields());
         $this->set('comments', PIREPData::GetComments($this->get->pirepid));
 
-        $this->render('pirep_edit.tpl');
+        $this->render('pirep_edit.php');
     }
 
     public function viewcomments() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         $this->set('comments', PIREPData::GetComments($this->get->pirepid));
-        $this->render('pireps_comments.tpl');
+        $this->render('pireps_comments.php');
     }
 
     public function deletecomment() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         if (!isset($this->post)) {
             return;
@@ -211,33 +220,36 @@ class PIREPAdmin extends CodonModule {
         LogData::addLog(Auth::$userinfo->pilotid, 'Deleted a comment');
 
         $this->set('message', 'Comment deleted!');
-        $this->render('core_success.tpl');
+        $this->render('core_success.php');
     }
 
     public function viewlog() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         $this->set('report', PIREPData::GetReportDetails($this->get->pirepid));
-        $this->render('pirep_log.tpl');
+        $this->render('pirep_log.php');
     }
 
     public function addcomment() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         if (isset($this->post->submit)) {
             $this->add_comment_post();
 
             $this->set('message', 'Comment added to PIREP!');
-            $this->render('core_success.tpl');
+            $this->render('core_success.php');
             return;
         }
 
 
         $this->set('pirepid', $this->get->pirepid);
-        $this->render('pirep_addcomment.tpl');
+        $this->render('pirep_addcomment.php');
     }
 
     /* Utility functions */
 
     protected function add_comment_post() {
+        $this->checkPermission(MODERATE_PIREPS);
         
         $comment = $this->post->comment;
         $commenter = Auth::$userinfo->pilotid;
@@ -252,17 +264,18 @@ class PIREPAdmin extends CodonModule {
         $this->set('lastname', $pirep_details->lastname);
         $this->set('pirepid', $pirepid);
 
-        $message = Template::GetTemplate('email_commentadded.tpl', true);
+        $message = Template::GetTemplate('email_commentadded.php', true);
         Util::SendEmail($pirep_details->email, 'Comment Added', $message);
 
         LogData::addLog(Auth::$userinfo->pilotid, 'Added a comment to PIREP #' . $pirepid);
     }
     
     public function approvepirep($pirepid) {
+        $this->checkPermission(MODERATE_PIREPS);
         $this->post->id = $pirepid;
         $this->approve_pirep_post();
         
-        $this->render('pirepadmin_approved.tpl');       
+        $this->render('pirepadmin_approved.php');       
     }
 
     /**
@@ -333,7 +346,7 @@ class PIREPAdmin extends CodonModule {
             $this->set('lastname', $pirep_details->lastname);
             $this->set('pirepid', $pirepid);
 
-            $message = Template::GetTemplate('email_commentadded.tpl', true);
+            $message = Template::GetTemplate('email_commentadded.php', true);
             Util::SendEmail($pirep_details->email, 'Comment Added', $message);
         }
 
@@ -350,14 +363,14 @@ class PIREPAdmin extends CodonModule {
             ) {
                 
             $this->set('message', 'You must fill out all of the required fields!');
-            $this->render('core_error.tpl');
+            $this->render('core_error.php');
             return false;
         }
 
         $pirepInfo = PIREPData::getReportDetails($this->post->pirepid);
         if (!$pirepInfo) {
             $this->set('message', 'Invalid PIREP!');
-            $this->render('core_error.tpl');
+            $this->render('core_error.php');
             return false;
         }
 
@@ -385,7 +398,7 @@ class PIREPAdmin extends CodonModule {
 
         if (!PIREPData::updateFlightReport($this->post->pirepid, $data)) {
             $this->set('message', 'There was an error editing your PIREP');
-            $this->render('core_error.tpl');
+            $this->render('core_error.php');
             return false;
         }
 

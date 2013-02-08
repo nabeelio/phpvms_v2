@@ -164,7 +164,6 @@ if(PilotGroups::group_has_perm(Auth::$usergroups, MODERATE_PIREPS)
 }
 
 if(PilotGroups::group_has_perm(Auth::$usergroups, MODERATE_PIREPS)
-	|| PilotGroups::group_has_perm(Auth::$usergroups, ACCESS_ADMIN)
 	|| PilotGroups::group_has_perm(Auth::$usergroups, EDIT_PIREPS_FIELDS)
 )
 {

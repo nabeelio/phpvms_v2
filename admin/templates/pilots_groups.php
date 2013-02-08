@@ -1,5 +1,4 @@
-<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
-<?php
+<?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); }
 if(!$pilotgroups) {
 	echo '<br />This user is not in any groups!<br /><br />';
 } else {
@@ -19,14 +18,9 @@ if(!$pilotgroups) {
 	<tr>
 		<td><?php echo $group->name;?></td>
 		<td>
-		<?php
-		if(PilotGroups::group_has_perm(Auth::$usergroups, FULL_ADMIN)) 
-		{ ?>
 			<button href="<?php echo adminaction('/pilotadmin/viewpilots');?>" pilotid="<?php echo $pilotid;?>" 
 				action="removegroup" id="<?php echo $group->groupid;?>" 
 				class="pilotgroupajax button {button:{icons:{primary:'ui-icon-trash'}}}">Remove</button></td>
-		<?php
-		} ?>
 	</tr>		
 	
 <?php

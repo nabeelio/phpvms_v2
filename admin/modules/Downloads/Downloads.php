@@ -18,7 +18,7 @@
 
 class Downloads extends CodonModule {
 	public function HTMLHead() {
-		$this->set('sidebar', 'sidebar_downloads.tpl');
+		$this->set('sidebar', 'sidebar_downloads.php');
 	}
 
 	public function index() {
@@ -55,71 +55,77 @@ class Downloads extends CodonModule {
 		}
 
 		$this->set('allcategories', DownloadData::GetAllCategories());
-		$this->render('downloads_overview.tpl');
+		$this->render('downloads_overview.php');
 	}
 
 	public function addcategory() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$this->set('title', 'Add Category');
 		$this->set('action', 'addcategory');
 
-		$this->render('downloads_categoryform.tpl');
+		$this->render('downloads_categoryform.php');
 
 	}
 
 	public function adddownload() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$this->set('title', 'Add Download');
 		$this->set('allcategories', DownloadData::GetAllCategories());
 		$this->set('action', 'adddownload');
 
-		$this->render('downloads_downloadform.tpl');
+		$this->render('downloads_downloadform.php');
 	}
 
 	public function editcategory() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$this->set('title', 'Edit Category');
 		$this->set('action', 'editcategory');
 		$this->set('category', DownloadData::GetAsset($this->get->id));
 
-		$this->render('downloads_categoryform.tpl');
+		$this->render('downloads_categoryform.php');
 	}
 
 	public function editdownload() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$this->set('title', 'Edit Download');
 		$this->set('action', 'editdownload');
 		$this->set('allcategories', DownloadData::GetAllCategories());
 		$this->set('download', DownloadData::GetAsset($this->get->id));
 
-		$this->render('downloads_downloadform.tpl');
+		$this->render('downloads_downloadform.php');
 	}
 
 	protected function AddCategoryPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->name == '') {
 			$this->set('message', 'No category name entered!');
-			$this->render('core_error.tpl');
+			$this->render('core_error.php');
 			return;
 		}
 
 		if (DownloadData::FindCategory($this->post->name)) {
 			$this->set('message', 'Category already exists');
-			$this->render('core_error.tpl');
+			$this->render('core_error.php');
 			return;
 		}
 
 		DownloadData::AddCategory($this->post->name, '', '');
 
 		$this->set('message', 'Category added!');
-		$this->render('core_success.tpl');
+		$this->render('core_success.php');
 	}
 
 	protected function EditCategoryPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->name == '') {
 			$this->set('message', 'No category name entered!');
-			$this->render('core_error.tpl');
+			$this->render('core_error.php');
 			return;
 		}
 
 		if (DownloadData::FindCategory($this->post->name)) {
 			$this->set('message', 'Category already exists');
-			$this->render('core_error.tpl');
+			$this->render('core_error.php');
 			return;
 		}
 
@@ -128,27 +134,29 @@ class Downloads extends CodonModule {
 		DownloadData::EditAsset($data);
 
 		$this->set('message', 'Category edited!');
-		$this->render('core_success.tpl');
+		$this->render('core_success.php');
 
 	}
 
 	protected function DeleteCategoryPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->id == '') {
 			$this->set('message', 'Invalid category!');
-			$this->render('core_error.tpl');
+			$this->render('core_error.php');
 			return;
 		}
 
 		DownloadData::RemoveCategory($this->post->id);
 
 		$this->set('message', 'Category removed!');
-		$this->render('core_success.tpl');
+		$this->render('core_success.php');
 	}
 
 	protected function AddDownloadPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->name == '' || $this->post->link == '') {
 			$this->set('message', 'Link and name must be entered');
-			$this->render('core_error.tpl');
+			$this->render('core_error.php');
 			return;
 		}
 
@@ -158,15 +166,16 @@ class Downloads extends CodonModule {
 
 		if ($val == false) {
 			$this->set('message', DB::$error);
-			$this->render('core_error.tpl');
+			$this->render('core_error.php');
 			return;
 		}
 	}
 
 	protected function EditDownloadPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		if ($this->post->name == '' || $this->post->link == '') {
 			$this->set('message', 'Link and name must be entered!');
-			$this->render('core_error.tpl');
+			$this->render('core_error.php');
 			return;
 		}
 
@@ -175,10 +184,11 @@ class Downloads extends CodonModule {
 		DownloadData::EditAsset($data);
 
 		$this->set('message', 'Download edited!');
-		$this->render('core_success.tpl');
+		$this->render('core_success.php');
 	}
 
 	protected function DeleteDownloadPost() {
+        $this->checkPermission(EDIT_DOWNLOADS);
 		$params = array();
 		if ($this->post->id == '') {
 			$params['status'] = 'Invalid Download ID';

@@ -1,6 +1,6 @@
 <?php if(!defined('IN_PHPVMS') && IN_PHPVMS !== true) { die(); } ?>
 <?php
-Template::Show('finance_header.tpl'); 
+Template::Show('finance_header.php'); 
 ?>
 <h3><?php echo $title?></h3>
 <table width="600px" class="balancesheet" cellpadding="0" cellspacing="0">

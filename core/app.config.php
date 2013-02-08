@@ -580,36 +580,74 @@ define('VMS_AUTH_COOKIE', 'VMSAUTH');
 /**
  * Library Includes (from 3rd Party)
  */
-
+ 
 # Bit-masks for permission sets
 $permission_set = array(
 	/*'NO_ADMIN_ACCESS'			=> 0,*/
-	'EDIT_NEWS'				=> 0x1, 
-	'EDIT_PAGES'				=> 0x2, 
-	'EDIT_DOWNLOADS'			=> 0x4,
-	'EMAIL_PILOTS'			=> 0x8, 
-	'EDIT_AIRLINES'			=> 0x10,
-	'EDIT_FLEET'				=> 0x20,
+	'ACCESS_ADMIN'				=> 0x1, 
+	'EDIT_NEWS'				    => 0x2, 
+	'EDIT_PAGES'				=> 0x4, 
+	'EDIT_DOWNLOADS'			=> 0x8,
+	'EMAIL_PILOTS'              => 0x10, 
+	'EDIT_AIRLINES'             => 0x20,
+	'EDIT_FLEET'				=> 0x40,
 	'EDIT_SCHEDULES'			=> 0x80,
-	'IMPORT_SCHEDULES'		=> 0x100,
+	'IMPORT_SCHEDULES'          => 0x100,
 	'MODERATE_REGISTRATIONS'	=> 0x200,
 	'EDIT_PILOTS'				=> 0x400,
 	'EDIT_GROUPS'				=> 0x800,
 	'EDIT_RANKS'				=> 0x1000,
 	'EDIT_AWARDS'				=> 0x2000,
 	'MODERATE_PIREPS'			=> 0x4000,
-	'VIEW_FINANCES'			=> 0x8000,
-	'EDIT_EXPENSES'			=> 0x10000,
-	'EDIT_SETTINGS'			=> 0x20000,
-	'EDIT_PIREPS_FIELDS'		=> 0x40000,
+	'EDIT_PIREPS_FIELDS'		=> 0x8000,
+	'VIEW_FINANCES'             => 0x10000,
+	'EDIT_EXPENSES'             => 0x20000,
+	'EDIT_SETTINGS'             => 0x40000,
 	'EDIT_PROFILE_FIELDS'		=> 0x80000,
 	'EDIT_VACENTRAL'			=> 0x100000,
-	'ACCESS_ADMIN'			=> 0x2000000,
-	'FULL_ADMIN'				=> 35651519
+    'MAINTENANCE'              => 0x2000000,
+    //'CUSTOM_PERM1'              => 0x4000000,
+    //'CUSTOM_PERM2'              => 0x8000000,
+    //'CUSTOM_PERM3'              => 0x10000000,
+	//'FULL_ADMIN'				=> 2147483647 // This is the supposed maximum, however it's still working!
+    'FULL_ADMIN'                => 0x1FFFFFFF
 );
-
+# Discriptions for permission sets
+$permission_discription = array(
+	/*'NO_ADMIN_ACCESS'			=> 0,*/
+	'ACCESS_ADMIN'				=> 'Give a user access to the administration panel. This is required if any other permissions are set.', 
+	'EDIT_NEWS'				    => '(News &amp; Content) Give a user access to add &amp; edit the news &amp; notams.', 
+	'EDIT_PAGES'				=> '(News &amp; Content) Give a user access to add &amp; edit the pages.', 
+	'EDIT_DOWNLOADS'			=> '(News &amp; Content) Give a user access to add &amp; edit the downloads.',
+	'EMAIL_PILOTS'              => '(News &amp; Content) Give a user access to email your pilots.', 
+	'EDIT_AIRLINES'             => '(Airline Operations) Give a user access to add &amp; edit your airlines.',
+	'EDIT_FLEET'				=> '(Airline Operations) Give a user access to add &amp; edit your fleet.',
+	'EDIT_SCHEDULES'			=> '(Airline Operations) Give a user access to add &amp; edit schedules.',
+	'IMPORT_SCHEDULES'          => '(Airline Operations) Give a user access to import and export schedules.',
+	'MODERATE_REGISTRATIONS'	=> '(Pilots &amp; Groups) Allow a user to moderate new site registrations.',
+	'EDIT_PILOTS'				=> '(Pilots &amp; Groups) Give a user access to edit your pilots.',
+	'EDIT_GROUPS'				=> '(Pilots &amp; Groups) Give a user access to add &amp; edit pilot groups. Might aswell just give them full admin.',
+	'EDIT_RANKS'				=> '(Pilots &amp; Groups) Give a user access to add &amp; edit ranks.',
+	'EDIT_AWARDS'				=> '(Pilots &amp; Groups) Give a user access to add &amp; edit awards.',
+	'MODERATE_PIREPS'			=> '(Pilot Reports (PIREPS)) Give a user access to moderate PIREPS',
+	'EDIT_PIREPS_FIELDS'		=> '(Pilot Reports (PIREPS)) Give a user access to add and edit PIREPS fields.',
+	'VIEW_FINANCES'             => '(Reports &amp; Expenses) Give a user access to view your finances.',
+	'EDIT_EXPENSES'             => '(Reports &amp; Expenses) Give a user access to edit your expenses.',
+	'EDIT_SETTINGS'             => '(Site &amp; Settings) Give a user access to edit your site settings.',
+	'EDIT_PROFILE_FIELDS'		=> '(Site &amp; Settings) Give a user access to add and edit profile fields.',
+	'EDIT_VACENTRAL'			=> '(Site &amp; Settings) Give a user access to edit your VACentral Settings.',
+    //'CUSTOM_PERM0'              => 'Custom Discription of the permission',
+    //'CUSTOM_PERM1'              => 'Custom Discription of the permission',
+    //'CUSTOM_PERM2'              => 'Custom Discription of the permission',
+    //'CUSTOM_PERM3'              => 'Custom Discription of the permission',
+    'FULL_ADMIN'				=> 'Full Administration Over-ride. This option will automatically overide all above settings, enabling all of them.'
+);
 Config::Set('permission_set', $permission_set);  
+Config::Set('permission_discription', $permission_discription);  
 define('NO_ADMIN_ACCESS', 0);
 foreach($permission_set as $key=>$value) {
 	define($key, $value);
+}
+foreach($permission_discription as $key=>$value) {
+	define($key.'_DISCRIP', $value);
 }

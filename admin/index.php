@@ -61,28 +61,28 @@ if($tplname == '')
 	$tplname = 'layout';
 
 //load the main skin
-$settings_file = SITE_ROOT . '/admin/lib/'.$tplname.'/'.$tplname.'.php';
+$settings_file = SITE_ROOT.'admin'.DS.'lib'.DS.$tplname.DS.$tplname.'.php';
 if(file_exists($settings_file)) {
 	include $settings_file;
 }
 
-Template::setTemplatePath(SITE_ROOT.'/admin/templates');
-Template::setSkinPath(SITE_ROOT.'/admin/lib/'.$tplname);
+Template::setTemplatePath(SITE_ROOT.'admin'.DS.'templates');
+Template::setSkinPath(SITE_ROOT.'admin'.DS.'lib'.DS.$tplname);
 	
-$BaseTemplate->template_path = SITE_ROOT.'/admin/lib/'.$tplname;
-$BaseTemplate->skin_path = SITE_ROOT.'/admin/lib/'.$tplname;
+$BaseTemplate->template_path = SITE_ROOT.'admin'.DS.'lib'.DS.$tplname;
+$BaseTemplate->skin_path = SITE_ROOT.'admin'.DS.'lib'.DS.$tplname;
 $BaseTemplate->Set('title', SITE_NAME);
 
 Template::Set('MODULE_NAV_INC', $NAVBAR);
 Template::Set('MODULE_HEAD_INC', $HTMLHead);
 
-$BaseTemplate->Show('header.tpl');
+$BaseTemplate->Show('header.php');
 
 flush();
 
 MainController::runAllActions();
 
-$BaseTemplate->Show('footer.tpl');
+$BaseTemplate->Show('footer.php');
 
 # Force connection close
 DB::close();
