@@ -127,6 +127,7 @@ class PIREPAdmin extends CodonModule {
             RanksData::CalculatePilotRanks();
             #PilotData::GenerateSignature($pirep_details->pilotid);
             #StatsData::UpdateTotalHours();
+            CodonEvent::Dispatch('pirep_accepted', 'PIREPAdmin', $pirep_details);
 
             $count++;
         }
