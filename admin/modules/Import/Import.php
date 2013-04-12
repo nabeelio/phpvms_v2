@@ -61,6 +61,104 @@ class Import extends CodonModule {
 
 		fclose($fp);
 	}
+	
+	public function importairports()
+	{
+		if (!file_exists($_FILES['uploadedfile']['tmp_name'])) {
+            $this->render('airport_import_form.php');
+            return;
+        }
+		
+		echo '<h3>Processing Import</h3>';
+		
+		# Get the column headers
+        $allaircraft = OperationsData::getAllAirports(false);
+        $headers = array();
+        $dbcolumns = DB::get_cols();
+        foreach ($dbcolumns as $col) {
+            $headers[] = $col->name;
+        }
+		
+		$temp_name = $_FILES['uploadedfile']['tmp_name'];
+        $new_name = CACHE_PATH .'/'. $_FILES['uploadedfile']['name'];
+		
+        if(!move_uploaded_file($temp_name, $new_name))
+		{
+			$this->render('core_error.php');
+			$this->set('message', 'Shit the bed?');
+			return false;	
+		}
+
+        $fp = fopen($new_name, 'r');
+        if (isset($_POST['header']))
+            $skip = true;
+
+        $added = 0;
+        $updated = 0;
+        $total = 0;
+        echo '<div style="overflow: auto; height: 400px; 
+					border: 1px solid #666; margin-bottom: 20px; 
+					padding: 5px; padding-top: 0px; padding-bottom: 20px;">';
+		
+		if (isset($_POST['erase_airports'])) {
+            OperationsData::deleteAllAirports();
+			echo "Deleting All Airports<br />";
+        }
+		
+        while ($fields = fgetcsv($fp, 1000, ',')) {
+            // Skip the first line
+            if ($skip == true) {
+                $skip = false;
+                continue;
+            }
+			//Check for empty lines, continue
+            if (empty($fields))
+                continue;
+			
+			//Create Varibles...
+			$icao = $fields[0];
+			$name = $fields[1];
+			$country = $fields[2];
+			$lat = $fields[3];
+			$lng = $fields[4];
+			$hub = $fields[5];
+			$fuelprice = $fields[6];
+			$chartlink = $fields[7];
+
+			//Since we need the values filled in, if not, then continue
+			if (empty($icao) || empty($lat) || empty($lng))
+				continue;
+
+            # Enabled or not
+            if ($hub == '1') {
+                $hub = true;
+            } else {
+                $hub = false;
+            }
+			
+			//Build Array, seem can't use the array merge for some reason...
+			$data = array('icao' => $fields[0], 'name' => $fields[1], 'country' => $fields[2], 'lat' => $fields[3], 'lng' => $fields[4], 
+							'hub' => $hub, 'fuelprice' => $fields[6], 'chartlink' => $fields[7]);
+
+            # Does this airport exist?
+            $aiport_info = OperationsData::getAirportInfo($icao);
+            if ($aiport_info) {
+                echo "Editing {$icao} - {$name}<br>";
+                OperationsData::editAirport($data);
+                $updated++;
+            } else {
+                echo "Adding {$icao} - {$name}<br>";
+                OperationsData::addAirport($data);
+                $added++;
+            }
+
+            $total++;
+        }
+		//You should always close a file before deleting otherwise it will spit the unlink error due to permissions
+		fclose($fp);
+        unlink($new_name);
+        echo "The import process is complete, added {$added} airports, updated {$updated}, for a total of {$total}<br />";
+	}
 
 	/**
 	 *

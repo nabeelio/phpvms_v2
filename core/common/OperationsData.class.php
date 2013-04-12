@@ -628,6 +628,14 @@ class OperationsData extends CodonData {
         CodonCache::delete('all_airports');
         return true;
     }
+    
+    public static function deleteAllAirports() {
+        $sql = 'DELETE FROM ' . TABLE_PREFIX . 'airports';
+        $res = DB::query($sql);
+        if (DB::errno() != 0) return false;
+        return true;
+    }
+    
     /**
      * Get information about an airport
      */
