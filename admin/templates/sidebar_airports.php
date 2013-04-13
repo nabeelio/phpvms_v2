@@ -8,6 +8,10 @@
 	<li><span class="file">
 		<a href="<?php echo SITE_URL?>/admin/action.php/import/exportairports">Export airports</a>
 	</span></li>
+    
+    	<li><span class="file">
+		<a href="<?php echo SITE_URL?>/admin/index.php/import/importairports">Import airports</a>
+	</span></li>
 	
 </ul>
 <h3>Help</h3>
