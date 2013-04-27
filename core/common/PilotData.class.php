@@ -978,7 +978,7 @@ class PilotData extends CodonData {
         $total = count($output);
         for ($i = 0; $i < $total; $i++) {
             if (Config::Get('SIGNATURE_USE_CUSTOM_FONT') == false) {
-                imagestring($img, int($font), $xoffset, $currline, $output[$i], $textcolor);
+                imagestring($img, (int)$font, $xoffset, $currline, $output[$i], $textcolor);
             } else {
                 // Use TTF
                 $tmp = imagettftext($img, $font_size, 0, $xoffset, $currline, $textcolor, $font, $output[$i]);
