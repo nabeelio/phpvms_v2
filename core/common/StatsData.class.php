@@ -37,7 +37,7 @@ class StatsData extends CodonData {
             ), $params
         );
         
-        if($params['table'] == '' || $params['table'] == '') {
+        if($params['table'] == '') {
             return false;
         }
         
