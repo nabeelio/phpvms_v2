@@ -72,6 +72,7 @@ class StatsData extends CodonData {
             $sql .= DB::build_where($params['where']);
             $total = DB::get_row($sql);
             
+            /*
             if(is_object($total)){
                 $checker = false;
                 foreach($total as $totaler){
@@ -82,9 +83,9 @@ class StatsData extends CodonData {
             }else{
                 $checker = true;
             }
+            */
             
-            
-            if(!$total || $total == null || empty($total) || $checker === false) {
+            if(!$total || $total == null || empty($total) || $total->total == null) {
                 $total = 0;
             } else {
                 $total = $total->total;
