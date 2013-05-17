@@ -9,7 +9,7 @@ if(PilotGroups::group_has_perm(Auth::$usergroups, EDIT_NEWS)
 )
 {
 ?>
-<li style="padding: 0; margin; 0;"><a class="menu" href="#">
+<li style="padding: 0; margin: 0;"><a class="menu" href="#">
 	<img src="<?php echo fileurl('/admin/lib/layout/images/site_icon.png');?>" />News & Content
 	</a>
 	<ul style="padding: 0; margin: 0;">
