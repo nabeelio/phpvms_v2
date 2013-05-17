@@ -585,32 +585,31 @@ define('VMS_AUTH_COOKIE', 'VMSAUTH');
 $permission_set = array(
 	/*'NO_ADMIN_ACCESS'			=> 0,*/
 	'ACCESS_ADMIN'				=> 0x1, 
-	'EDIT_NEWS'				    => 0x2, 
+	'EDIT_NEWS'				=> 0x2, 
 	'EDIT_PAGES'				=> 0x4, 
 	'EDIT_DOWNLOADS'			=> 0x8,
-	'EMAIL_PILOTS'              => 0x10, 
-	'EDIT_AIRLINES'             => 0x20,
+	'EMAIL_PILOTS'                          => 0x10, 
+	'EDIT_AIRLINES'                         => 0x20,
 	'EDIT_FLEET'				=> 0x40,
 	'EDIT_SCHEDULES'			=> 0x80,
-	'IMPORT_SCHEDULES'          => 0x100,
-	'MODERATE_REGISTRATIONS'	=> 0x200,
+	'IMPORT_SCHEDULES'                      => 0x100,
+	'MODERATE_REGISTRATIONS'                => 0x200,
 	'EDIT_PILOTS'				=> 0x400,
 	'EDIT_GROUPS'				=> 0x800,
 	'EDIT_RANKS'				=> 0x1000,
 	'EDIT_AWARDS'				=> 0x2000,
 	'MODERATE_PIREPS'			=> 0x4000,
-	'EDIT_PIREPS_FIELDS'		=> 0x8000,
-	'VIEW_FINANCES'             => 0x10000,
-	'EDIT_EXPENSES'             => 0x20000,
-	'EDIT_SETTINGS'             => 0x40000,
-	'EDIT_PROFILE_FIELDS'		=> 0x80000,
+	'EDIT_PIREPS_FIELDS'                    => 0x8000,
+	'VIEW_FINANCES'                         => 0x10000,
+	'EDIT_EXPENSES'                         => 0x20000,
+	'EDIT_SETTINGS'                         => 0x40000,
+	'EDIT_PROFILE_FIELDS'                   => 0x80000,
 	'EDIT_VACENTRAL'			=> 0x100000,
-    'MAINTENANCE'              => 0x2000000,
-    //'CUSTOM_PERM1'              => 0x4000000,
-    //'CUSTOM_PERM2'              => 0x8000000,
-    //'CUSTOM_PERM3'              => 0x10000000,
-	//'FULL_ADMIN'				=> 2147483647 // This is the supposed maximum, however it's still working!
-    'FULL_ADMIN'                => 0x1FFFFFFF
+        'MAINTENANCE'                           => 0x2000000,
+        //'CUSTOM_PERM1'                          => 0x4000000,
+        //'CUSTOM_PERM2'                          => 0x8000000,
+        //'CUSTOM_PERM3'                          => 0x10000000,
+        'FULL_ADMIN'                            => 0x7FFFFFFF // == 2147483647 == Maximum 32bits
 );
 # Discriptions for permission sets
 $permission_discription = array(
