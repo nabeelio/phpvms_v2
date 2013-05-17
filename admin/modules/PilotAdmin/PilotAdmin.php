@@ -470,19 +470,20 @@ class PilotAdmin extends CodonModule {
         PilotGroups::group_has_perm(Auth::$usergroups, EDIT_AWARDS) ||
         PilotGroups::group_has_perm(Auth::$usergroups, MODERATE_PIREPS)
         ) {
-        $this->set('pilotinfo', PilotData::GetPilotData($this->get->pilotid));
-        $this->set('customfields', PilotData::GetFieldData($this->get->pilotid, true));
-        $this->set('allawards', AwardsData::GetPilotAwards($this->get->pilotid));
-        $this->set('pireps', PIREPData::GetAllReportsForPilot($this->get->pilotid));
-        $this->set('countries', Countries::getAllCountries());
+            $this->set('pilotinfo', PilotData::GetPilotData($this->get->pilotid));
+            $this->set('customfields', PilotData::GetFieldData($this->get->pilotid, true));
+            $this->set('allawards', AwardsData::GetPilotAwards($this->get->pilotid));
+            $this->set('pireps', PIREPData::GetAllReportsForPilot($this->get->pilotid));
+            $this->set('countries', Countries::getAllCountries());
+            //$this->set('directPirepEdit', true);
+            
+            $this->SetGroupsData($this->get->pilotid);
 
-        $this->SetGroupsData($this->get->pilotid);
+            // For the PIREP list
+            $this->set('pending', false);
+            $this->set('load', 'pilotpireps');
 
-        // For the PIREP list
-        $this->set('pending', false);
-        $this->set('load', 'pilotpireps');
-
-        $this->render('pilots_detailtabs.php');
+            $this->render('pilots_detailtabs.php');
         }else{
         	Debug::showCritical('Unauthorized access - Invalid Permissions.');
         	die();
