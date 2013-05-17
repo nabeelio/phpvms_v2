@@ -77,6 +77,11 @@ class PilotAdmin extends CodonModule {
 
                 break;
 
+            case 'editpirep':
+                $editor = new PIREPAdmin();
+                $editor->edit_pirep_post($this->post);
+                break;
+            
             case 'deletepilot':
 
                 $pilotid = $this->post->pilotid;
@@ -110,7 +115,7 @@ class PilotAdmin extends CodonModule {
                 return;
 
                 break;
-
+                
             case 'removegroup':
 
                 $this->RemovePilotGroup();
@@ -475,7 +480,7 @@ class PilotAdmin extends CodonModule {
             $this->set('allawards', AwardsData::GetPilotAwards($this->get->pilotid));
             $this->set('pireps', PIREPData::GetAllReportsForPilot($this->get->pilotid));
             $this->set('countries', Countries::getAllCountries());
-            //$this->set('directPirepEdit', true);
+            $this->set('directPirepEdit', true);
             
             $this->SetGroupsData($this->get->pilotid);
 

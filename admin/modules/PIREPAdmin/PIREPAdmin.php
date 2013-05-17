@@ -62,7 +62,7 @@ class PIREPAdmin extends CodonModule {
     public function viewpending() {
         $this->checkPermission(MODERATE_PIREPS);
         $this->post_action();
-
+        
         $this->set('title', 'Pending Reports');
 
         if (isset($this->get->hub) && $this->get->hub != '') {
@@ -196,7 +196,11 @@ class PIREPAdmin extends CodonModule {
         $this->set('fielddata', PIREPData::GetFieldData($this->get->pirepid));
         $this->set('pirepfields', PIREPData::GetAllFields());
         $this->set('comments', PIREPData::GetComments($this->get->pirepid));
-
+        
+        if ($this->get->directPirepEdit && strtolower($this->get->directPirepEdit) !== "false") {
+            $this->set('directPirepEdit', true);
+        }
+        
         $this->render('pirep_edit.php');
     }
 
@@ -355,10 +359,12 @@ class PIREPAdmin extends CodonModule {
         CodonEvent::Dispatch('pirep_rejected', 'PIREPAdmin', $pirep_details);
     }
 
-    protected function edit_pirep_post() {
-        if ($this->post->code == '' || $this->post->flightnum == '' 
-                || $this->post->depicao == '' || $this->post->arricao == '' 
-                || $this->post->aircraft == '' || $this->post->flighttime == ''
+    public function edit_pirep_post($postData = null) {
+        $postData = ($postData == null) ? $this->post : $postData;
+        $this->checkPermission(MODERATE_PIREPS);
+        if ($postData->code == '' || $postData->flightnum == '' 
+                || $postData->depicao == '' || $postData->arricao == '' 
+                || $postData->aircraft == '' || $postData->flighttime == ''
             ) {
                 
             $this->set('message', 'You must fill out all of the required fields!');
@@ -366,50 +372,50 @@ class PIREPAdmin extends CodonModule {
             return false;
         }
 
-        $pirepInfo = PIREPData::getReportDetails($this->post->pirepid);
+        $pirepInfo = PIREPData::getReportDetails($postData->pirepid);
         if (!$pirepInfo) {
             $this->set('message', 'Invalid PIREP!');
             $this->render('core_error.php');
             return false;
         }
 
-        $this->post->fuelused = str_replace(' ', '', $this->post->fuelused);
-        $this->post->fuelused = str_replace(',', '', $this->post->fuelused);
-        $fuelcost = $this->post->fuelused * $this->post->fuelunitcost;
+        $postData->fuelused = str_replace(' ', '', $postData->fuelused);
+        $postData->fuelused = str_replace(',', '', $postData->fuelused);
+        $fuelcost = $postData->fuelused * $postData->fuelunitcost;
 
         # form the fields to submit
         $data = array(
-            'pirepid' => $this->post->pirepid, 
-            'code' => $this->post->code, 
-            'flightnum' => $this->post->flightnum, 
-            'depicao' => $this->post->depicao, 
-            'arricao' => $this->post->arricao, 
-            'aircraft' => $this->post->aircraft, 
-            'flighttime' => $this->post->flighttime, 
-            'load' => $this->post->load, 
-            'price' => $this->post->price, 
-            'pilotpay' => $this->post->pilotpay, 
-            'fuelused' => $this->post->fuelused, 
-            'fuelunitcost' => $this->post->fuelunitcost, 
+            'pirepid' => $postData->pirepid, 
+            'code' => $postData->code, 
+            'flightnum' => $postData->flightnum, 
+            'depicao' => $postData->depicao, 
+            'arricao' => $postData->arricao, 
+            'aircraft' => $postData->aircraft, 
+            'flighttime' => $postData->flighttime, 
+            'load' => $postData->load, 
+            'price' => $postData->price, 
+            'pilotpay' => $postData->pilotpay, 
+            'fuelused' => $postData->fuelused, 
+            'fuelunitcost' => $postData->fuelunitcost, 
             'fuelprice' => $fuelcost, 
-            'expenses' => $this->post->expenses
+            'expenses' => $postData->expenses
         );
 
-        if (!PIREPData::updateFlightReport($this->post->pirepid, $data)) {
+        if (!PIREPData::updateFlightReport($postData->pirepid, $data)) {
             $this->set('message', 'There was an error editing your PIREP');
             $this->render('core_error.php');
             return false;
         }
 
-        PIREPData::SaveFields($this->post->pirepid, $_POST);
+        PIREPData::SaveFields($postData->pirepid, $_POST);
 
         //Accept or reject?
-        $this->post->id = $this->post->pirepid;
-        $submit = strtolower($this->post->submit_pirep);
+        $postData->id = $postData->pirepid;
+        $submit = strtolower($postData->submit_pirep);
 
         // Add a comment
-        if (trim($this->post->comment) != '' && $submit != 'reject pirep') {
-            PIREPData::AddComment($this->post->pirepid, Auth::$userinfo->pilotid, $this->post->comment);
+        if (trim($postData->comment) != '' && $submit != 'reject pirep') {
+            PIREPData::AddComment($postData->pirepid, Auth::$userinfo->pilotid, $postData->comment);
         }
 
         if ($submit == 'accept pirep') {
@@ -424,7 +430,7 @@ class PIREPAdmin extends CodonModule {
         # $pirepInfo = PIREPData::getReportDetails($this->post_action->pirepid);
         PilotData::updatePilotStats($pirepInfo->pilotid);
 
-        LogData::addLog(Auth::$userinfo->pilotid, 'Edited PIREP #' . $this->post->id);
+        LogData::addLog(Auth::$userinfo->pilotid, 'Edited PIREP #' . $postData->id);
         return true;
     }
 }
