@@ -109,7 +109,7 @@ foreach($pireps as $pirep)
 		href="<?php echo SITE_URL?>/admin/action.php/pirepadmin/rejectpirep?pirepid=<?php echo $pirep->pirepid;?>&pilotid=<?php echo $pirep->pilotid; ?>">Reject</button>
 
 	<button class="{button:{icons:{primary:'ui-icon-wrench'}}}"
-		onclick="window.location = '<?php echo SITE_URL?>/admin/index.php/pirepadmin/editpirep?pirepid=<?php echo $pirep->pirepid;?>&pilotid=<?php echo $pirep->pilotid?>'">Edit</button>
+                onclick="window.location = '<?php echo SITE_URL?>/admin/index.php/pirepadmin/editpirep?pirepid=<?php echo $pirep->pirepid;?>&pilotid=<?php echo $pirep->pilotid; if($directPirepEdit){echo "&directPirepEdit=true";}?>'">Edit</button>
 		
 	<button href="<?php echo SITE_URL?>/admin/action.php/pirepadmin/<?php echo $load; ?>?pilotid=<?php echo $pirep->pilotid?>" action="deletepirep"
 		id="<?php echo $pirep->pirepid;?>" class="deleteitem {button:{icons:{primary:'ui-icon-trash'}}}">Delete</button>
