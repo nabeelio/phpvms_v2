@@ -130,7 +130,7 @@ class Login extends CodonModule
 				
 				PilotData::updateLogin($pilotid);
 				
-				CodonEvent::Dispatch('login_success', 'Login');
+				CodonEvent::Dispatch('login_success', 'Login', $pilotid);
 				
 				$this->post->redir = str_replace('index.php/', '', $this->post->redir);
 				header('Location: '.url('/'.$this->post->redir));
