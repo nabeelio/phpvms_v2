@@ -96,6 +96,22 @@ class FSFK extends CodonModule {
                 $img = (string )$xml->FLIGHTMAPS->FlightMapLandingProfileJPG;
                 if ($img)
                     $rawdata['FLIGHTMAPS']['FlightMapLandingProfile'] = $img;
+                
+                $img = (string )$xml->FLIGHTMAPS->FlightMapTaxiInJPG;
+                if ($img)
+                    $rawdata['FLIGHTMAPS']['FlightMapTaxiIn'] = $img;
+
+                $img = (string )$xml->FLIGHTMAPS->FlightMapTaxiOutJPG;
+                if ($img)
+                    $rawdata['FLIGHTMAPS']['FlightMapTaxiOut'] = $img;
+                
+                $img = (string )$xml->FLIGHTMAPS->FlightMapVerticalProfileJPG;
+                if ($img)
+                    $rawdata['FLIGHTMAPS']['FlightMapVerticalProfile'] = $img;
+
+                $img = (string )$xml->FLIGHTMAPS->FlightMapJPG;
+                if ($img)
+                    $rawdata['FLIGHTMAPS']['FlightMap'] = $img;
 
                 continue;
             } elseif ($key == 'FLIGHTPLAN') {
@@ -108,7 +124,7 @@ class FSFK extends CodonModule {
             } else {
                 $key = trim($key);
                 $value = (string )$value;
-                $value = str_replace('¯Â', '', $value);
+                $value = str_replace('ï¿½ï¿½', '', $value);
 
                 $rawdata['FLIGHTDATA'][$key] = $value;
             }

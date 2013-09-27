@@ -59,7 +59,7 @@
 					echo '<select name="DEFAULT_GROUP">';
 						
 						foreach($allgroups as $group) {
-							$sel = ($current == $group->groupid)? 'selected' : '';
+							$sel = ($current->value == $group->groupid ? 'selected="selected"' : '');
 							echo '<option value="'.$group->groupid.'" '. $sel . '>'.$group->name.'</option>';
 						}
    
