@@ -42,19 +42,19 @@
  */
 class CodonModule
 {
-	public static $post;
-	public static $get;
-	public static $controller;
-	public static $activeModule;
+	public $post;
+	public $get;
+	public $controller;
+	public $activeModule;
 	public $action;
-	
+
 	public $title;
-	
+
 	public function __construct()
 	{
-		
+
 	}
-	
+
 	/**
 	 * Initialize the parent class. Called by the MainController
 	 *  when the module is created
@@ -63,55 +63,55 @@ class CodonModule
 	public function init($module_name='')
 	{
 		$module_name = strtolower($module_name);
-				
+
 		$this->post = Vars::$post;
 		$this->get = CodonRewrite::$get;
 		$this->request = Vars::$request;
 		$this->controller = CodonRewrite::$controller;
-			
+
 		$this->init = true;
 		$this->activeModule = MainController::$activeModule;
 	}
-	
+
 	public function config($setting)
 	{
 		return Config::Get($setting);
 	}
-	
+
 	public function get($name)
 	{
 		return Template::Get($name, true);
 	}
-	
+
 	public function set($name, $value)
 	{
 		Template::Set($name, $value);
 	}
-	
+
 	public function show($tpl)
 	{
 		Template::Show($tpl);
 	}
-	
+
 	public function render($tpl)
 	{
 		Template::Show($tpl);
 	}
-	
+
 	public function log($text, $file='log')
 	{
 		Debug::log($text, $file);
 	}
-	
+
 	public function firephp()
 	{
 		include_once CORE_PATH.DS.'lib'.DS.'firebug'.DS.'FirePHP.class.php';
-		
+
 		$instance = FirePHP::getInstance(true);
 		$args = func_get_args();
 		return call_user_func_array(array($instance,'fb'),$args);
 	}
-	
+
 	public function callHook($hook_name)
 	{
 		if(file_exists(SITE_ROOT.'/core/hooks/'.$hook_name))
