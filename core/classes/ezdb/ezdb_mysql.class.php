@@ -128,7 +128,7 @@ class ezDB_mysql extends ezDB_Base
 		if (!$this->dbh)
 		{
 			if($this->throw_exceptions)
-				throw new ezDB_Error('Invalid or inactive connection!');
+				throw new ezDB_Error('Invalid or inactive connection!', -1);
 				
 			$this->register_error('Can\'t select database, invalid or inactive connection', -1);
 			return false;
