@@ -86,20 +86,26 @@
 </tr>
 <tr>
 	<td><strong>Equipment: </strong></td>
+    <?php
+    if(empty($allaircraft)) {
+        echo '<td>No aircraft available.  Please add aircraft before adding routes.</td>';
+    } else {
+    ?>
 	<td><select name="aircraft">
 		<?php
-		
+
 		foreach($allaircraft as $aircraft)
 		{
 			if($aircraft->registration == $schedule->registration)
 				$sel = 'selected';
 			else
 				$sel = '';
-	
+
 			echo '<option value="'.$aircraft->id.'" '.$sel.'>'.$aircraft->name.' ('.$aircraft->registration.')</option>';
 		} ?>
 		</select>
 	</td>
+    <?php } ?>
 </tr>
 <tr>
 	<td valign="top"><strong>Flight Level:</strong></td>
