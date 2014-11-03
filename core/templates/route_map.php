@@ -24,7 +24,8 @@
  * And for reference, you want to tinker:
  * http://code.google.com/apis/maps/documentation/v3/basics.html
  */
- 
+//$pirep = ($pirep != null) ? $pirep : null;
+//$schedule = ($schedule != null) ? $schedule : null;
 if(isset($pirep))
 	$mapdata = $pirep;
 if(isset($schedule))
@@ -68,7 +69,7 @@ if(isset($schedule))
 <script type="text/javascript">
 var options = {
 	mapTypeId: google.maps.MapTypeId.ROADMAP
-}
+};
 
 var map = new google.maps.Map(document.getElementById("routemap"), options);
 var dep_location = new google.maps.LatLng(<?php echo $mapdata->deplat?>,<?php echo $mapdata->deplng;?>);
@@ -116,7 +117,7 @@ if(is_array($mapdata->route_details))
 			icon: "<?php echo $icon; ?>",
 			title: "<?php echo $route->title; ?>",
 			infowindow_content: v<?php echo $route->name?>_navpoint_info
-		})
+		});
 		
 		bounds.extend(v<?php echo $route->name?>_coords);
 		
@@ -144,10 +145,7 @@ var arrMarker = new google.maps.Marker({
 	title: "<?php echo $mapdata->arrname;?>"
 });
 
-var flightPath = new google.maps.Polyline({
-	path: [dep_location, <?php if(count($list) > 0) { echo implode(',', $list).','; }?> arr_location],
-	strokeColor: "#FF0000", strokeOpacity: 1.0, strokeWeight: 2
-}).setMap(map);
+var flightPath = new google.maps.Polyline({path: [dep_location, <?php if(count($list) > 0) { echo implode(',', $list).','; }?> arr_location], strokeColor: "#FF0000", strokeOpacity: 1.0, strokeWeight: 2}).setMap(map);
 
 // Resize the view to fit it all in
 map.fitBounds(bounds); 

@@ -4,7 +4,13 @@
 if(isset($message))
 	echo '<div id="error">'.$message.'</div>';
 ?>
-<form action="<?php echo SITE_URL?>/admin/index.php/pirepadmin/viewpending" method="post">
+<form action="<?php 
+if($directPirepEdit){
+    echo SITE_URL."/admin/index.php/pilotadmin/viewpilots?action=viewoptions&pilotid=".$pirep->pilotid."#pireps";
+}else{
+    echo SITE_URL."/admin/index.php/pirepadmin/viewpending?directPirepEdit=true";
+}
+?>" method="post">
 <table width="100%" class="tablesorter">
 <tr><td colspan="2" style="border: none;"><h4>PIREP Basics</h4></td></tr>
 <tr>

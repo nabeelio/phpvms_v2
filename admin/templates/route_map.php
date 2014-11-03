@@ -3,12 +3,13 @@
 <div class="mapcenter" align="center">
 	<div id="routemap" style="width:600px; height: 480px"></div>
 </div>
+<?php $mapdata = ($mapdata != null) ? $mapdata : null; ?>
 <p><strong>Route: </strong><?php echo $mapdata->route;?></p>
 <script type="text/javascript">
 var options = {
 	mapTypeId: google.maps.MapTypeId.ROADMAP,
 	disableDefaultUI: true
-}
+};
 
 var map = new google.maps.Map(document.getElementById("routemap"), options);
 
@@ -65,10 +66,7 @@ var arrMarker = new google.maps.Marker({
 	title: "<?php echo $mapdata->arrname;?>"
 });
 
-var flightPath = new google.maps.Polyline({
-	path: [dep_location, <?php if(count($list) > 0) { echo implode(',', $list).','; }?> arr_location],
-	strokeColor: "#FF0000", strokeOpacity: 1.0, strokeWeight: 2
-}).setMap(map);
+var flightPath = new google.maps.Polyline({path: [dep_location, <?php if(count($list) > 0) { echo implode(',', $list).','; }?> arr_location], strokeColor: "#FF0000", strokeOpacity: 1.0, strokeWeight: 2}).setMap(map);
 
 map.fitBounds(bounds); 
 </script>

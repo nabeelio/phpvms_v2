@@ -125,10 +125,7 @@ var arrMarker = new google.maps.Marker({
 	title: "<?php echo $mapdata->arrname;?>"
 });
 
-var flightPath = new google.maps.Polyline({
-	path: [dep_location, <?php if(is_array($list)) { echo implode(',', $list).','; }?> arr_location],
-	strokeColor: "#FF0000", strokeOpacity: 1.0, strokeWeight: 2
-}).setMap(map);
+var flightPath = new google.maps.Polyline({path: [dep_location, <?php if(is_array($list)) { echo implode(',', $list).','; }?> arr_location], strokeColor: "#FF0000", strokeOpacity: 1.0, strokeWeight: 2}).setMap(map);
 
 map.fitBounds(bounds); 
 </script>

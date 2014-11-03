@@ -42,10 +42,10 @@
  */
 class CodonModule
 {
-	public static $post;
-	public static $get;
-	public static $controller;
-	public static $activeModule;
+	public $post;
+	public $get;
+	public $controller;
+	public $activeModule;
 	public $action;
 	
 	public $title;

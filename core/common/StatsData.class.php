@@ -37,7 +37,7 @@ class StatsData extends CodonData {
             ), $params
         );
         
-        if($params['table'] == '' || $params['table'] == '') {
+        if($params['table'] == '') {
             return false;
         }
         
@@ -71,8 +71,21 @@ class StatsData extends CodonData {
             
             $sql .= DB::build_where($params['where']);
             $total = DB::get_row($sql);
-                                    
-            if(!$total) {
+            
+            /*
+            if(is_object($total)){
+                $checker = false;
+                foreach($total as $totaler){
+                    if($totaler != null){
+                        $checker += (int)$totaler;
+                    }
+                }
+            }else{
+                $checker = true;
+            }
+            */
+            
+            if(!$total || $total == null || empty($total) || $total->total == null) {
                 $total = 0;
             } else {
                 $total = $total->total;
