@@ -1,6 +1,6 @@
 preparecommit
-core/local.config.php.old
-core/logs/errors.txt
+core/local.config.php
+core/logs/*
 core/pages/*
 core/cache/*
 core/local.config.php
@@ -8,10 +8,8 @@ core/logs/*
 lib/signatures/*
 lib/avatars/*
 lib/rss/*
-core/modules/test
-core/modules/test/**
-mobile
 lib/rss/latestpireps.rss
-unittest/reports/**
-unittest/web
+tests/*
+tests/Tests/**
+tests/utils/*
 nbproject/

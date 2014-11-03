@@ -9,6 +9,8 @@ INSERT INTO `phpvms_airports` (`id`, `icao`, `name`, `country`, `lat`, `lng`, `h
 INSERT INTO `phpvms_ranks` VALUES(1, 'New Hire', '', 0, 18.0); 
 
 INSERT INTO `phpvms_groups` (`name`, `permissions`, `core`) VALUES ('Administrators', '2147483647', 1);
+//INSERT INTO `phpvms_groups` (`name`, `permissions`, `core`) VALUES ('Administrators', '536870911', 1);
+
 INSERT INTO `phpvms_groups` (`name`, `permissions`, `core`) VALUES ('Active Pilots', '0', 1);
 INSERT INTO `phpvms_groups` (`name`, `permissions`, `core`) VALUES ('Inactive Pilots', '0', 1);
 
