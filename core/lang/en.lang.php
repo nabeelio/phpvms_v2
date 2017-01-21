@@ -40,11 +40,30 @@ $trans = array(
 	'password.changed'					=> 'Password has been successfully changed',
 	
 	/* Pilots Info */
+	'pilots.title'						=> 'Pilots',
 	'pilot.deleted'						=> 'Pilot had been deleted',
+	
+	/* ACARS */
+	'acars.title'						=> 'ACARS',
 	
 	/* Awards */
 	'award.exists'						=> 'The pilot already has this award!',
 	'award.deleted'						=> 'Award deleted!',
+	
+	/* Contact */
+	'contact.title'						=> 'Contact',
+	
+	/* Downloads */
+	'downloads.title'					=> 'Downloads',
+	
+	/* Finances */
+	'finances.title'					=> 'Finances',
+	
+	/* Front Bids */
+	'frontbids.title'					=> 'Front Bids',
+	
+	/* Front Page */
+	'frontpage.title'					=> 'Front Page',
 	
 	/* Groups */
 	'group.added'						=> 'The group %s has been added', /* %s is group name */
@@ -54,7 +73,14 @@ $trans = array(
 	'group.add.error'					=> 'There was an error adding this user',
 	'group.user.added'					=> 'User has been added to the group!',
 	
+	/* Login */
+	'login.title'						=> 'Login',
+	
+	/* Logout */
+	'logout.title'						=> 'Logout',
+	
 	/* Pages */
+	'pages.title'						=> 'Pages',
 	'page.add.title'					=> 'Add Page',
 	'page.edit.title'					=> 'Edit Page', 
 	'page.exists'						=> 'This page already exists!',
@@ -63,7 +89,20 @@ $trans = array(
 	'page.error.delete'					=> 'There was an error deleting the page!',
 	'page.deleted'						=> 'The page was deleted',
 	
+	/* Profile */
+	'profile.title'						=> 'Profile',
+	
+	/* Registration */
+	'registration.title'					=> 'Registration',
+	
+	/* Route Map */
+	'routemap.title'					=> 'Route Map',
+	
+	/* Schedules */
+	'schedules.title'					=> 'Schedules',
+	
 	/* News */
+	'news.title'						=> 'News',
 	'news.add.title'					=> 'Add News',
 	'news.edit.title'					=> 'Edit News',
 	'news.updated.success'				=> 'News edited successfully!',
@@ -78,8 +117,14 @@ $trans = array(
 	'pirep.field.edit'					=> 'Edit PIREP Field',
 	
 	/* PIREPS */
+	'pireps.title'					=> 'PIREPs',
 	'pireps.view.recent'				=> 'Recent Reports',
 	
+	/* XML */
+	'xml.title'					=> 'XML',
+	
+	/* kACARS Free */
+	'kacars_free.title'				=> 'kACARS Free',
 	
 	/*
 	 * Template language replacements

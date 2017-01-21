@@ -1,0 +1,2 @@
+<h3>Confirmación de Registro</h3>
+<p>¡Gracias por registrase con nosotros! ¡Su registro ha sido completado! Puede ingresar con su ID de Piloto (<?php echo PilotData::GetPilotCode($pilot->code, $pilot->pilotid);?>) y la contraseña que utilizó durante su registro.</p>

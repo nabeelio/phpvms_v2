@@ -63,7 +63,7 @@ $page_content = ob_get_clean();
 $BaseTemplate->Set('title', MainController::$page_title .' - '.SITE_NAME);
 $BaseTemplate->Set('page_title', MainController::$page_title .' - '.SITE_NAME);
 
-if(file_exists(SKINS_PATH.'/layout.tpl'))
+if(Template::getTemplatePathDefaultLanguage('layout.tpl'))
 {
 	$BaseTemplate->Set('page_htmlhead', Template::Get('core_htmlhead.tpl', true));
 	$BaseTemplate->Set('page_htmlreq', Template::Get('core_htmlreq.tpl', true));

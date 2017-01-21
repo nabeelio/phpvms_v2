@@ -71,4 +71,14 @@ class Lang
 		return self::gs($string);
 	}
 	
+	public static function getAllLanguages()
+	{
+		$sql = "SELECT l.language, l.name
+			FROM ".TABLE_PREFIX."languages l
+			ORDER BY l.name";
+		
+		$ret = DB::get_results($sql);
+		return $ret;
+	}
+	
 }

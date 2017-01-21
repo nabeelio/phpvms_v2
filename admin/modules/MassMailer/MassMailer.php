@@ -83,6 +83,8 @@ class MassMailer extends CodonModule
 		
 		$subject = DB::escape($this->post->subject);
 		$message = stripslashes($this->post->message). PHP_EOL . PHP_EOL;
+		$fromname = Auth::$userinfo->firstname . ' ' . Auth::$userinfo->lastname;
+		$fromemail = Auth::$userinfo->email;
 		
 		# Do some quick fixing of obvious formatting errors
 		$message = str_replace('<br>', '<br />', $message);
@@ -96,7 +98,7 @@ class MassMailer extends CodonModule
 			$send_message = str_replace('{PILOT_ID}', PilotData::GetPilotCode($pilot->code, $pilot->pilotid), $send_message);
 			$send_message = utf8_encode($send_message);
 			
-			Util::SendEmail($pilot->email, $subject, $send_message);
+			Util::SendEmail($pilot->email, $subject, $send_message, $fromname, $fromemail);
 		}
 		
 		echo 'Complete!';

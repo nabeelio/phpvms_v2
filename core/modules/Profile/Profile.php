@@ -126,6 +126,7 @@ class Profile extends CodonModule
 		$this->set('customfields', PilotData::GetFieldData(Auth::$pilotid, true));
 		$this->set('bgimages', PilotData::GetBackgroundImages());
 		$this->set('countries', Countries::getAllCountries());
+		$this->set('languages', Lang::getAllLanguages());
 		$this->set('pilotcode', PilotData::GetPilotCode(Auth::$userinfo->code, Auth::$userinfo->pilotid));
 
 		$this->render('profile_edit.tpl');
@@ -165,6 +166,7 @@ class Profile extends CodonModule
 			'email' => $this->post->email,
 			'location' => $this->post->location,
 			'hub' => Auth::$userinfo->hub,
+			'language' => $this->post->language,
 			'bgimage' => $this->post->bgimage,
 			'retired' => false
 		);
@@ -177,6 +179,8 @@ class Profile extends CodonModule
 
 		PilotData::SaveAvatar($userinfo->code, $userinfo->pilotid);
 
+		Lang::set_language($this->post->language);
+		
 		$this->set('message', 'Profile saved!');
 		$this->render('core_success.tpl');
 	}

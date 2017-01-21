@@ -77,19 +77,19 @@ class ACARSData extends CodonData
 			$schedule = $schedule[0];
 			
 			$data['route'] = $schedule->route;
-			//$data['route_details'] = serialize(SchedulesData::getRouteDetails($schedule->id));
+			$data['route_details'] = serialize(SchedulesData::getRouteDetails($schedule->id));
 		}
 		/*	A route was passed in, so get the details about this route */
 		elseif(isset($data['route']) && !empty($data['route']))
 		{
-			/*$tmp = new stdClass();
+			$tmp = new stdClass();
 			$tmp->deplat = $dep_apt->lat;
 			$tmp->deplng = $dep_apt->lng;
 			$tmp->route = $data['route'];
 			
 			$data['route_details'] = NavData::parseRoute($tmp);
 			$data['route_details'] = serialize($data['route_details']);
-			unset($tmp);*/
+			unset($tmp);
 		}
 		
 		if(!empty($data['route_details']))

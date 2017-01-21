@@ -100,4 +100,10 @@ class Template
 	{
 		return self::$tplset->ShowModule($ModuleName, $Method);
 	}
+	
+	public static function getTemplatePathDefaultLanguage($tpl_path, $checkskin=true, $force_base=false)
+	{
+		return self::$tplset->getTemplatePathDefaultLanguage($tpl_path, $checkskin, $force_base);
+	}
+	
 }

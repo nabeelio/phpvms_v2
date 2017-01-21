@@ -78,6 +78,7 @@ class Auth extends CodonData
 					SessionManager::Set('userinfo', $userinfo);
 					SessionManager::Set('usergroups', self::$usergroups);
 					PilotData::UpdateLogin($userinfo->pilotid);
+					Lang::set_language($userinfo->language);
 					
 					self::update_session(self::$session_id, self::$userinfo->pilotid);
 					
@@ -104,8 +105,8 @@ class Auth extends CodonData
 				
 				# Bugfix, in case user updates their profile info, grab the latest
 				self::$userinfo = PilotData::GetPilotData(self::$pilotid);
+				Lang::set_language(self::$userinfo->language);
 				self::update_session(self::$session_id, self::$userinfo->pilotid);
-				
 				return true;
 			}
 			else

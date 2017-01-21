@@ -400,7 +400,7 @@ class PIREPData extends CodonData
 			} /* End "if FSFK" */
 			
 			
-			if($row->route_details != '')
+			if($row->route_details != '' && $row->route_details != 'a:0:{}')
 			{
 				$row->route_details = unserialize($row->route_details);
 			}
@@ -409,7 +409,7 @@ class PIREPData extends CodonData
 				$row->route_details = NavData::parseRoute($row);
 				
 				# Save it for future?
-				//PIREPData::updatePIREPFields($row->pirepid, array('route_details'=>serialize($row->route_details)));
+				PIREPData::updatePIREPFields($row->pirepid, array('route_details'=>serialize($row->route_details)));
 			}
 			
 		} /* End "if $row" */

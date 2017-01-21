@@ -47,3 +47,19 @@ INSERT INTO `phpvms_settings` VALUES(NULL , 'Total VA Hours', 'TOTAL_HOURS', '0'
 DELETE FROM `phpvms_settings` WHERE `name`='PHPVMS_VERSION';
 DELETE FROM `phpvms_settings` WHERE `name`='NOTIFY_UPDATE';
 DELETE FROM `phpvms_settings` WHERE `name`='GOOGLE_KEY';
+
+-- Create language table
+CREATE TABLE IF NOT EXISTS `phpvms_languages` (
+	`id` int(11) NOT NULL auto_increment,
+	`language` varchar(5) NOT NULL,
+	`name` varchar(25) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `language` (`language`)
+)ENGINE=INNODB;
+
+-- Insert default languages
+INSERT INTO `phpvms_languages` VALUES (NULL, 'en', 'English');
+INSERT INTO `phpvms_languages` VALUES (NULL, 'es', 'Spanish');
+
+-- Add language reference
+ALTER TABLE `phpvms_pilots` ADD CONSTRAINT `phpvms_pilots_ibfk_2` FOREIGN KEY (`language`) REFERENCES `phpvms_languages` (`language`) ON UPDATE CASCADE;

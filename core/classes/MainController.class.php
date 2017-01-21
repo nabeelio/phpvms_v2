@@ -73,7 +73,7 @@ class MainController
 		    {
 		    	if(is_dir($path.'/'.$file))
 		    	{
-					$fullpath = $path . DS . $file . DS . $file . '.php';
+					$fullpath = $path . DS . $file . DS . 'module.php';
 					
 					if(file_exists($fullpath))
 					{
@@ -127,8 +127,8 @@ class MainController
 					
 					if(self::$activeModule == $ModuleName)
 					{
-						# Skip it for now, run it last since it's the active
-						#	one, and may overwrite some other parameters
+						// Skip it for now, run it last since it's the active
+						//	one, and may overwrite some other parameters
 						continue;
 					}
 					else
@@ -222,7 +222,10 @@ class MainController
 		self::$page_title = $$ModuleName->title;
 		if(strlen(self::$page_title) === 0)
 		{
-			self::$page_title = ucwords(strtolower($ModuleName));
+			self::$page_title = Lang::get(strtolower($ModuleName) . '.title');
+			if(strlen(self::$page_title) == 0) {
+				self::$page_title = ucwords(strtolower($ModuleName));
+			}
 		}
 		
 		return true;	

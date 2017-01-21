@@ -270,6 +270,7 @@ CREATE TABLE `phpvms_pilots` (
   `joindate` datetime NOT NULL default '0000-00-00 00:00:00',
   `lastpirep` datetime NOT NULL default '0000-00-00 00:00:00',
   `lastip` VARCHAR( 25 ) NULL DEFAULT '',
+  `language` VARCHAR( 5 ) NOT NULL DEFAULT 'en',
   PRIMARY KEY  (`pilotid`),
   KEY `code` (`code`),
   KEY `rank` (`rank`)
@@ -393,6 +394,14 @@ CREATE TABLE `phpvms_settings` (
 	UNIQUE KEY `name` (`name`)
 )ENGINE=INNODB;
 
+CREATE TABLE `phpvms_languages` (
+	`id` int(11) NOT NULL auto_increment,
+	`language` varchar(5) NOT NULL,
+	`name` varchar(25) NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `language` (`language`)
+)ENGINE=INNODB;
+
 ALTER TABLE `phpvms_fieldvalues`
   ADD CONSTRAINT `phpvms_fieldvalues_ibfk_1` FOREIGN KEY (`fieldid`) REFERENCES `phpvms_customfields` (`fieldid`) ON DELETE CASCADE,
   ADD CONSTRAINT `phpvms_fieldvalues_ibfk_2` FOREIGN KEY (`pilotid`) REFERENCES `phpvms_pilots` (`pilotid`) ON DELETE CASCADE;
@@ -402,7 +411,8 @@ ALTER TABLE `phpvms_groupmembers`
   ADD CONSTRAINT `phpvms_groupmembers_ibfk_2` FOREIGN KEY (`pilotid`) REFERENCES `phpvms_pilots` (`pilotid`) ON DELETE CASCADE;
 
 ALTER TABLE `phpvms_pilots`
-  ADD CONSTRAINT `phpvms_pilots_ibfk_1` FOREIGN KEY (`code`) REFERENCES `phpvms_airlines` (`code`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `phpvms_pilots_ibfk_1` FOREIGN KEY (`code`) REFERENCES `phpvms_airlines` (`code`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `phpvms_pilots_ibfk_2` FOREIGN KEY (`language`) REFERENCES `phpvms_languages` (`language`) ON UPDATE CASCADE;
 
 ALTER TABLE `phpvms_pirepcomments`
   ADD CONSTRAINT `phpvms_pirepcomments_ibfk_1` FOREIGN KEY (`pirepid`) REFERENCES `phpvms_pireps` (`pirepid`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -416,3 +426,6 @@ INSERT INTO `phpvms_settings` VALUES(NULL, 'Date Format', 'DATE_FORMAT', 'm/d/Y'
 INSERT INTO `phpvms_settings` VALUES(NULL, 'Current Skin', 'CURRENT_SKIN', 'crystal', 'Available skins', 1);
 INSERT INTO `phpvms_settings` VALUES(NULL, 'Default User Group', 'DEFAULT_GROUP', 'Active Pilots', 'This is the default group if they are not explicitly denied', 1);
 INSERT INTO `phpvms_settings` VALUES(NULL , 'Total VA Hours', 'TOTAL_HOURS', '0', 'Your total hours', 0);
+
+INSERT INTO `phpvms_languages` VALUES (NULL, 'en', 'English');
+INSERT INTO `phpvms_languages` VALUES (NULL, 'es', 'Spanish');

@@ -89,16 +89,6 @@ class TemplateSet
 	 */
 	public function set($name, $value)
 	{
-		// See if they're setting the template as a file
-		//	Check if the file exists 
-		if(is_string($value) && strstr($value, $this->tpl_ext))
-		{
-			if(file_exists($this->template_path . DS . $value))
-			{
-				$value = $this->GetTemplate($value, true);
-			}
-		}
-		
 		$this->vars[$name] = $value;
 	}
 	
@@ -203,52 +193,14 @@ class TemplateSet
 		{
 			$tpl_name .= $this->tpl_ext;
 		}
-		
-		if($force_base === true) 
-		{
-			$old_tpl = $this->template_path;
-			$this->template_path = Config::Get('BASE_TEMPLATE_PATH');
-			
-			if($checkskin === true)
-			{
-				if(defined('SKINS_PATH') && file_exists(SKINS_PATH . DS . $tpl_name))
-				{
-					$tpl_path = SKINS_PATH . DS . $tpl_name;
-				}
-				else
-				{
-					$tpl_path = $this->template_path . DS . $tpl_name;
-				}
-			}
-		}
 
-		if((!defined('ADMIN_PANEL') || $force_base == true) && $checkskin == true)
+		$tpl_path = $this->getTemplatePathDefaultLanguage($tpl_name, $checkskin, $force_base);
+		if(!$tpl_path)
 		{
-			if(defined('SKINS_PATH') && file_exists(SKINS_PATH . DS . $tpl_name))
-			{
-				$tpl_path = SKINS_PATH . DS . $tpl_name;
-			}
-			else
-			{
-				$tpl_path = $this->template_path . DS . $tpl_name;
-			}
-		}
-		else
-		{
-			$tpl_path = $this->template_path . DS . $tpl_name;
-		}
-		
-		if($force_base) 
-		{
-			$this->template_path = $old_tpl;
-		}
-
-		if(!file_exists($tpl_path))
-		{
-			trigger_error('The template file "'.$tpl_path.'" doesn\'t exist');
+			trigger_error('The template file "'.$tpl_name.'" doesn\'t exist');
 			return;
 		}
-			
+
 		extract($this->vars, EXTR_OVERWRITE);
 		
 		ob_start();
@@ -263,7 +215,82 @@ class TemplateSet
 		echo $cont;
 	}
 	
+	/**
+	 * getTemplatePathDefaultLanguage
+	 *  This function tries to obtain a template path with the usual language. The first choice
+	 *  is the language set in the Lang class, which can be either set from SITE_LANGUAGE or,
+	 *  if a pilot is logged in, from the profile.
+	 *
+	 * @param string $tpl_name Template to return (with extension)
+	 * @param bool $checkskin Check the active skin folder for the template first
+	 * @param bool $force_base Force it to read from the base template dir
+	 * @return mixed Returns a template path if found, or false if not found.
+	 */
+	public function getTemplatePathDefaultLanguage($tpl_name, $checkskin=true, $force_base=false)
+	{
+		$tpl_path = $this->getTemplatePathWithLanguage($tpl_name, Lang::$language, $checkskin, $force_base);
+		if(!$tpl_path) {
+			$tpl_path = $this->getTemplatePathWithLanguage($tpl_name, Config::Get('SITE_BASE_LANGUAGE'), $checkskin, $force_base);
+		}
+		return $tpl_path;
+	}
 	
+	/**
+	 * getTemplatePathWithLanguage
+	 *  This function tries to find a template for the given language.
+	 *
+	 * @param string $tpl_name Template to return (with extension)
+	 * @param bool $checkskin Check the active skin folder for the template first
+	 * @param bool $force_base Force it to read from the base template dir
+	 * @return mixed Returns a template path if found, or false if not found.
+	 */
+	public function getTemplatePathWithLanguage($tpl_name, $lang, $checkskin=true, $force_base=false)
+	{
+		if($force_base === true) 
+		{
+			$old_tpl = $this->template_path;
+			$this->template_path = Config::Get('BASE_TEMPLATE_PATH');
+			
+			if($checkskin === true)
+			{
+				if(defined('SKINS_PATH') && file_exists(SKINS_PATH . DS . $lang . DS . $tpl_name))
+				{
+					$tpl_path = SKINS_PATH . DS . $lang . DS . $tpl_name;
+				}
+				else
+				{
+					$tpl_path = $this->template_path . DS . $lang . DS . $tpl_name;
+				}
+			}
+		}
+
+		if((!defined('ADMIN_PANEL') || $force_base == true) && $checkskin == true)
+		{
+			if(defined('SKINS_PATH') && file_exists(SKINS_PATH . DS . $lang . DS . $tpl_name))
+			{
+				$tpl_path = SKINS_PATH . DS . $lang . DS . $tpl_name;
+			}
+			else
+			{
+				$tpl_path = $this->template_path . DS . $lang . DS . $tpl_name;
+			}
+		}
+		else
+		{
+			$tpl_path = $this->template_path . DS . $lang . DS . $tpl_name;
+		}
+		
+		if($force_base) 
+		{
+			$this->template_path = $old_tpl;
+		}
+		
+		if(file_exists($tpl_path))
+			return $tpl_path;
+		else
+			return false;
+	}
+
 	/**
 	 * ShowModule
 	 *	This is an alias to MainController::Run(); calls a function

@@ -255,6 +255,7 @@ Config::Set('DAYS_LONG',
 );
 
 Config::Set('SITE_LANGUAGE', 'en');
+Config::set('SITE_BASE_LANGUAGE', 'en');
 Config::Set('ADMIN_SKIN', 'layout');
 
 

@@ -18,7 +18,6 @@
 
 class ACARS extends CodonModule
 {
-	public $title = 'ACARS';
 	public $acarsflights;
 	
 	public function index()
@@ -28,7 +27,6 @@ class ACARS extends CodonModule
 	
 	public function viewmap()
 	{
-		$this->title = 'ACARS Map';
 		$this->set('acarsdata', ACARSData::GetACARSData());
 		$this->render('acarsmap.tpl');
 	}

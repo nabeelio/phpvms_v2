@@ -18,8 +18,6 @@
 
 class Frontpage extends CodonModule
 {
-	public $title = 'Welcome';
-	
 	public function index()
 	{
 		$this->set('usersonline', StatsData::UsersOnline());
