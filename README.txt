@@ -25,3 +25,5 @@ Backup your core/local.config.php. Then, upload all of the files.
  For more information, visit www.phpvms.net
 	Forums: http://forum.phpvms.net
 	Documentation: http://docs.phpvms.net
+
+Codacy Badge
