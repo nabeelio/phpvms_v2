@@ -73,12 +73,12 @@ const map = createMap({
 
 const depCoords = L.latLng(<?php echo $mapdata->deplat?>, <?php echo $mapdata->deplng;?>);
 const depMarker = L.marker(depCoords, {
-	icon: L.icon({ iconUrl: depicon })
+	icon: L.icon({ iconUrl: depicon, iconSize: [35, 35] })
 }).bindPopup("<?php echo $mapdata->depname;?>").addTo(map);
 
 const arrCoords = L.latLng(<?php echo $mapdata->arrlat?>, <?php echo $mapdata->arrlng;?>);
 const arrMarker = L.marker(arrCoords, {
-	icon: L.icon({ iconUrl: arricon })
+	icon: L.icon({ iconUrl: arricon, iconSize: [35, 35] })
 }).bindPopup("<?php echo $mapdata->arrname;?>").addTo(map);
 
 const icon_vor = L.icon({ 
@@ -93,6 +93,7 @@ const icon_fix = L.icon({
 // for drawing the line
 let points = [];
 points.push(depCoords);
+
 <?php
 if(is_array($mapdata->route_details)) {
 	foreach($mapdata->route_details as $route) {
@@ -121,7 +122,6 @@ if(is_array($mapdata->route_details)) {
 		})
 		.bindPopup(tmpl("navpoint_bubble", {nav: v<?php echo $route->name?>_info}))
 		.addTo(map);
-		
 		<?php
 	}
 }
