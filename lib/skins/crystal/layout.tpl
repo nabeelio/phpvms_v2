@@ -29,7 +29,9 @@ echo $page_htmlhead;
 
 <?php /*Any custom Javascript should be placed below this line, after the above call */ ?>
 
-
+<link rel="stylesheet" href="<?php echo SITE_URL?>/lib/js/leaflet/leaflet.css" />
+<script src="<?php echo SITE_URL?>/lib/js/leaflet/leaflet.js"></script>
+<script src="<?php echo SITE_URL?>/lib/js/leaflet/Leaflet.Geodesic.js"></script>
 
 </head>
 <body>

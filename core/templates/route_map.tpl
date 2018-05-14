@@ -64,41 +64,46 @@ if(isset($schedule))
 /*	Below here is all the javascript for the map. Be careful of what you
 	modify!! */
 ?>
+<script src="<?php echo SITE_URL?>/lib/js/base_map.js"></script>
 <script type="text/javascript">
-var options = {
-	mapTypeId: google.maps.MapTypeId.ROADMAP
-}
 
-var map = new google.maps.Map(document.getElementById("routemap"), options);
-var dep_location = new google.maps.LatLng(<?php echo $mapdata->deplat?>,<?php echo $mapdata->deplng;?>);
-var arr_location = new google.maps.LatLng(<?php echo $mapdata->arrlat?>,<?php echo $mapdata->arrlng;?>);
-
-var bounds = new google.maps.LatLngBounds();                                                                                                     
-bounds.extend(dep_location);
-bounds.extend(arr_location);
-
-var depMarker = new google.maps.Marker({
-	position: dep_location,
-	map: map,
-	icon: depicon,
-	title: "<?php echo $mapdata->depname;?>"
+const map = createMap({
+	render_elem: 'routemap',
 });
+
+const depCoords = L.latLng(<?php echo $mapdata->deplat?>, <?php echo $mapdata->deplng;?>);
+const depMarker = L.marker(depCoords, {
+	icon: L.icon({ iconUrl: depicon })
+}).bindPopup("<?php echo $mapdata->depname;?>").addTo(map);
+
+const arrCoords = L.latLng(<?php echo $mapdata->arrlat?>, <?php echo $mapdata->arrlng;?>);
+const arrMarker = L.marker(arrCoords, {
+	icon: L.icon({ iconUrl: arricon })
+}).bindPopup("<?php echo $mapdata->arrname;?>").addTo(map);
+
+const icon_vor = L.icon({ 
+	iconUrl: "<?php echo fileurl('/lib/images/icon_vor.png') ?>",
+	iconSize: [19, 20],
+})
+const icon_fix = L.icon({ 
+	iconUrl: "<?php echo fileurl('/lib/images/icon_fix.png') ?>",
+	iconSize: [12, 15],
+})
+
+// for drawing the line
+let points = [];
+points.push(depCoords);
 <?php
-/* Populate the route */
-if(is_array($mapdata->route_details))
-{
-	$list = array();
-	
-	foreach($mapdata->route_details as $route)
-	{
+if(is_array($mapdata->route_details)) {
+	foreach($mapdata->route_details as $route) {
 		if($route->type == NAV_VOR)
-			$icon = fileurl('/lib/images/icon_vor.png');
+			$icon = 'icon_vor';
 		else
-			$icon = fileurl('/lib/images/icon_fix.png');
+			$icon = 'icon_fix';
 		
-		/*	Build info array for the bubble */
+		//	Build info array for the bubble
 		?>
-		var v<?php echo $route->name?>_info = {
+		const v<?php echo $route->name?>_info = {
 			freq: "<?php echo $route->freq ?>",
 			name: "<?php echo $route->name ?>",
 			title: "<?php echo $route->title ?>",
@@ -107,47 +112,30 @@ if(is_array($mapdata->route_details))
 			lng: "<?php echo $route->lng ?>"
 		};
 		
-		var v<?php echo $route->name?>_navpoint_info = tmpl("navpoint_bubble", {nav: v<?php echo $route->name?>_info});
-		var v<?php echo $route->name?>_coords = new google.maps.LatLng(<?php echo $route->lat?>, <?php echo $route->lng?>);
-		var v<?php echo $route->name?>_marker = new google.maps.Marker({
-			position: v<?php echo $route->name?>_coords,
-			map: map,
-			icon: "<?php echo $icon; ?>",
+		const <?php echo $route->name?>_point = L.latLng(<?php echo $route->lat?>, <?php echo $route->lng?>);
+		points.push(<?php echo $route->name?>_point);
+
+		L.marker(<?php echo $route->name?>_point, {
+			icon: <?php echo $icon ?>,
 			title: "<?php echo $route->title; ?>",
-			infowindow_content: v<?php echo $route->name?>_navpoint_info
 		})
-		
-		bounds.extend(v<?php echo $route->name?>_coords);
-		
-		google.maps.event.addListener(v<?php echo $route->name?>_marker, 'click', function() 
-		{
-			info_window = new google.maps.InfoWindow({ 
-				content: this.infowindow_content,
-				position: this.position
-			});
-			
-			info_window.open(map, this);
-		});
+		.bindPopup(tmpl("navpoint_bubble", {nav: v<?php echo $route->name?>_info}))
+		.addTo(map);
 		
 		<?php
-			
-		// For the polyline
-		$list[] = "v{$route->name}_coords";
 	}
 }
 ?>
-var arrMarker = new google.maps.Marker({
-	position: arr_location,
-	map: map,
-	icon: arricon,
-	title: "<?php echo $mapdata->arrname;?>"
-});
 
-var flightPath = new google.maps.Polyline({
-	path: [dep_location, <?php if(count($list) > 0) { echo implode(',', $list).','; }?> arr_location],
-	strokeColor: "#FF0000", strokeOpacity: 1.0, strokeWeight: 2
-}).setMap(map);
+points.push(arrCoords);
 
-// Resize the view to fit it all in
-map.fitBounds(bounds); 
+const geodesicLayer = L.geodesic([points], {
+	weight: 3,
+	opacity: 0.5,
+	color: 'black',
+	steps: 10
+}).addTo(map);
+
+map.fitBounds(geodesicLayer.getBounds());
+
 </script>
