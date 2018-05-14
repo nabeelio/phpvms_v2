@@ -7,3 +7,4 @@ ed
 phpvms.iml
 core/local.config.php
 *.iml
+core/cache/

@@ -222,10 +222,12 @@ Config::Set('PHPVMS_NEWS_FEED', 'http://feeds.feedburner.com/phpvms');
 Config::Set('VACENTRAL_NEWS_FEED', 'http://feeds.feedburner.com/vacentral');
 Config::Set('GEONAME_API_SERVER', 'http://ws.geonames.org');
 
-/* Keys for recaptcha, you can change these if you want to your own but it's
-	a global key so it should just work */
-Config::Set('RECAPTCHA_PUBLIC_KEY', '6LcklAsAAAAAAJqmghmMPOACeJrAxW3sJulSboxx');
-Config::Set('RECAPTCHA_PRIVATE_KEY', '6LcklAsAAAAAAMeQy5ZBoDu8JOMTP-UL7ek1GedO');
+# Add to the end of local.config.php
+# You need to get the keys from here: https://www.google.com/recaptcha/admin
+# Put the "Site Key" in RECAPTCHA_PUBLIC_KEY
+# Put the "Secret Key" in RECAPTCHA_PRIVATE_KEY
+Config::Set('RECAPTCHA_PUBLIC_KEY', '');
+Config::Set('RECAPTCHA_PRIVATE_KEY', '');
 
 /*	Whether you have the /admin/maintenance.php script added into cron.
 	If you do, set this to true. This saves many DB calls since phpVMS will

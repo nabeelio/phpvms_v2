@@ -16,6 +16,8 @@
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/
  */
 
+require_once CORE_PATH.'/lib/recaptcha/autoload.php';
+
 function pre_module_load()
 {	
 	if(is_dir(CORE_PATH.'/local.config.php'))

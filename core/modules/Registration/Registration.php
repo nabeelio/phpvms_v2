@@ -31,8 +31,6 @@ class Registration extends CodonModule
 		
 	public function index()
 	{
-		require_once CORE_LIB_PATH.'/recaptcha/recaptchalib.php';
-
 		if(Auth::LoggedIn()) // Make sure they don't over-ride it
 		{
 			$this->render('login_already.tpl');
@@ -167,13 +165,10 @@ class Registration extends CodonModule
 	protected function VerifyData()
 	{
 		$error = false;
+		$recaptcha = new \ReCaptcha\ReCaptcha(Config::Get('RECAPTCHA_PRIVATE_KEY'));
+		$resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
 		
-		$resp = recaptcha_check_answer (Config::Get('RECAPTCHA_PRIVATE_KEY'),
-			$_SERVER["REMOTE_ADDR"],
-			$_POST["recaptcha_challenge_field"],
-			$_POST["recaptcha_response_field"]);
-
-		if(!$resp->is_valid)
+		if(!$resp->isSuccess())
 		{
 			$error = true;
 			$this->set('captcha_error', $resp->error);
