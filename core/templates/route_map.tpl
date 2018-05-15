@@ -91,12 +91,15 @@ let points = [];
 points.push(depCoords);
 
 // rendering for if there's smartcars data
-if(flight.rawdata instanceof Object && Array.isArray(flight.rawdata.points)) {
+if(flight.rawdata instanceof Object 
+	&& flight.rawdata.points !== undefined
+	&& Array.isArray(flight.rawdata.points)
+) {
 	$.each(flight.rawdata.points, function(i, nav) {
 		if(nav.lat === undefined || nav.lng === undefined) {
 			return;
 		}
-		
+
 		points.push(L.latLng(nav.lat, nav.lng));
 	});
 } else {
