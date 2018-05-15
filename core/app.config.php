@@ -104,7 +104,7 @@ Config::Set('MAP_TYPE', 'OpenStreetMap.Mapnik');
 Config::Set('MAP_LINE_COLOR', '#ff0000');
 Config::Set('MAP_CENTER_LAT', '45.484400');
 Config::Set('MAP_CENTER_LNG', '-62.334821');
-Config::Set('MAP_ZOOM_LEVEL', 12);
+Config::Set('MAP_ZOOM_LEVEL', 5);
 
 # ACARS options
 #  Minutes, flights to show on the ACARS

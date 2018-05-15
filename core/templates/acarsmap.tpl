@@ -152,7 +152,7 @@ const opts = {
 	render_elem: 'acarsmap',
 	provider: '<?php echo Config::Get("MAP_TYPE"); ?>',
 	autozoom: true,
-	zoom: 5,
+	zoom: <?php echo Config::Get('MAP_ZOOM_LEVEL'); ?>,
     center: L.latLng("<?php echo Config::Get('MAP_CENTER_LAT'); ?>", "<?php echo Config::Get('MAP_CENTER_LNG'); ?>"),
     refreshTime: 10000
 };
