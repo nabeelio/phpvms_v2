@@ -67,67 +67,49 @@ if(isset($schedule))
 <script src="<?php echo SITE_URL?>/lib/js/base_map.js"></script>
 <script type="text/javascript">
 
+// Convert the map data into JSON
+const flight = JSON.parse('<?php echo json_encode($mapdata); ?>');
+console.log(flight);
+
 const map = createMap({
 	render_elem: 'routemap',
 	provider: '<?php echo Config::Get("MAP_TYPE"); ?>',
 });
 
-const depCoords = L.latLng(<?php echo $mapdata->deplat?>, <?php echo $mapdata->deplng;?>);
-const depMarker = L.marker(depCoords, {
+const depCoords = L.latLng(flight.deplat, flight.deplng);
+selDepMarker = L.marker(depCoords, {
 	icon: MapFeatures.icons.departure,
-}).bindPopup("<?php echo $mapdata->depname;?>").addTo(map);
+}).bindPopup(flight.depname).addTo(map);
 
-const arrCoords = L.latLng(<?php echo $mapdata->arrlat?>, <?php echo $mapdata->arrlng;?>);
-const arrMarker = L.marker(arrCoords, {
+const arrCoords = L.latLng(flight.arrlat, flight.arrlng);
+selArrMarker = L.marker(arrCoords, {
 	icon: MapFeatures.icons.arrival,
-}).bindPopup("<?php echo $mapdata->arrname;?>").addTo(map);
+}).bindPopup(flight.arrname).addTo(map);
 
-// for drawing the line
 let points = [];
 points.push(depCoords);
 
-<?php
-if(is_array($mapdata->route_details)) {
-	foreach($mapdata->route_details as $route) {
-		if($route->type == NAV_VOR)
-			$icon = 'MapFeatures.icons.vor';
-		else
-			$icon = 'MapFeatures.icons.fix';
-		
-		//	Build info array for the bubble
-		?>
-		const v<?php echo $route->name?>_info = {
-			freq: "<?php echo $route->freq ?>",
-			name: "<?php echo $route->name ?>",
-			title: "<?php echo $route->title ?>",
-			type: "<?php echo $route->type ?>",
-			lat: "<?php echo $route->lat ?>",
-			lng: "<?php echo $route->lng ?>"
-		};
-		
-		const <?php echo $route->name?>_point = L.latLng(<?php echo $route->lat?>, <?php echo $route->lng?>);
-		points.push(<?php echo $route->name?>_point);
+$.each(flight.route_details, function(i, nav) {
+	const loc = L.latLng(nav.lat, nav.lng);
+	const icon = (nav.type === 3) ? MapFeatures.icons.vor : MapFeatures.icons.fix;
+	points.push(loc);
 
-		L.marker(<?php echo $route->name?>_point, {
-			icon: <?php echo $icon ?>,
-			title: "<?php echo $route->title; ?>",
+	const marker = L.marker(loc, {
+			icon: icon,
+			title: nav.title,
 		})
-		.bindPopup(tmpl("navpoint_bubble", {nav: v<?php echo $route->name?>_info}))
+		.bindPopup(tmpl("navpoint_bubble", { nav: nav }))
 		.addTo(map);
-		<?php
-	}
-}
-?>
+});
 
 points.push(arrCoords);
 
-const geodesicLayer = L.geodesic([points], {
-	weight: 3,
+const selPointsLayer = L.geodesic([points], {
+	weight: 2,
 	opacity: 0.5,
 	color: 'black',
 	steps: 10
 }).addTo(map);
 
-map.fitBounds(geodesicLayer.getBounds());
-
+map.fitBounds(selPointsLayer.getBounds());
 </script>
