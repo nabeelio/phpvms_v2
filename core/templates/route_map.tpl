@@ -92,10 +92,12 @@ points.push(depCoords);
 
 // rendering for if there's smartcars data
 if(flight.rawdata instanceof Object && Array.isArray(flight.rawdata.points)) {
-	console.log('using raw data');
 	$.each(flight.rawdata.points, function(i, nav) {
-		const loc = L.latLng(nav.lat, nav.lng);
-		points.push(loc);
+		if(nav.lat === undefined || nav.lng === undefined) {
+			return;
+		}
+		
+		points.push(L.latLng(nav.lat, nav.lng));
 	});
 } else {
 	$.each(flight.route_details, function(i, nav) {
