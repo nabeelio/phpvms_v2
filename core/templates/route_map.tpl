@@ -67,7 +67,8 @@ if(isset($schedule))
 <script src="<?php echo SITE_URL?>/lib/js/base_map.js"></script>
 <script type="text/javascript">
 
-// Convert the map data into JSON
+// Write the PIREP data out into JSON
+// The big reason being we don't need to have PHP writing JS - yuck
 const flight = JSON.parse('<?php echo json_encode($mapdata); ?>');
 console.log(flight);
 
@@ -89,18 +90,27 @@ selArrMarker = L.marker(arrCoords, {
 let points = [];
 points.push(depCoords);
 
-$.each(flight.route_details, function(i, nav) {
-	const loc = L.latLng(nav.lat, nav.lng);
-	const icon = (nav.type === 3) ? MapFeatures.icons.vor : MapFeatures.icons.fix;
-	points.push(loc);
+// rendering for if there's smartcars data
+if(flight.rawdata instanceof Object && Array.isArray(flight.rawdata.points)) {
+	console.log('using raw data');
+	$.each(flight.rawdata.points, function(i, nav) {
+		const loc = L.latLng(nav.lat, nav.lng);
+		points.push(loc);
+	});
+} else {
+	$.each(flight.route_details, function(i, nav) {
+		const loc = L.latLng(nav.lat, nav.lng);
+		const icon = (nav.type === 3) ? MapFeatures.icons.vor : MapFeatures.icons.fix;
+		points.push(loc);
 
-	const marker = L.marker(loc, {
-			icon: icon,
-			title: nav.title,
-		})
-		.bindPopup(tmpl("navpoint_bubble", { nav: nav }))
-		.addTo(map);
-});
+		const marker = L.marker(loc, {
+				icon: icon,
+				title: nav.title,
+			})
+			.bindPopup(tmpl("navpoint_bubble", { nav: nav }))
+			.addTo(map);
+	});
+}
 
 points.push(arrCoords);
 
