@@ -69,26 +69,18 @@ if(isset($schedule))
 
 const map = createMap({
 	render_elem: 'routemap',
+	provider: '<?php echo Config::Get("MAP_TYPE"); ?>',
 });
 
 const depCoords = L.latLng(<?php echo $mapdata->deplat?>, <?php echo $mapdata->deplng;?>);
 const depMarker = L.marker(depCoords, {
-	icon: L.icon({ iconUrl: depicon, iconSize: [35, 35] })
+	icon: MapFeatures.icons.departure,
 }).bindPopup("<?php echo $mapdata->depname;?>").addTo(map);
 
 const arrCoords = L.latLng(<?php echo $mapdata->arrlat?>, <?php echo $mapdata->arrlng;?>);
 const arrMarker = L.marker(arrCoords, {
-	icon: L.icon({ iconUrl: arricon, iconSize: [35, 35] })
+	icon: MapFeatures.icons.arrival,
 }).bindPopup("<?php echo $mapdata->arrname;?>").addTo(map);
-
-const icon_vor = L.icon({ 
-	iconUrl: "<?php echo fileurl('/lib/images/icon_vor.png') ?>",
-	iconSize: [19, 20],
-})
-const icon_fix = L.icon({ 
-	iconUrl: "<?php echo fileurl('/lib/images/icon_fix.png') ?>",
-	iconSize: [12, 15],
-})
 
 // for drawing the line
 let points = [];
@@ -98,9 +90,9 @@ points.push(depCoords);
 if(is_array($mapdata->route_details)) {
 	foreach($mapdata->route_details as $route) {
 		if($route->type == NAV_VOR)
-			$icon = 'icon_vor';
+			$icon = 'MapFeatures.icons.vor';
 		else
-			$icon = 'icon_fix';
+			$icon = 'MapFeatures.icons.fix';
 		
 		//	Build info array for the bubble
 		?>

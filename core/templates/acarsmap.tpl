@@ -20,29 +20,6 @@
  * table.acarsmap tbody tr.odd { } 
  */
 ?>
-<script type="text/javascript">
-<?php 
-/* These are the settings for the Google map. You can see the
-	Google API reference if you want to add more options.
-	
-	There's two options I've added:
-	
-	autozoom: This will automatically center in on/zoom 
-	  so all your current flights are visible. If false,
-	  then the zoom and center you specify will be used instead
-	  
-	refreshTime: Time, in seconds * 1000 to refresh the map.
-	  The default is 10000 (10 seconds)
-*/
-?>
-var acars_map_defaults = {
-	autozoom: true,
-	zoom: 4,
-    center: new google.maps.LatLng("<?php echo Config::Get('MAP_CENTER_LAT'); ?>", "<?php echo Config::Get('MAP_CENTER_LNG'); ?>"),
-    mapTypeId: google.maps.MapTypeId.TERRAIN,
-    refreshTime: 10000
-};
-</script>
 <div class="mapcenter" align="center">
 	<div id="acarsmap" style="width:<?php echo  Config::Get('MAP_WIDTH');?>; height: <?php echo Config::Get('MAP_HEIGHT')?>"></div>
 </div>
@@ -64,7 +41,8 @@ var acars_map_defaults = {
 </thead>
 <tbody id="pilotlist"></tbody>
 </table>
-<script type="text/javascript" src="<?php echo fileurl('/lib/js/acarsmap.js');?>"></script>
+<script src="<?php echo SITE_URL?>/lib/js/base_map.js"></script>
+<script src="<?php echo SITE_URL?>/lib/js/acarsmap.js"></script>
 <?php
 /* This is the template which is used in the table above, for each row. 
 	Be careful modifying it. You can simply add/remove columns, combine 
@@ -154,4 +132,30 @@ var acars_map_defaults = {
 <strong>Frequency: </strong><%=nav.freq%>
 <% } %>
 </span>
+</script>
+<script type="text/javascript">
+<?php 
+/* These are the settings for the Google map. You can see the
+	Google API reference if you want to add more options.
+	
+	There's two options I've added:
+	
+	autozoom: This will automatically center in on/zoom 
+	  so all your current flights are visible. If false,
+	  then the zoom and center you specify will be used instead
+	  
+	refreshTime: Time, in seconds * 1000 to refresh the map.
+	  The default is 10000 (10 seconds)
+*/
+?>
+const opts = {
+	render_elem: 'acarsmap',
+	provider: '<?php echo Config::Get("MAP_TYPE"); ?>',
+	autozoom: true,
+	zoom: 5,
+    center: L.latLng("<?php echo Config::Get('MAP_CENTER_LAT'); ?>", "<?php echo Config::Get('MAP_CENTER_LNG'); ?>"),
+    refreshTime: 10000
+};
+
+renderAcarsMap(opts);
 </script>

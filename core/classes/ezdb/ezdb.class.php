@@ -88,15 +88,16 @@ class DB
 	{
 		$class_name = strtolower('ezdb_'.$type);
 		include dirname(__FILE__).DIRECTORY_SEPARATOR.$class_name.'.class.php';
-
+		
 		if(!self::$DB = new $class_name())
 		{
 			self::$error = self::$DB->error;
 			self::$errno = self::$DB->errno;
-
+			
 			return false;
 		}
-
+		
+		self::set_caching(Config::Get('DBASE_USE_CACHE'));
 		return true;
 	}
 
